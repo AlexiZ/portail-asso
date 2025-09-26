@@ -25,4 +25,67 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    '@ckeditor/ckeditor5-build-classic' => [
+        'version' => '44.3.0',
+    ],
+    '@ckeditor/ckeditor5-alignment/src/alignment' => [
+        'version' => '46.0.3',
+    ],
+    'ckeditor5/src/core.js' => [
+        'version' => '46.0.3',
+    ],
+    'ckeditor5/src/utils.js' => [
+        'version' => '46.0.3',
+    ],
+    'ckeditor5/src/ui.js' => [
+        'version' => '46.0.3',
+    ],
+    'ckeditor5/src/icons.js' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-core' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-utils' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-ui' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-icons' => [
+        'version' => '46.0.3',
+    ],
+    'es-toolkit/compat' => [
+        'version' => '1.39.5',
+    ],
+    '@ckeditor/ckeditor5-engine' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-watchdog' => [
+        'version' => '46.0.3',
+    ],
+    'color-parse' => [
+        'version' => '2.0.2',
+    ],
+    'color-convert' => [
+        'version' => '3.1.0',
+    ],
+    'vanilla-colorful/lib/entrypoints/hex' => [
+        'version' => '0.7.2',
+    ],
+    'color-name' => [
+        'version' => '2.0.0',
+    ],
+    '@ckeditor/ckeditor5-font/src/font' => [
+        'version' => '46.0.3',
+    ],
+    'ckeditor5/src/engine.js' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-source-editing/src/sourceediting' => [
+        'version' => '46.0.3',
+    ],
+    '@ckeditor/ckeditor5-fullscreen/src/fullscreen' => [
+        'version' => '46.0.3',
+    ],
 ];

@@ -1,0 +1,90 @@
+wiki_plab: Wiki Plab
+nav:
+    logout: Déconnexion
+    admin: Admin
+    moderation: Modération
+    login: Connexion
+    register: Inscription
+
+home:
+    title: Accueil
+    agenda_days: Agenda des %days% prochains jours
+    events:
+        none: Aucun événement prévu dans les %days% prochains jours.
+    associations:
+        title: Associations
+        list:
+            none: Aucune association enregistrée pour le moment.
+        add:
+            title: Ajouter une association
+
+charter:
+    title: Charte d'édition
+
+association:
+    form:
+        name: Nom de l’association
+        content: Contenu
+    add:
+        title: Créer une page association
+        save: Enregistrer cette page association
+        cancel: Annuler et revenir à l'accueil
+        confirm: Nouvelle association créée avec succès.
+    edit:
+        title: Modifier la page de %association%
+        save: Enregistrer les modifications
+        cancel: Annuler et revenir sur la page de l'association
+        confirm: Les informations ont bien été modifiées.
+        forbidden: Vous n’êtes pas autorisé à modifier cette association.
+    show:
+        events:
+            title: Événements à venir
+            no_events: Aucun événement prévu.
+        actions:
+            edit: Modifier
+            show: Détails
+            new_event: Nouvel événement
+
+login:
+    title: Connexion
+    form:
+        username: Adresse e-mail
+        password: Mot de passe
+        submit: Se connecter
+    register: Créer un compte
+
+register:
+    title: Inscription
+    form:
+        email: Adresse e-mail
+        password: Mot de passe
+        confirm_password: Confirmer le mot de passe
+        submit: Créer mon compte
+    login: Déjà inscrit ? Se connecter
+
+event:
+    start_only: Le %date% à %start%
+    single_day: Le %date% de %start% à %end%
+    multiple_days: Du %start_date% à %start_hour% au %end_date% à %end_hour%
+    show:
+        back: Retour à la page de %association%
+        actions:
+            edit: Modifier
+    add:
+        title: Créer un nouvel événement
+        form:
+            submit: Créer l'événement
+            confirm: Événement ajouté avec succès.
+            back: Annuler et revenir sur la page de l'association
+    edit:
+        title: Modifier l'événement %title%
+        form:
+            submit: Mettre à jour
+            confirm: Événement mis à jour avec succès.
+            back: Annuler et revenir sur la page de l'association
+    form:
+        title: Titre
+        short_description: Description courte
+        long_description: Description longue
+        start_at: Date et heure de début
+        end_at: Date et heure de fin

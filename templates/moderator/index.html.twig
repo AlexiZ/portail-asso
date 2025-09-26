@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modération{% endblock %}
+
+{% block body %}
+    <h1>Modération des contributions</h1>
+
+    {% if revisions is not empty %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Association</th>
+                <th>Créateur</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rev in revisions %}
+                <tr>
+                    <td>{{ rev.association.name }}</td>
+                    <td>{{ rev.createdBy ? rev.createdBy.email : 'Anonyme' }}</td>
+                    <td>{{ rev.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path('moderator_approve_revision', { id: rev.id }) }}" class="btn btn-sm btn-success">
+                            <i class="fa fa-check"></i> Approuver
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">Aucune contribution en attente.</div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'association.edit.title'|trans({'%association%': association.name}) }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between">
+        <h1>{{ 'association.edit.title'|trans({'%association%': association.name}) }}</h1>
+
+        {% if association.revisions|default|length > 0 %}
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Versions antérieures
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                    {% for revision in association.revisions %}
+                        <li>
+                            <a class="dropdown-item revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: association.slug, revisionId: revision.id}) }}">
+                                Créée le {{ revision.createdAt|date('Y-m-d \\à H:i:s') }}{% if revision.createdBy|default %} par {{ revision.createdBy }}{% endif %}{% if loop.index == loop.last %} (actuelle){% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    {{ form_start(formAssociation) }}
+        <div class="mb-3">
+            {{ form_row(formAssociation.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
+        </div>
+
+        <button class="btn btn-success">
+            <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
+        </button>
+    {{ form_end(formAssociation) }}
+
+    <hr>
+
+    <a href="{{ path('association_show', { slug: association.slug }) }}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.edit.cancel'|trans }}
+    </a>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'event.add.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'event.add.title'|trans }}</h1>
+
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.shortDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.longDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.startAt, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.endAt, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <button class="btn btn-success">
+            <i class="fa fa-save"></i>
+            {{ 'event.add.form.submit'|trans }}
+        </button>
+    {{ form_end(form) }}
+
+    <hr>
+    <a href="{{ path('association_show', { slug: event.association.slug }) }}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'event.add.form.back'|trans }}
+    </a>
+{% endblock %}

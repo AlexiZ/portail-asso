@@ -1,0 +1,83 @@
+wiki_plab: Wiki Plab
+nav:
+    logout: Diskenn
+    admin: Merour
+    moderation: Moderadur
+    login: Kevrekañ
+    register: Enskrivañ
+home:
+    title: Degemer mat
+    agenda_days: Deiziataer evit an %days% devezh da zont
+    events:
+        none: Abadenn ebet aozet e-kerzh an %days% devezh da zont.
+    associations:
+        title: Kevredigezhioù
+        list:
+            none: Kevredigezh ebet enrollet evit c'hoazh.
+        add:
+            title: Ouzhpennañ ur gevredigezh
+
+association:
+    form:
+        name: Anv ar gevredigezh
+        content: Danvez
+    add:
+        title: Krouiñ ur bajenn gevredigezh
+        save: Enrollañ ar bajenn gevredigezh-mañ
+        cancel: Nullañ ha distreiñ d'ar gêr
+    edit:
+        title: Kemmañ ar bajenn eus %association%
+        save: Enrollañ ar c'hemmoù
+        cancel: Nullañ ha distreiñ d'ar bajenn gevredigezh
+        confirm: Kemmet eo bet an titouroù.
+    show:
+        events:
+            title: Darvoudoù da zont
+            no_events: Abadenn ebet rakwelet.
+        actions:
+            edit: Da gemmañ
+            show: Munudoù
+            new_event: Darvoud nevez
+
+login:
+    title: Kevrekañ
+    form:
+        username: Chomlec'h postel
+        password: Ger-tremen
+        submit: Kevreañ
+    register: Krouiñ ur gont
+
+register:
+    title: Enskrivañ
+    form:
+        email: Chomlec'h postel
+        password: Ger-tremen
+        confirm_password: Kadarnaat ar ger-tremen
+        submit: Krouiñ ma c'hont
+    login: Enrollet oc'h dija ? Kevreañ
+
+event:
+    start_only: D'an %date% da %start%
+    single_day: D'an %date% eus %start% da %end%
+    multiple_days: Eus an %start_date% da %start_hour% betek an %end_date% da %end_hour%
+    show:
+        back: Distreiñ d'ar bajenn %association%
+        actions:
+            edit: Da gemmañ
+    add:
+        title: Ouzhpennañ un darvoud
+        form:
+            submit: Ouzhpennañ darvoud
+            confirm: Ouzhpennet eo bet an darvoud gant berzh
+            back: Nullañ ha distreiñ d'ar bajenn gevredigezh
+    edit:
+        title: Kemmañ an darvoud %title%
+        form:
+            submit: Evit hizivaat
+            confirm: Hizivaet eo bet an darvoud gant berzh.
+            back: Nullañ ha distreiñ d'ar bajenn gevredigezh
+    form:
+        title: Titl
+        description: Deskrivadur
+        start_at: Deiziad hag eur kregiñ
+        end_at: Deiziad hag eur echuiñ

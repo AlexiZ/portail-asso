@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Événements à venir{% endblock %}
+
+{% block body %}
+    <h1>Événements à venir</h1>
+
+    {% if events is not empty %}
+        <ul class="list-group">
+            {% for event in events %}
+                <li class="list-group-item">
+                    <a href="{{ path('event_show', { id: event.id }) }}">
+                        <strong>{{ event.title }}</strong>
+                    </a><br>
+                    <small>
+                        Du {{ event.startAt|date('d/m/Y H:i') }}
+                        {% if event.endAt %} au {{ event.endAt|date('d/m/Y H:i') }}{% endif %}
+                    </small>
+                    <p class="mb-0">{{ event.description|u.truncate(150, '...') }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Aucun événement prévu.</p>
+    {% endif %}
+{% endblock %}
