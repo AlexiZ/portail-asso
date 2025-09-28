@@ -3,29 +3,36 @@
 namespace App\Entity;
 
 use App\Enum\Association\Category;
+use App\Repository\AssociationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['autocomplete'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Groups(['autocomplete'])]
     private string $name;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    #[Groups(['autocomplete'])]
     private string $slug;
 
     #[ORM\Column(type: Types::JSON, enumType: Category::class)]
+    #[Groups(['autocomplete'])]
     private ?array $categories = [];
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    #[Groups(['autocomplete'])]
     private ?string $logoFilename = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
@@ -75,9 +82,11 @@ class Association
     private string $createdBy;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Groups(['autocomplete'])]
     private \DateTimeInterface $updatedAt;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
+    #[Groups(['autocomplete'])]
     private string $updatedBy;
 
     public function __construct()

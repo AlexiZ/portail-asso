@@ -15,4 +15,15 @@ class AssociationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Association::class);
     }
+
+    public function searchByName(string $name): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('LOWER(a.name) LIKE :name')
+            ->setParameter('name', '%'.strtolower($name).'%')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

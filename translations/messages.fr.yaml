@@ -70,6 +70,9 @@ association:
             help: Vous pouvez indiquer ici l'objet de l'association et son mode de fonctionnement mais également décrire les activités proposées, les modalités d'adhésion, le nombre de membres, la date de création, etc...
         error:
             logo: Impossible de charger le logo, une erreur est survenue
+            already_exists: "Une association portant ce nom existe déjà, vous pouvez la consulter en cliquant sur ce client : <a href=\"%assocationLink%\">%assocationName%</a>"
+    pre_new:
+        confirm: Non, je veux créer une nouvelle page association
     add:
         title: Créer une page association
         save: Enregistrer cette page association

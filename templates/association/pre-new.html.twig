@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'association.add.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'association.add.title'|trans }}</h1>
+
+    {% include 'association/form.html.twig' with {formAssociation: form} %}
+
+    <div id="results" class="d-none">
+        <h2>S'agit-il de l'une de ces associations ?</h2>
+
+        <div id="content">
+
+        </div>
+
+        <a href="javascript:void(0);" onclick="window.location.href='{{ path('association_new') }}'+this.dataset.name" class="btn btn-primary mt-3" id="confirm" data-name="">
+            <i class="fa fa-save"></i>&nbsp;{{ 'association.pre_new.confirm'|trans }}
+        </a>
+    </div>
+
+    <hr>
+
+    <a href="{{ path('homepage') }}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.add.cancel'|trans }}
+    </a>
+{% endblock %}

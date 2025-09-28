@@ -101,4 +101,22 @@ return [
         'version' => '2.4.3',
         'type' => 'css',
     ],
+    'fos-router' => [
+        'version' => '2.4.6',
+    ],
+    'intl-messageformat' => [
+        'version' => '10.7.15',
+    ],
+    'tslib' => [
+        'version' => '2.8.1',
+    ],
+    '@formatjs/fast-memoize' => [
+        'version' => '2.2.6',
+    ],
+    '@formatjs/icu-messageformat-parser' => [
+        'version' => '2.11.1',
+    ],
+    '@formatjs/icu-skeleton-parser' => [
+        'version' => '1.8.13',
+    ],
 ];

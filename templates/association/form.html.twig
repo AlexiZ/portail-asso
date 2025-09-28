@@ -3,73 +3,85 @@
         {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
     </div>
 
-    <div class="mb-3">
-        {{ form_row(formAssociation.categories, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-select js-tomselect'}}) }}
-    </div>
+    {% if formAssociation.categories is defined %}
+        <div class="mb-3">
+            {{ form_row(formAssociation.categories, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-select js-tomselect'}}) }}
+        </div>
+    {% endif %}
 
-    <div class="mb-4">
-        {% if association.logoFilename|default %}
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail">
+    {% if formAssociation.logo is defined %}
+        <div class="mb-4">
+            {% if association.logoFilename|default %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+            {% else %}
+                {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if formAssociation.contactName is defined %}
+        <div class="mb-4">
+            <fieldset class="row">
+                <legend>{{ 'association.form.contact.title'|trans }}</legend>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.contactName, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
                 </div>
-            </div>
-        {% else %}
-            {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-        {% endif %}
-    </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.contactFunction, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-12">
+                    {{ form_row(formAssociation.contactAddress, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.contactEmail, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.contactPhone, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
 
-    <div class="mb-4">
-        <fieldset class="row">
-            <legend>{{ 'association.form.contact.title'|trans }}</legend>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactName, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactFunction, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-12">
-                {{ form_row(formAssociation.contactAddress, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactEmail, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactPhone, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-        </fieldset>
-    </div>
+    {% if formAssociation.networkWebsite is defined %}
+        <div class="mb-4">
+            <fieldset class="row">
+                <legend>{{ 'association.form.network.title'|trans }}</legend>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.networkWebsite, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.networkFacebook, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.networkInstagram, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formAssociation.networkOther, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </fieldset>
+        </div>
+    {% endif %}
 
-    <div class="mb-4">
-        <fieldset class="row">
-            <legend>{{ 'association.form.network.title'|trans }}</legend>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkWebsite, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkFacebook, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkInstagram, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkOther, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-        </fieldset>
-    </div>
+    {% if formAssociation.content is defined %}
+        <div class="mb-3">
+            <fieldset>
+                <legend>{{ 'association.form.content.label'|trans }}</legend>
+                <p>{{ 'association.form.content.help'|trans }}</p>
+                {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
+            </fieldset>
+        </div>
+    {% endif %}
 
-    <div class="mb-3">
-        <fieldset>
-            <legend>{{ 'association.form.content.label'|trans }}</legend>
-            <p>{{ 'association.form.content.help'|trans }}</p>
-            {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
-        </fieldset>
-    </div>
-
-    <button class="btn btn-success">
-        <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
-    </button>
+    {% if formAssociation.content is defined %}
+        <button class="btn btn-success">
+            <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
+        </button>
+    {% endif %}
 {{ form_end(formAssociation) }}

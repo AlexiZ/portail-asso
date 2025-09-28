@@ -50,8 +50,8 @@
                     {% endif %}
                 </div>
 
-                <div class="col-md-9 d-flex">
-                    <div>
+                <div class="col-md-{% if association.logoFilename|default %}9{% else%}12{% endif%} row d-flex">
+                    <div class="col-6">
                         <h3>Nous contacter</h3>
 
                         {% if association.hasAnyContactDetail|default %}
@@ -72,10 +72,12 @@
                                     <li>{{ association.contactPhone }}</li>
                                 {% endif %}
                             </ul>
+                        {% else %}
+                            <p class="fst-italic">Aucune information de contact n'a été fournie.</p>
                         {% endif %}
                     </div>
 
-                    <div class="mx-3">
+                    <div class="col-6">
                         <h3>Nos réseaux</h3>
 
                         {% if association.hasAnyNetwork|default %}
@@ -93,6 +95,8 @@
                                     <li><a href="{{ association.networkOther }}">{{ association.networkOther }}</a></li>
                                 {% endif %}
                             </ul>
+                        {% else %}
+                            <p class="fst-italic">Aucun réseau n'a été fourni.</p>
                         {% endif %}
                     </div>
                 </div>

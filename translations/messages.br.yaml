@@ -67,6 +67,11 @@ association:
         content:
             label: Deskrivadur ar gevredigezh |
             help: Amañ e c’hallit merkañ pal ar gevredigezh hag he doare ober, met deskrivañ ivez an obererezhioù kinniget, an doareoù da vezañ ezel, an niver a izili, an deiziad krouidigezh, h.a.
+        error:
+            logo: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
+            already_exists: "Ur c'hevreadur gant an anv-mañ zo anezhañ dija, gallout a rit mont da welet anezhi en ur glikañ war ar c'hlient-mañ : <a href=\"%assocationLink%\">%assocationName%</a>"
+    pre_new:
+        confirm: Nann, fellout a ra din krouiñ ur bajenn gevredigezh nevez
     add:
         title: Krouiñ ur bajenn gevredigezh
         save: Enrollañ ar bajenn gevredigezh-mañ

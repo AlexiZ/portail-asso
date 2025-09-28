@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,6 +34,41 @@ class AssociationController extends AbstractController
     ) {
     }
 
+    #[Route('/pre-nouvelle', name: 'association_pre_new', options: ['expose' => true])]
+    public function preNew(
+        Request $request,
+        SluggerInterface $slugger,
+        SerializerInterface $serializer,
+    ): Response {
+        $association = new Association();
+        $form = $this->createForm(AssociationType::class, $association, ['pre_new' => true]);
+        $form->handleRequest($request);
+
+        if ($request->isXmlHttpRequest()) {
+            $results = $this->em->getRepository(Association::class)->searchByName($request->get('q'));
+
+            return new JsonResponse($serializer->serialize($results, 'json', ['groups' => ['autocomplete']]), 200, [], true);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $slug = strtolower($slugger->slug($association->getName()));
+            $association->setSlug($slug);
+            $existingAsso = $this->em->getRepository(Association::class)->findOneBy(['slug' => $slug]);
+            if ($existingAsso instanceof Association) {
+                $form->addError(new FormError($this->translator->trans('association.form.error.already_exists', [
+                    '%assocationLink%' => $this->generateUrl('association_show', ['id' => $association->getId()]),
+                    '%associationName%' => $association->getName(),
+                ])));
+
+                return $this->redirectToRoute('association_pre_new');
+            }
+        }
+
+        return $this->render('association/pre-new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/nouvelle', name: 'association_new')]
     public function new(
         Request $request,
@@ -40,6 +76,9 @@ class AssociationController extends AbstractController
         #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory,
     ): Response {
         $association = new Association();
+        if ($name = $request->query->get('name')) {
+            $association->setName($name);
+        }
         $form = $this->createForm(AssociationType::class, $association);
         $form->handleRequest($request);
 
@@ -70,7 +109,7 @@ class AssociationController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'association_show')]
+    #[Route('/{slug}', name: 'association_show', options: ['expose' => true])]
     public function show(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,

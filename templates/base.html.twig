@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-100">
+<html lang="{{ app.request.locale|split('_')[0] }}" class="h-100">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
         {% endblock %}
     </head>
 
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100" data-route="{{ app.request.attributes.all()['_route'] }}">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">

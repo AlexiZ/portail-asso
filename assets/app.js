@@ -1,5 +1,6 @@
 import 'bootstrap';
 import TomSelect from 'tom-select';
+import Routing from 'fos-router';
 
 import './styles/app.scss';
 
@@ -138,4 +139,69 @@ document.addEventListener('DOMContentLoaded', function () {
         childList: true,
         subtree: true,
     });
+
+    const associationAutocompleteField = document.querySelector('body[data-route="association_pre_new"] input[type="text"][name="association[name]"]');
+    if (associationAutocompleteField) {
+        associationAutocompleteField.addEventListener('input', (event) => {
+            const value = event.target.value.trim();
+            const resultsDiv = document.querySelector('#results');
+
+            if (value.length > 2) {
+                const resultsDivConfirm = resultsDiv.querySelector('#confirm');
+                resultsDivConfirm.dataset.name = '?name='+value;
+
+                const url = Routing.generate('association_pre_new', {q: value});
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur HTTP : ' + response.status);
+                        }
+
+                        return response.json();
+                    })
+                    .then(data => {
+                        const query = associationAutocompleteField.value.trim();
+                        const resultsDivContent = resultsDiv.querySelector('#content');
+
+                        resultsDivContent.innerHTML = '';
+
+                        if (data.length === 0) {
+                            return;
+                        }
+
+                        const div = document.createElement('div');
+                        div.classList.add('list-group');
+
+                        data.forEach(association => {
+                            const a = document.createElement('a');
+                            a.classList.add('list-group-item', 'list-group-item-action');
+                            a.href = Routing.generate('association_show', {'slug': association.slug});
+
+                            const regex = new RegExp(`(${query})`, 'gi');
+                            a.innerHTML = association.name.replace(regex, '<mark>$1</mark>');
+
+                            div.appendChild(a);
+                        });
+
+                        if (data.length > 0) {
+                            resultsDiv.classList.remove('d-none');
+                        }
+
+                        resultsDivContent.appendChild(div);
+                    })
+                    .catch(error => {
+                        console.error('Erreur dans l’appel Ajax : ', error);
+                    })
+                ;
+            } else {
+                resultsDiv.classList.add('d-none');
+            }
+        });
+    }
+
 });

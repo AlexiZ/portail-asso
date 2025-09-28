@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const FosRouting = require('fos-router/webpack/FosRouting');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -45,6 +46,8 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+    .enableStimulusBridge('./assets/controllers.json')
+
     // configure Babel
     // .configureBabel((config) => {
     //     config.plugins.push('@babel/a-babel-plugin');
@@ -71,6 +74,8 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    .addPlugin(new FosRouting())
 ;
 
 module.exports = Encore.getWebpackConfig();
