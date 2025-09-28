@@ -24,18 +24,7 @@
         {% endif %}
     </div>
 
-    {{ form_start(formAssociation) }}
-        <div class="mb-3">
-            {{ form_row(formAssociation.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="mb-3">
-            {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
-        </div>
-
-        <button class="btn btn-success">
-            <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
-        </button>
-    {{ form_end(formAssociation) }}
+    {% include 'association/form.html.twig' with {formAssociation: formAssociation} %}
 
     <hr>
 

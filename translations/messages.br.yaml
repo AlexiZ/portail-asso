@@ -5,8 +5,19 @@ nav:
     moderation: Moderadur
     login: Kevrekañ
     register: Enskrivañ
+
 home:
     title: Degemer mat
+    introduction:
+        title: Degemer mat war Porched Kevredigezhioù Plabenneg !
+        content: >
+            Al lec'hienn-mañ, kinniget ha meret gant ar gevredigezh <a href="https://plabennecentransition.fr/">Plabennec en Tremen</a>, a ya en-dro evel ur <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : pep hini a c'hell he lenn ha reiñ e lod dezhi, en ur zoujañ d'hor <a href="/charte-d-edition">garta embann</a>.
+            <br>
+            He fal eo krouiñ un diaz roadennoù bev ha talvoudus evit an holl re a fell dezho kemer perzh ha kemer perzh e treuzfurmadur o c'hêr.
+            <br>
+            Pal ar bajenn-mañ eo lakaat pinvidigezh ar gumuniezh lec'hel hag ar vuhez keodedel da vezañ aesoc'h da gaout, ha kinnig un ostilh resis evit en em lakaat e-barzh.
+            <br>
+            N'eo ket meneget ho kevredigezh c'hoazh ? Ouzhpennit anezhañ aes en ur glikañ war ar bouton amañ dindan.
     agenda_days: Deiziataer evit an %days% devezh da zont
     events:
         none: Abadenn ebet aozet e-kerzh an %days% devezh da zont.
@@ -17,10 +28,45 @@ home:
         add:
             title: Ouzhpennañ ur gevredigezh
 
+charter:
+    title: Karta an embann
+
 association:
+    category:
+        animals: Loened
+        arts-culture: Arzoù ha sevenadur
+        crafts-cooking: Artizanerezh ha keginañ
+        well-being: Ar yec'hed
+        ecology-environment: Ekologiezh & Endro
+        education: Desaverezh
+        leisure: Dudi
+        music: Sonerezh
+        heritage: Hêrezh
+        professional-student-network : Rouedadoù micherel ha studierien
+        health: Yec'hed
+        science-technology: Skiantoù ha teknologiezhioù
+        solidarity-social-action: Kevredigezh hag obererezh sokial
+        spirituality: Speredelezh
+        sport: Sportoù
     form:
         name: Anv ar gevredigezh
-        content: Danvez
+        logo: Logo ar gevredigezh
+        contact:
+            title: Penaos mont e-barzh ar gevredigezh ? (an holl vaeziennoù a zo dibar)
+            name: Anv an den privilejiet
+            function: Arc'hwel an den-mañ
+            address: Chomlec'h ar gevredigezh |
+            email: Postel darempred
+            phone: Pellgomz
+        network:
+            title: War peseurt rouedadoù e c'haller kavout ar gevredigezh ? (an holl vaeziennoù a zo dibar)
+            website: Lec'hienn
+            facebook: Pajenn Facebook
+            instagram: Pajenn Instagram
+            other: Rouedad sokial all
+        content:
+            label: Deskrivadur ar gevredigezh |
+            help: Amañ e c’hallit merkañ pal ar gevredigezh hag he doare ober, met deskrivañ ivez an obererezhioù kinniget, an doareoù da vezañ ezel, an niver a izili, an deiziad krouidigezh, h.a.
     add:
         title: Krouiñ ur bajenn gevredigezh
         save: Enrollañ ar bajenn gevredigezh-mañ

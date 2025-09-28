@@ -5,19 +5,7 @@
 {% block body %}
     <h1>{{ 'association.add.title'|trans }}</h1>
 
-    {{ form_start(form) }}
-        <div class="mb-3">
-            {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_row(form.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
-        </div>
-
-        <button class="btn btn-success">
-            <i class="fa fa-save"></i>&nbsp;{{ 'association.add.save'|trans }}
-        </button>
-    {{ form_end(form) }}
+    {% include 'association/form.html.twig' with {formAssociation: form} %}
 
     <hr>
 

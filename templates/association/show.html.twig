@@ -35,11 +35,78 @@
         </div>
     </div>
 
+    <div class="mb-3">
+        {% for category in association.categories %}
+            <span class="badge bg-{{ category.badge }}">{{ ('association.category.' ~ category.value)|trans }}</span>
+        {% endfor %}
+    </div>
+
     <div class="card mb-4">
         <div class="card-body">
-            {{ association.content|raw }}
+            <div class="row">
+                <div class="col-md-3">
+                    {% if association.logoFilename|default %}
+                        <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-9 d-flex">
+                    <div>
+                        <h3>Nous contacter</h3>
+
+                        {% if association.hasAnyContactDetail|default %}
+                            <ul class="list-unstyled">
+                                {% if association.contactName|default or association.contactFunction|default %}
+                                    <li>
+                                        {% if association.contactName|default %}{{ association.contactName }}{% endif %}
+                                        {% if association.contactFunction|default %} - {{ association.contactFunction }}{% endif %}
+                                    </li>
+                                {% endif %}
+                                {% if association.contactAddress|default %}
+                                    <li>{{ association.contactAddress }}</li>
+                                {% endif %}
+                                {% if association.contactEmail|default %}
+                                    <li>{{ association.contactEmail }}</li>
+                                {% endif %}
+                                {% if association.contactPhone|default %}
+                                    <li>{{ association.contactPhone }}</li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="mx-3">
+                        <h3>Nos réseaux</h3>
+
+                        {% if association.hasAnyNetwork|default %}
+                            <ul class="list-unstyled">
+                                {% if association.networkWebsite|default %}
+                                    <li><a href="{{ association.networkWebsite }}">{{ association.networkWebsite }}</a></li>
+                                {% endif %}
+                                {% if association.networkFacebook|default %}
+                                    <li><a href="{{ association.networkFacebook }}">{{ association.networkFacebook }}</a></li>
+                                {% endif %}
+                                {% if association.networkInstagram|default %}
+                                    <li><a href="{{ association.networkInstagram }}">{{ association.networkInstagram }}</a></li>
+                                {% endif %}
+                                {% if association.networkOther|default %}
+                                    <li><a href="{{ association.networkOther }}">{{ association.networkOther }}</a></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    {% if association.content|default %}
+        <div class="card mb-4">
+            <div class="card-body">
+                {{ association.content|raw }}
+            </div>
+        </div>
+    {% endif %}
 
     <h2 class="h4 mt-4">{{ 'association.show.events.title'|trans }}</h2>
     {% if association.events|default|length > 0 %}

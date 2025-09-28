@@ -8,6 +8,16 @@ nav:
 
 home:
     title: Accueil
+    introduction:
+        title: Bienvenue sur le Portail des associations Plabennecoises !
+        content: >
+            Ce site, proposé et animé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, fonctionne comme un <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : chacun peut le lire et y contribuer, dans le respect de notre <a href="%charter%">charte d'édition</a>.
+            <br>
+            Son objectif est de constituer une base de données vivante et utile pour toutes celles et ceux qui souhaitent agir et participer à la transformation de leur ville.
+            <br>
+            Cette page a pour vocation de rendre plus accessible la richesse de la vie associative et citoyenne locale, et d’offrir un outil concret pour s’y engager.
+            <br>
+            Votre association n’apparaît pas encore dans la liste ? Ajoutez-la facilement en cliquant sur le bouton ci-dessous.
     agenda_days: Agenda des %days% prochains jours
     events:
         none: Aucun événement prévu dans les %days% prochains jours.
@@ -22,9 +32,44 @@ charter:
     title: Charte d'édition
 
 association:
+    category:
+        animals: Animaux
+        arts-culture: Arts & Culture
+        crafts-cooking: Artisanat & Cuisine
+        well-being: Bien-être
+        ecology-environment: Écologie & Environnement
+        education: Éducation
+        leisure: Loisirs
+        music: Musique
+        heritage: Patrimoine
+        professional-student-network : Réseaux pros & étudiants
+        health: Santé
+        science-technology: Sciences & Technologie
+        solidarity-social-action: Solidarité et Action sociale
+        spirituality: Spiritualité
+        sport: Sport
     form:
         name: Nom de l’association
-        content: Contenu
+        categories: Catégories
+        logo: Logo de l'association
+        contact:
+            title: Comment peut-on joindre l'association ? (tous les champs sont facultatifs)
+            name: Nom de la personne privilégiée
+            function: Fonction de cette personne
+            address: Adresse de l'association
+            email: Email de contact
+            phone: Téléphone
+        network:
+            title: Sur quels réseaux peut-on retrouver l'association ? (tous les champs sont facultatifs)
+            website: Site web
+            facebook: Page Facebook
+            instagram: Page Instagram
+            other: Autre réseau social
+        content:
+            label: Description de l'association
+            help: Vous pouvez indiquer ici l'objet de l'association et son mode de fonctionnement mais également décrire les activités proposées, les modalités d'adhésion, le nombre de membres, la date de création, etc...
+        error:
+            logo: Impossible de charger le logo, une erreur est survenue
     add:
         title: Créer une page association
         save: Enregistrer cette page association

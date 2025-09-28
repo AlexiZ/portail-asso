@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\Association\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -14,14 +16,46 @@ class Association
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 190)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 190, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private string $slug;
 
-    // Single blob of text used by WYSIWYG (HTML)
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::JSON, enumType: Category::class)]
+    private ?array $categories = [];
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $logoFilename = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $contactName = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $contactFunction = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $contactEmail = null;
+
+    #[ORM\Column(type: Types::STRING, length: 32, nullable: true)]
+    private ?string $contactPhone = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $contactAddress = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $networkWebsite = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $networkFacebook = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $networkInstagram = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $networkOther = null;
+
+    #[ORM\Column(type: Types::TEXT)]
     private string $content;
 
     #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
@@ -34,16 +68,16 @@ class Association
     #[ORM\JoinColumn(nullable: true)]
     private ?User $owner = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
     private string $createdBy;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeInterface $updatedAt;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
     private string $updatedBy;
 
     public function __construct()
@@ -52,6 +86,28 @@ class Association
         $this->events = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'categories' => implode(',', $this->categories),
+            'logoFilename' => $this->logoFilename,
+            'contactName' => $this->contactName,
+            'contactFunction' => $this->contactFunction,
+            'contactEmail' => $this->contactEmail,
+            'contactPhone' => $this->contactPhone,
+            'contactAddress' => $this->contactAddress,
+            'networkWebsite' => $this->networkWebsite,
+            'networkFacebook' => $this->networkFacebook,
+            'networkInstagram' => $this->networkInstagram,
+            'networkOther' => $this->networkOther,
+            'content' => $this->content,
+            'events' => $this->events->toArray(),
+            'owner' => $this->owner,
+        ];
     }
 
     public function getId(): ?int
@@ -88,6 +144,148 @@ class Association
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getCategories(): ?array
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?array $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function getLogoFilename(): ?string
+    {
+        return $this->logoFilename;
+    }
+
+    public function setLogoFilename(?string $logoFilename): self
+    {
+        $this->logoFilename = $logoFilename;
+
+        return $this;
+    }
+
+    public function getContactName(): ?string
+    {
+        return $this->contactName;
+    }
+
+    public function setContactName(?string $contactName): self
+    {
+        $this->contactName = $contactName;
+
+        return $this;
+    }
+
+    public function getContactFunction(): ?string
+    {
+        return $this->contactFunction;
+    }
+
+    public function setContactFunction(?string $contactFunction): self
+    {
+        $this->contactFunction = $contactFunction;
+
+        return $this;
+    }
+
+    public function getContactEmail(): ?string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(?string $contactEmail): self
+    {
+        $this->contactEmail = $contactEmail;
+
+        return $this;
+    }
+
+    public function getContactPhone(): ?string
+    {
+        return $this->contactPhone;
+    }
+
+    public function setContactPhone(?string $contactPhone): self
+    {
+        $this->contactPhone = $contactPhone;
+
+        return $this;
+    }
+
+    public function getContactAddress(): ?string
+    {
+        return $this->contactAddress;
+    }
+
+    public function setContactAddress(?string $contactAddress): self
+    {
+        $this->contactAddress = $contactAddress;
+
+        return $this;
+    }
+
+    public function hasAnyContactDetail(): bool
+    {
+        return !empty($this->contactName) || !empty($this->contactFunction) || !empty($this->contactEmail) || !empty($this->contactPhone) || !empty($this->contactAddress);
+    }
+
+    public function getNetworkWebsite(): ?string
+    {
+        return $this->networkWebsite;
+    }
+
+    public function setNetworkWebsite(?string $networkWebsite): self
+    {
+        $this->networkWebsite = $networkWebsite;
+
+        return $this;
+    }
+
+    public function getNetworkFacebook(): ?string
+    {
+        return $this->networkFacebook;
+    }
+
+    public function setNetworkFacebook(?string $networkFacebook): self
+    {
+        $this->networkFacebook = $networkFacebook;
+
+        return $this;
+    }
+
+    public function getNetworkInstagram(): ?string
+    {
+        return $this->networkInstagram;
+    }
+
+    public function setNetworkInstagram(?string $networkInstagram): self
+    {
+        $this->networkInstagram = $networkInstagram;
+
+        return $this;
+    }
+
+    public function getNetworkOther(): ?string
+    {
+        return $this->networkOther;
+    }
+
+    public function setNetworkOther(?string $networkOther): self
+    {
+        $this->networkOther = $networkOther;
+
+        return $this;
+    }
+
+    public function hasAnyNetwork(): bool
+    {
+        return !empty($this->networkWebsite) || !empty($this->networkFacebook) || !empty($this->networkInstagram) || !empty($this->networkOther);
     }
 
     public function getContent(): string

@@ -1,53 +1,58 @@
-import './styles/app.css';
+import 'bootstrap';
+import TomSelect from 'tom-select';
+
+import './styles/app.scss';
+
+function initTomSelects() {
+    document.querySelectorAll('select.js-tomselect').forEach(element => {
+        if (element.tomselect) return;
+
+        new TomSelect(element, {
+            create: false, // interdit d’ajouter de nouvelles valeurs
+            plugins: { remove_button: { title: 'Retirer' } }, // joli "x" sur les tags
+            maxOptions: 200,
+        });
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('textarea.wysiwyg').forEach((el) => {
-        CKEDITOR.plugins.loaded['version'] = null;
-        CKEDITOR.replace(el, {
-            fullPage: false,
-            versionCheck: false,
-            allowedContent: true,
-            removePlugins: 'elementspath',
-            extraPlugins: 'colorbutton,colordialog,justify',
-            language: 'fr',
-            height: el.dataset.height || 500,
-            toolbar: [
-                { name: 'clipboard', items: ['Undo', 'Redo'] },
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
-                { name: 'alignment', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                { name: 'links', items: ['Link', 'Unlink'] },
-                { name: 'insert', items: ['Image', 'Table'] },
-                { name: 'colors', items: ['TextColor', 'BGColor'] },
-                { name: 'tools', items: ['Maximize', 'Source'] }
-            ]
-        });
+    const wysiwygs = document.querySelectorAll('textarea.wysiwyg');
+    if (wysiwygs) {
+        wysiwygs.forEach((el) => {
+            CKEDITOR.plugins.loaded['version'] = null;
+            CKEDITOR.replace(el, {
+                fullPage: false,
+                versionCheck: false,
+                allowedContent: true,
+                removePlugins: 'elementspath',
+                extraPlugins: 'colorbutton,colordialog,justify',
+                language: 'fr',
+                height: el.dataset.height || 300,
+                toolbar: [
+                    {name: 'clipboard', items: ['Undo', 'Redo']},
+                    {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline']},
+                    {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent']},
+                    {name: 'alignment', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+                    {name: 'links', items: ['Link', 'Unlink']},
+                    {name: 'insert', items: ['Image', 'Table']},
+                    {name: 'colors', items: ['TextColor', 'BGColor']},
+                    {name: 'tools', items: ['Maximize', 'Source']}
+                ]
+            });
 
-        CKEDITOR.instances[el.id].on('instanceReady', function (evt) {
-            if (!evt.editor.getData().trim() && el.classList.contains('page-template')) {
-                evt.editor.setData(`
+            CKEDITOR.instances[el.id].on('instanceReady', function (evt) {
+                if (!evt.editor.getData().trim() && el.classList.contains('page-template')) {
+                    evt.editor.setData(`
                     <h2>Description</h2>
                     <p>Décrivez votre association...</p>
-
-                    <h2>Contact</h2>
-                    <ul>
-                    <li>Email : </li>
-                    <li>Téléphone : </li>
-                    <li>Adresse : </li>
-                    </ul>
-
-                    <h2>Site Web / Réseaux sociaux</h2>
-                    <p><a href="#">Lien vers votre site ou Facebook</a></p>
-
-                    <h2>Logo</h2>
-                    <p><img src="#" alt="Logo de l'association" style="max-width:200px;"></p>
 
                     <h2>Autres informations utiles</h2>
                     <p>Ajoutez ici toute information que vous jugez utile.</p>
                 `);
-            }
+                }
+            });
         });
-    });
+    }
 
     const backToTop = document.getElementById("btn-back-to-top");
     if (backToTop) {
@@ -109,4 +114,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    initTomSelects();
+
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            mutation.addedNodes.forEach((node) => {
+                if (!(node instanceof HTMLElement)) return;
+
+                // si un <select> est ajouté directement
+                if (node.matches?.('select.js-tomselect')) {
+                    initTomSelects(node.parentNode || document);
+                }
+
+                // si un container est ajouté avec des <select> à l’intérieur
+                if (node.querySelectorAll) {
+                    initTomSelects(node);
+                }
+            });
+        }
+    });
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+    });
 });

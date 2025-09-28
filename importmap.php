@@ -88,4 +88,17 @@ return [
     '@ckeditor/ckeditor5-fullscreen/src/fullscreen' => [
         'version' => '46.0.3',
     ],
+    'tom-select' => [
+        'version' => '2.4.3',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
 ];

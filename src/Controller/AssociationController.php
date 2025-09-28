@@ -10,6 +10,11 @@ use App\Repository\AssociationRevisionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,10 +33,11 @@ class AssociationController extends AbstractController
     ) {
     }
 
-    #[Route('/new', name: 'association_new')]
+    #[Route('/nouvelle', name: 'association_new')]
     public function new(
         Request $request,
         SluggerInterface $slugger,
+        #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory,
     ): Response {
         $association = new Association();
         $form = $this->createForm(AssociationType::class, $association);
@@ -47,6 +53,8 @@ class AssociationController extends AbstractController
                 $association->setCreatedBy($this->getUser()->getUsername());
                 $association->setUpdatedBy($this->getUser()->getUsername());
             }
+
+            $this->processAssociationLogo($association, $form, $slugger, $uploadsDirectory);
 
             $this->em->persist($association);
             $this->em->flush();
@@ -72,11 +80,13 @@ class AssociationController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/edit', name: 'association_edit')]
+    #[Route('/{slug}/modifier', name: 'association_edit')]
     public function edit(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
         Request $request,
+        SluggerInterface $slugger,
+        #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory,
     ): Response {
         $formAssociation = $this->createForm(AssociationType::class, $association);
         $formAssociation->handleRequest($request);
@@ -87,6 +97,8 @@ class AssociationController extends AbstractController
             $revision->setContentBefore($association->getContent());
             $revision->setContentAfter($formAssociation->get('content')->getData());
             $revision->setApproved($this->isGranted('ROLE_MODERATOR'));
+
+            $this->processAssociationLogo($association, $formAssociation, $slugger, $uploadsDirectory);
 
             $association->setUpdatedAt(new \DateTimeImmutable());
             $association->setUpdatedBy($request->server->get('REMOTE_ADDR'));
@@ -111,7 +123,25 @@ class AssociationController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/rollback/{revisionId}/preview', name: 'association_rollback_preview')]
+    private function processAssociationLogo(Association $association, FormInterface $formAssociation, SluggerInterface $slugger, string $uploadsDirectory): void
+    {
+        /** @var UploadedFile $logoFile */
+        $logoFile = $formAssociation->get('logo')->getData();
+        if ($logoFile) {
+            $originalFilename = pathinfo($logoFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$logoFile->guessExtension();
+
+            try {
+                $logoFile->move($uploadsDirectory, $newFilename);
+                $association->setLogoFilename($newFilename);
+            } catch (FileException) {
+                $formAssociation->get('logo')->addError(new FormError($this->translator->trans('association.form.error.logo')));
+            }
+        }
+    }
+
+    #[Route('/{slug}/revision/{revisionId}/apercu', name: 'association_rollback_preview')]
     public function rollbackPreview(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
@@ -127,7 +157,7 @@ class AssociationController extends AbstractController
         return new JsonResponse($revision->getContentAfter());
     }
 
-    #[Route('/{slug}/rollback/{revisionId}/confirm', name: 'association_rollback')]
+    #[Route('/{slug}/revision/{revisionId}/confirmer', name: 'association_rollback')]
     public function rollbackConfirm(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,

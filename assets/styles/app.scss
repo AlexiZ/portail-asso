@@ -1,0 +1,36 @@
+@import "bootstrap/scss/functions";
+
+$warning: #F39200FF;
+$success: #2BB989;
+$danger: #EA5188FF;
+$info: #A169CCFF;
+$primary: #077C5DFF;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/bootstrap";
+
+@import "tom-select/dist/scss/tom-select.bootstrap5";
+
+body {
+    background-color: #fbfaf9;
+}
+
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+}
+
+.masonry {
+    column-count: 2;   /* ou 3 selon largeur */
+    column-gap: 1rem;
+
+    .col {
+        display: inline-block; /* pour que les blocs s’empilent correctement */
+        width: 100%;
+    }
+}
