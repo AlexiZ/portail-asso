@@ -73,6 +73,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_filter(array_unique($roles));
     }
 
+    public function getHighestRole(): string
+    {
+        if (in_array('ROLE_ADMIN', $this->getRoles(), true)) {
+            return 'ROLE_ADMIN';
+        }
+        if (in_array('ROLE_MODERATOR', $this->getRoles(), true)) {
+            return 'ROLE_MODERATOR';
+        }
+
+        return 'ROLE_USER';
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

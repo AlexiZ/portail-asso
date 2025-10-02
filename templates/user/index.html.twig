@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'user_account.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="p-3 mb-4 bg-white rounded-3 border">
+        <div class="container-fluid py-3">
+            <h1 class="fw-bold">{{ 'user_account.title'|trans }}</h1>
+
+            <p><strong>{{ 'user_account.content.identifier'|trans }} :</strong> {{ user.userIdentifier }}</p>
+            <p>
+                <strong>{{ 'user_account.content.roles'|trans }} :</strong> {{ ('user.role.' ~ app.user.highestRole|lower)|trans }}
+            </p>
+
+            <hr>
+
+            <h2>{{ 'user_account.change_password.title'|trans }}</h2>
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_row(form.plainPassword.first, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.plainPassword.second, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-success"><i class="fa fa-save"></i>&nbsp;{{ 'user_account.change_password.submit'|trans }}</button>
+                </div>
+            {{ form_end(form) }}
+
+            <hr>
+
+            <h2>{{ 'user_account.delete_account.title'|trans }}</h2>
+            <form class="my-4" method="post" onsubmit="return confirm('{{ 'user_account.delete_account.confirm'|trans }}');">
+                <input type="hidden" name="delete_account" value="1">
+                <div class="mb-3">
+                    <button class="btn btn-danger text-white"><i class="fa fa-triangle-exclamation"></i>&nbsp;{{ 'user_account.delete_account.submit'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

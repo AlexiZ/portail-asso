@@ -18,7 +18,7 @@ home:
     introduction:
         title: Bienvenue sur le Portail des associations Plabennecoises !
         content: >
-            Ce site, proposé et animé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, fonctionne comme un <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : chacun peut le lire et y contribuer, dans le respect de notre <a href="%charter%">charte d'édition</a>.
+            Ce site, proposé et animé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, fonctionne comme un <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : chacun peut le lire et y contribuer, dans le respect de notre charte d'édition.
             <br>
             Son objectif est de constituer une base de données vivante et utile pour toutes celles et ceux qui souhaitent agir et participer à la transformation de leur ville.
             <br>
@@ -37,6 +37,12 @@ home:
 
 charter:
     title: Charte d'édition
+    content: >
+        Plabennec en Transition propose à chaque association (culturelle, sportive, caritative, sociale, de bien-être, …), chaque groupe d’activité ou d’initiative citoyenne d’alimenter sa propre présentation sur le wiki.
+        <br>
+        Sur cette base collaborative, toutes les contributions partageront l’objectif d’offrir aux abonnés une communication claire, sincère et conforme aux exigences de la vie en société.
+        <br>
+        Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et des valeurs de Plabennec en Transition soient préservés sur le wiki.
 
 association:
     category:
@@ -79,7 +85,7 @@ association:
             logo: Impossible de charger le logo, une erreur est survenue
             already_exists: "Une association portant ce nom existe déjà, vous pouvez la consulter en cliquant sur ce client : <a href=\"%assocationLink%\">%assocationName%</a>"
     pre_new:
-        confirm: Non, je veux créer une nouvelle page association
+        confirm: Je veux créer une nouvelle page association
     add:
         title: Créer une page association
         save: Enregistrer cette page association
@@ -143,3 +149,35 @@ event:
         long_description: Description longue
         start_at: Date et heure de début
         end_at: Date et heure de fin
+
+user:
+    role:
+        role_admin: Administrateur
+        role_moderator: Modérateur
+        role_user: Pas de rôle spécial
+
+user_account:
+    title: Mon Compte
+    content:
+        identifier: Votre identifiant
+        roles: Vos droits d'accès
+    change_password:
+        title: Changer mon mot de passe
+        submit: Enregistrer le nouveau mot de passe
+        form:
+            plain_password: Nouveau mot de passe
+            confirm_password: Confirmez le mot de passe
+            error:
+                password_mismatch: Les mots de passe ne correspondent pas.
+            constraint:
+                password_not_blank: Veuillez entrer un mot de passe.
+                password_min_length: Le mot de passe doit contenir au moins 6 caractères.
+            success: Mot de passe modifié avec succès.
+    delete_account:
+        title: Supprimer mon compte
+        confirm: Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+        submit: Supprimer mon compte
+        success: Votre compte a été supprimé.
+
+user_subscriptions:
+    title: Mes Abonnements

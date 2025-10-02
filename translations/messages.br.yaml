@@ -18,7 +18,7 @@ home:
     introduction:
         title: Degemer mat war Porched Kevredigezhioù Plabenneg !
         content: >
-            Al lec'hienn-mañ, kinniget ha meret gant ar gevredigezh <a href="https://plabennecentransition.fr/">Plabennec en Tremen</a>, a ya en-dro evel ur <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : pep hini a c'hell he lenn ha reiñ e lod dezhi, en ur zoujañ d'hor <a href="/charte-d-edition">garta embann</a>.
+            Al lec'hienn-mañ, kinniget ha meret gant ar gevredigezh <a href="https://plabennecentransition.fr/">Plabennec en Tremen</a>, a ya en-dro evel ur <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : pep hini a c'hell he lenn ha reiñ e lod dezhi, en ur zoujañ d'hor garta embann.
             <br>
             He fal eo krouiñ un diaz roadennoù bev ha talvoudus evit an holl re a fell dezho kemer perzh ha kemer perzh e treuzfurmadur o c'hêr.
             <br>
@@ -37,6 +37,12 @@ home:
 
 charter:
     title: Karta an embann
+    content: >
+        Plabennec en Transition a ginnig da bep kevredigezh (sevenadurel, sportel, karantezus, kevredigezhel, yec'hed, h.a.), da bep strollad obererezh pe stignad keodedel kinnig e ginnig dezhañ e-unan war ar wiki.
+        <br>
+        War ar bazenn genlabour-se e vo rannet ar pal gant an holl ginnigoù da ginnig d'an enskrivadurioù ur c'hemennadenn sklaer ha gwirion a glot gant ezhommoù ar vuhez er gevredigezh.
+        <br>
+        Plabennec en transition a vir ar gwir da gemmañ an endalc'hadoù degemeret evit ma vo miret war ar wiki liesseurted ar mennozhioù, an doujañs evit ar re all ha talvoudoù Plabennec en Transition.
 
 association:
     category:
@@ -78,7 +84,7 @@ association:
             logo: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
             already_exists: "Ur c'hevreadur gant an anv-mañ zo anezhañ dija, gallout a rit mont da welet anezhi en ur glikañ war ar c'hlient-mañ : <a href=\"%assocationLink%\">%assocationName%</a>"
     pre_new:
-        confirm: Nann, fellout a ra din krouiñ ur bajenn gevredigezh nevez
+        confirm: Fellout a ra din krouiñ ur bajenn gevredigezh nevez
     add:
         title: Krouiñ ur bajenn gevredigezh
         save: Enrollañ ar bajenn gevredigezh-mañ
@@ -139,3 +145,35 @@ event:
         description: Deskrivadur
         start_at: Deiziad hag eur kregiñ
         end_at: Deiziad hag eur echuiñ
+
+user:
+    role:
+        role_admin: Administrateur
+        role_moderator: Modérateur
+        role_user: Pas de rôle spécial
+
+user_account:
+    title: Ma c'hont
+    content:
+        identifier: Hoc'h anv implijer
+        roles: Ho gwirioù mont e-barzh
+    change_password:
+        title: Cheñchit ma ger-tremen
+        submit: Enrollañ ar ger-tremen nevez
+        form:
+            plain_password: Ger-tremen nevez
+            confirm_password: Kadarnaat ar ger-tremen
+            error:
+                password_mismatch: Ne glot ket ar gerioù-tremen.
+            constraint:
+                password_not_blank: Lakait ur ger-tremen mar plij.
+                password_min_length: Ret eo d'ar ger-tremen kaout 6 arouezenn d'an nebeutañ.
+            success: Kemmet eo bet ar ger-tremen gant berzh.
+    delete_account:
+        title: Dilemel ma c'hont
+        confirm: Ha sur oc'h e fell deoc'h dilemel ho kont ? Dic'hortoz eo an ober-mañ.
+        submit: Dilemel ma c'hont
+        success: Dilamet eo bet ho kont.
+
+user_subscriptions:
+    title: Ma koumanantoù

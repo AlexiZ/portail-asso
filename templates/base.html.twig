@@ -22,19 +22,22 @@
 
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item border-end px-1">
+                            <a class="nav-link" href="{{ path('publishing_charter') }}">{{ 'charter.title'|trans }}</a>
+                        </li>
                         {% if app.user %}
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown border-end px-1">
                                 <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ app.user.email }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ path('user_account') }}">
                                             <i class="fa fa-user me-2"></i>{{ 'nav.user.account'|trans }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ path('user_subscriptions') }}">
                                             <i class="fa fa-bell me-2"></i>{{ 'nav.user.subscriptions'|trans }}
                                         </a>
                                     </li>
@@ -62,15 +65,15 @@
                                 </ul>
                             </li>
                         {% else %}
-                            <li class="nav-item">
+                            <li class="nav-item border-end px-1">
                                 <a class="nav-link" href="{{ path('app_login') }}">{{ 'nav.login'|trans }}</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item border-end px-1">
                                 <a class="nav-link" href="{{ path('app_register') }}">{{ 'nav.register'|trans }}</a>
                             </li>
                         {% endif %}
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown px-1">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ app.request.locale|upper }}
                             </a>

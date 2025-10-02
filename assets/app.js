@@ -169,8 +169,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         const resultsDivContent = resultsDiv.querySelector('#content');
 
                         resultsDivContent.innerHTML = '';
+                        resultsDiv.classList.remove('d-none');
 
                         if (data.length === 0) {
+                            const p = document.createElement('p');
+                            p.innerHTML = '<em>Aucune page association ne porte ce nom.</em>';
+                            resultsDivContent.appendChild(p);
+
                             return;
                         }
 
@@ -187,10 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             div.appendChild(a);
                         });
-
-                        if (data.length > 0) {
-                            resultsDiv.classList.remove('d-none');
-                        }
 
                         resultsDivContent.appendChild(div);
                     })

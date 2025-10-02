@@ -5,13 +5,9 @@
 {% block body %}
     <div class="p-3 mb-4 bg-white rounded-3 border">
         <div class="container-fluid py-3">
-            <h1 class="fw-bold">Charte d'édition</h1>
+            <h1 class="fw-bold">{{ 'charter.title'|trans }}</h1>
             <p class="col-md-8">
-                Plabennec en Transition propose à chaque association (culturelle, sportive, caritative, sociale, de bien-être,…), chaque groupe d’activité ou d’initiative citoyenne d’alimenter sa propre présentation sur le wiki.
-                <br>
-                Sur cette base collaborative, toutes les contributions partageront l’objectif d’offrir aux abonnés une communication claire, sincère et conforme aux exigences de la vie en société.
-                <br>
-                Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et des valeurs de Plabennec en Transition soient préservés sur le wiki.
+                {{ 'charter.content'|trans|raw }}
             </p>
         </div>
     </div>
