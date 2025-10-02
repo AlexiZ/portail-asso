@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Association;
+use App\Entity\User;
 use App\Form\ChangePasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,8 +62,18 @@ class UserController extends AbstractController
     }
 
     #[Route('/mes-abonnements', name: 'user_subscriptions')]
-    public function charter(): Response
+    public function charter(EntityManagerInterface $em): Response
     {
-        return $this->render('user/subscriptions.html.twig');
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $associations = $em->getRepository(Association::class)->getUserSubs($user);
+
+        return $this->render('user/subscriptions.html.twig', [
+            'associations' => $associations,
+        ]);
     }
 }

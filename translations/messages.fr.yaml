@@ -49,6 +49,7 @@ charter:
         <br>
         Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et des valeurs de Plabennec en Transition soient préservés sur le wiki.
 
+
 association:
     category:
         animals: Animaux
@@ -110,6 +111,29 @@ association:
             edit: Modifier
             show: Détails
             new_event: Nouvel événement
+            subscribe:
+                title: S'abonner
+                modal:
+                    title: Ajouter un abonnement
+                    body: Vous êtes sur le point de vous abonner à la page de "%association%".
+                    actions:
+                        cancel: Annuler
+                        confirm: Je m'abonne
+            unsubscribe:
+                title: Se désabonner
+                modal:
+                    title: Supprimer un abonnement
+                    body: Vous allez être désabonné de la page de "%association%".
+                    actions:
+                        cancel: Annuler
+                        confirm: Je me désabonne
+    subscription:
+        info: Vous êtes abonné à cette page
+        success: Vous avez été abonné à cette page avec succès.
+        error:
+            no_user: Vous devez être connecté pour vous abonner à une page.
+    unsubscription:
+        success: Votre abonnement à cette page a été supprimé.
 
 login:
     title: Connexion
@@ -186,6 +210,11 @@ user_account:
 
 user_subscriptions:
     title: Mes Abonnements
+    intro: >
+        <b>Comment ça marche ?</b><br>
+        Une fois par semaine, vous recevrez un mail vous informant des modifications et nouveaux événements sur les pages auxquelles vous êtes abonnés.<br>
+        Vous ne recevrez pas de mail si les pages auxquelles vous êtes abonné n'ont pas changé.
+    empty_list: Vous n'avez aucun abonnement.
 
 search:
     title: Résultats de recherche pour "<em>%searchTerm%</em>"

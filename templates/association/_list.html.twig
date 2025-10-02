@@ -17,7 +17,7 @@
                 <div class="list-group mb-3">
                     {% for assoc in grouped[letter]|sort((a, b) => a.name <=> b.name) %}
                         <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action d-flex justify-content-between">
-                            <span>{{ assoc.name|mark(searchTerm|default) }}</span>
+                            <span>{{ assoc.name|mark(searchTerm|default) }}{% if app.user|default and app.user.isSubscribedTo(assoc) %}&nbsp;<i class="fa fa-star text-warning" title="{{ 'association.subscribe.info'|trans }}"></i>{% endif %}</span>
                             <span>
                                 {% if assoc.categories|default %}
                                     {% for category in assoc.categories %}

@@ -32,6 +32,59 @@
                     <i class="fa fa-calendar-plus"></i>&nbsp;{{ 'association.show.actions.new_event'|trans }}
                 </a>
             {% endif %}
+            {% if app.user|default %}
+                {% if app.user.isSubscribedTo(association) %}
+                    <button type="button" class="btn btn-info text-white ms-2" data-bs-toggle="modal" data-bs-target="#unsubscriptionModal">
+                        <i class="fa fa-bell-slash"></i>&nbsp;{{ 'association.show.actions.unsubscribe.title'|trans }}
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-warning text-white ms-2" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
+                        <i class="fa fa-bell"></i>&nbsp;{{ 'association.show.actions.subscribe.title'|trans }}
+                    </button>
+                {% endif %}
+
+                {% if app.user.isSubscribedTo(association) %}
+                    <div class="modal fade" id="unsubscriptionModal" tabindex="-1" aria-labelledby="unsubscriptionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="unsubscriptionModalLabel">{{ 'association.show.actions.unsubscribe.modal.title'|trans }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{ 'association.show.actions.unsubscribe.modal.body'|trans({'%association%': association.name}) }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
+                                    <a class="btn btn-info text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
+                                        {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="subscriptionModalLabel">{{ 'association.show.actions.subscribe.modal.title'|trans }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{ 'association.show.actions.subscribe.modal.body'|trans({'%association%': association.name}) }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
+                                    <a class="btn btn-warning text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
+                                        {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 

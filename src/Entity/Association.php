@@ -89,12 +89,19 @@ class Association
     #[Groups(['autocomplete'])]
     private string $updatedBy;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'subscriptions')]
+    private Collection $subscribers;
+
     public function __construct()
     {
         $this->revisions = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->subscribers = new ArrayCollection();
     }
 
     public function serialize(): array
@@ -389,6 +396,33 @@ class Association
     public function setUpdatedBy(string $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSubscribers(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    public function addSubscriber(User $subscriber): static
+    {
+        if (!$this->subscribers->contains($subscriber)) {
+            $this->subscribers->add($subscriber);
+            $subscriber->addSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriber(User $subscriber): static
+    {
+        if ($this->subscribers->removeElement($subscriber)) {
+            $subscriber->removeSubscription($this);
+        }
 
         return $this;
     }

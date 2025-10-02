@@ -30,9 +30,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'createdBy', cascade: ['persist'])]
     private Collection $revisions;
 
+    /** @var Collection<int, Association> */
+    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'subscribers')]
+    #[ORM\JoinTable(name: 'subscriptions')]
+    private Collection $subscriptions;
+
     public function __construct()
     {
         $this->revisions = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     public function getUsername(): string
@@ -104,14 +110,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, AssociationRevision>
+     */
     public function getRevisions(): Collection
     {
         return $this->revisions;
     }
 
-    public function setRevisions(Collection $revisions): User
+    public function addRevision(AssociationRevision $revision): static
     {
-        $this->revisions = $revisions;
+        if (!$this->revisions->contains($revision)) {
+            $this->revisions->add($revision);
+        }
+
+        return $this;
+    }
+
+    public function removeRevision(AssociationRevision $revision): static
+    {
+        $this->revisions->removeElement($revision);
 
         return $this;
     }
@@ -119,5 +137,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection<int, Association>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Association $subscription): static
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Association $subscription): static
+    {
+        $this->subscriptions->removeElement($subscription);
+
+        return $this;
+    }
+
+    public function isSubscribedTo(Association $association): bool
+    {
+        return $this->subscriptions->contains($association);
     }
 }

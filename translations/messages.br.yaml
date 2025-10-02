@@ -107,6 +107,29 @@ association:
             edit: Da gemmañ
             show: Munudoù
             new_event: Darvoud nevez
+            subscribe:
+                title: En em enskrivañ
+                modal:
+                    title: Ouzhpennañ un enskrivadur
+                    body: Emaoc'h o paouez en em enskrivañ war bajenn "%association%".
+                    actions:
+                        cancel: Nullañ
+                        confirm: En em enskrivañ a ran
+            unsubscribe:
+                title: Digoumanantiñ
+                modal:
+                    title: Dilemel un enskrivadur
+                    body: Digoumanantet e viot diouzh pajenn "%association%".
+                    actions:
+                        cancel: Nullañ
+                        confirm: Digoumanantiñ a ran
+    subscription:
+        info: Enskrivet oc'h er bajenn-mañ
+        success: Enrollet oc'h bet d'ar bajenn-mañ gant berzh.
+        error:
+            no_user: Ret eo deoc'h bezañ kevreet evit koumanantiñ d'ur bajenn.
+    unsubscription:
+        success: Tennet eo bet ho koumanant d'ar bajenn-mañ.
 
 login:
     title: Kevrekañ
@@ -182,6 +205,11 @@ user_account:
 
 user_subscriptions:
     title: Ma koumanantoù
+    intro: >
+        <b>Penaos e ya en-dro ?</b><br>
+        Ur wech ar sizhun e resevot ur postel o kelaouiñ ac'hanoc'h diwar-benn ar c'hemmoù hag an darvoudoù nevez war ar pajennoù ma'z oc'h koumanantet.<br>
+        Ne vo ket resevet posteloù ganeoc'h ma n'eo ket bet kemmet ar pajennoù hoc'h enskrivet.
+    empty_list: N'hoc'h eus koumanant ebet.
 
 search:
     title: Disoc'hoù klask evit "<em>%searchTerm%</em>"

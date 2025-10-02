@@ -6,9 +6,12 @@
     <div class="p-3 mb-4 bg-white rounded-3 border">
         <div class="container-fluid py-3">
             <h1 class="fw-bold">{{ 'user_subscriptions.title'|trans }}</h1>
+
             <p>
-                TODO
+                {{ 'user_subscriptions.intro'|trans|raw }}
             </p>
+
+            {% include 'association/_list.html.twig' with {'associations': associations, 'customEmptyMessage': 'user_subscriptions.empty_list'|trans} %}
         </div>
     </div>
 {% endblock %}

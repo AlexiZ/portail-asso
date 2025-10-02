@@ -234,4 +234,29 @@ class AssociationController extends AbstractController
 
         return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
     }
+
+    #[Route('/{slug}/suivre', name: 'association_subscribe')]
+    public function subscribe(
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Association $association,
+    ): Response {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            $this->addFlash('danger', $this->translator->trans('association.subscription.error.no_user'));
+
+            return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
+        }
+
+        if ($user->isSubscribedTo($association)) {
+            $user->removeSubscription($association);
+            $this->addFlash('success', $this->translator->trans('association.unsubscription.success'));
+        } else {
+            $user->addSubscription($association);
+            $this->addFlash('success', $this->translator->trans('association.subscription.success'));
+        }
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
+    }
 }
