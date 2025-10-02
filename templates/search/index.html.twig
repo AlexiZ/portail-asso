@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'user_account.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="p-3 mb-4 bg-white rounded-3 border">
+        <div class="container-fluid py-3">
+            <h1 class="fw-bold">{{ 'search.title'|trans({'%searchTerm%': searchTerm})|raw }}</h1>
+
+            {% include 'association/_list.html.twig' with {'associations': associations, customEmptyMessage: 'search.empty_results'|trans} %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,6 @@
-wiki_plab: Wiki Plab
+wiki_plab:
+    long: Porched ar c'hevredigezhioù Plabennek
+    short: Porched
 
 nav:
     login: Kevrekañ
@@ -12,6 +14,9 @@ nav:
     lang:
         french: Galleg
         breton: Brezhoneg
+    search:
+        title: Evit enklask
+        placeholder: Ur bajenn gevredigezh...
 
 home:
     title: Degemer mat
@@ -177,3 +182,7 @@ user_account:
 
 user_subscriptions:
     title: Ma koumanantoù
+
+search:
+    title: Disoc'hoù klask evit "<em>%searchTerm%</em>"
+    empty_results: Kevredigezh ebet ne glot gant ho klask.

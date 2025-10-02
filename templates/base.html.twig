@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} | {{ 'wiki_plab'|trans }}</title>
+        <title>{% block title %}{% endblock %} | {{ 'wiki_plab.long'|trans }}</title>
 
         {% block stylesheets %}
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -17,7 +17,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ 'wiki_plab'|trans }}" height="50" class="d-inline-block align-text-top">
-                    <span class="ps-3 pt-3 align-middle">{{ 'wiki_plab'|trans }}</span>
+                    <span class="ps-3 pt-3 align-middle">{{ 'wiki_plab.short'|trans }}</span>
                 </a>
 
                 <div class="collapse navbar-collapse">
@@ -25,6 +25,7 @@
                         <li class="nav-item border-end px-1">
                             <a class="nav-link" href="{{ path('publishing_charter') }}">{{ 'charter.title'|trans }}</a>
                         </li>
+
                         {% if app.user %}
                             <li class="nav-item dropdown border-end px-1">
                                 <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,14 +80,28 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'br'})) }}">
+                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_locale': 'br'})) }}">
                                         <img class="me-2" src="{{ asset('build/images/br.png') }}" alt="{{ 'nav.lang.breton'|trans }}">{{ 'nav.lang.breton'|trans }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}">
+                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_locale': 'fr'})) }}">
                                         <img class="me-2" src="{{ asset('build/images/fr.png') }}" alt="{{ 'nav.lang.french'|trans }}">{{ 'nav.lang.french'|trans }}
                                     </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown px-1">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="searchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="document.querySelector('#searchDropdownContent input').focus()">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end px-2" id="searchDropdownContent" aria-labelledby="searchDropdown">
+                                <li>
+                                    <form method="GET" action="{{ path('search') }}" class="d-flex">
+                                        <input class="form-control me-2" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search">
+                                        <button class="btn btn-outline-success" type="submit">{{ 'nav.search.title'|trans }}</button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>

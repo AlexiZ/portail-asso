@@ -34,3 +34,11 @@ body {
         width: 100%;
     }
 }
+
+#searchDropdown::after {
+    display: none;
+}
+
+#searchDropdownContent {
+    width: 500px;
+}
