@@ -23,22 +23,44 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
                         {% if app.user %}
-                            <li class="nav-item">
-                                <span class="nav-link">{{ app.user.email }}</span>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ app.user.email }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fa fa-user me-2"></i>{{ 'nav.user.account'|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fa fa-bell me-2"></i>{{ 'nav.user.subscriptions'|trans }}
+                                        </a>
+                                    </li>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('moderator_index') }}">
+                                                <i class="fa fa-shield-halved me-2"></i>{{ 'nav.user.moderation'|trans }}
+                                            </a>
+                                        </li>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('admin_index') }}">
+                                                    <i class="fa fa-lock me-2"></i>{{ 'nav.user.admin'|trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                            <i class="fa fa-arrow-right-from-bracket me-2"></i>{{ 'nav.user.logout'|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}">{{ 'nav.logout'|trans }}</a>
-                            </li>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('admin_index') }}">{{ 'nav.admin'|trans }}</a>
-                                </li>
-                            {% endif %}
-                            {% if is_granted('ROLE_MODERATOR') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('moderator_index') }}">{{ 'nav.moderation'|trans }}</a>
-                                </li>
-                            {% endif %}
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_login') }}">{{ 'nav.login'|trans }}</a>
@@ -53,8 +75,16 @@
                                 {{ app.request.locale|upper }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-                                <li><a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'br'})) }}">Breton</a></li>
-                                <li><a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}">Français</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'br'})) }}">
+                                        <img class="me-2" src="{{ asset('build/images/br.png') }}" alt="{{ 'nav.lang.breton'|trans }}">{{ 'nav.lang.breton'|trans }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}">
+                                        <img class="me-2" src="{{ asset('build/images/fr.png') }}" alt="{{ 'nav.lang.french'|trans }}">{{ 'nav.lang.french'|trans }}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

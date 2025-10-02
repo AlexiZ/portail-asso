@@ -1,10 +1,17 @@
 wiki_plab: Wiki Plab
+
 nav:
-    logout: Déconnexion
-    admin: Admin
-    moderation: Modération
     login: Connexion
     register: Inscription
+    user:
+        account: Mon Compte
+        subscriptions: Mes Abonnements
+        logout: Déconnexion
+        admin: Espace Admin
+        moderation: Espace Modération
+    lang:
+        french: Français
+        breton: Breton
 
 home:
     title: Accueil

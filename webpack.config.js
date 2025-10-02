@@ -15,6 +15,13 @@ Encore
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
 
+    .copyFiles({
+        from: './assets/images',
+
+        // to: 'images/[path][name].[ext]', // version simple
+        to: 'images/[path][name].[hash:8].[ext]' // version avec hash (recommandée en prod)
+    })
+
     /*
      * ENTRY CONFIG
      *
