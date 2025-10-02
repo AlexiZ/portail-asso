@@ -17,7 +17,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ 'wiki_plab'|trans }}" height="50" class="d-inline-block align-text-top">
-                    <span class="ps-3 pt-3 align-middle">{{ 'wiki_plab.short'|trans }}</span>
+                    <span class="ps-3 pt-3 align-middle">{{ 'wiki_plab.long'|trans }}</span>
                 </a>
 
                 <div class="collapse navbar-collapse">
@@ -99,7 +99,7 @@
                             <ul class="dropdown-menu dropdown-menu-end px-2" id="searchDropdownContent" aria-labelledby="searchDropdown">
                                 <li>
                                     <form method="GET" action="{{ path('search') }}" class="d-flex">
-                                        <input class="form-control me-2" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search">
+                                        <input class="form-control me-2" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search" autocomplete="false">
                                         <button class="btn btn-outline-success" type="submit">{{ 'nav.search.title'|trans }}</button>
                                     </form>
                                 </li>

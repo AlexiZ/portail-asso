@@ -1,6 +1,6 @@
 {{ form_start(formAssociation) }}
     <div class="mb-3">
-        {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+        {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control', 'autocomplete': false}}) }}
     </div>
 
     {% if formAssociation.categories is defined %}
@@ -80,7 +80,7 @@
     {% endif %}
 
     {% if formAssociation.content is defined %}
-        <button class="btn btn-success">
+        <button class="btn btn-success text-white">
             <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
         </button>
     {% endif %}

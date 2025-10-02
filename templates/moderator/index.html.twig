@@ -22,7 +22,7 @@
                     <td>{{ rev.createdBy ? rev.createdBy.email : 'Anonyme' }}</td>
                     <td>{{ rev.createdAt|date('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ path('moderator_approve_revision', { id: rev.id }) }}" class="btn btn-sm btn-success">
+                        <a href="{{ path('moderator_approve_revision', { id: rev.id }) }}" class="btn btn-sm btn-success text-white">
                             <i class="fa fa-check"></i> Approuver
                         </a>
                     </td>
