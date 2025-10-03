@@ -30,9 +30,9 @@ home:
             Pal ar bajenn-mañ eo lakaat pinvidigezh ar gumuniezh lec'hel hag ar vuhez keodedel da vezañ aesoc'h da gaout, ha kinnig un ostilh resis evit en em lakaat e-barzh.
             <br>
             N'eo ket meneget ho kevredigezh c'hoazh ? Ouzhpennit anezhañ aes en ur glikañ war ar bouton amañ dindan.
-    agenda_days: Deiziataer evit an %days% devezh da zont
+    agenda_days: Deiziataer evit an {days} devezh da zont
     events:
-        none: Abadenn ebet aozet e-kerzh an %days% devezh da zont.
+        none: Abadenn ebet aozet e-kerzh an {days} devezh da zont.
     associations:
         title: Kevredigezhioù
         list:
@@ -41,13 +41,13 @@ home:
             title: Ouzhpennañ ur gevredigezh
 
 charter:
-    title: Karta an embann
     content: >
         Plabennec en Transition a ginnig da bep kevredigezh (sevenadurel, sportel, karantezus, kevredigezhel, yec'hed, h.a.), da bep strollad obererezh pe stignad keodedel kinnig e ginnig dezhañ e-unan war ar wiki.
         <br>
         War ar bazenn genlabour-se e vo rannet ar pal gant an holl ginnigoù da ginnig d'an enskrivadurioù ur c'hemennadenn sklaer ha gwirion a glot gant ezhommoù ar vuhez er gevredigezh.
         <br>
         Plabennec en transition a vir ar gwir da gemmañ an endalc'hadoù degemeret evit ma vo miret war ar wiki liesseurted ar mennozhioù, an doujañs evit ar re all ha talvoudoù Plabennec en Transition.
+    title: Karta an embann
 
 association:
     category:
@@ -82,12 +82,11 @@ association:
             facebook: Pajenn Facebook
             instagram: Pajenn Instagram
             other: Rouedad sokial all
-        content:
-            label: Deskrivadur ar gevredigezh |
-            help: Amañ e c’hallit merkañ pal ar gevredigezh hag he doare ober, met deskrivañ ivez an obererezhioù kinniget, an doareoù da vezañ ezel, an niver a izili, an deiziad krouidigezh, h.a.
+        content: Deskrivadur ar gevredigezh |
+        content_help: Amañ e c’hallit merkañ pal ar gevredigezh hag he doare ober, met deskrivañ ivez an obererezhioù kinniget, an doareoù da vezañ ezel, an niver a izili, an deiziad krouidigezh, h.a.
         error:
             logo: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
-            already_exists: "Ur c'hevreadur gant an anv-mañ zo anezhañ dija, gallout a rit mont da welet anezhi en ur glikañ war ar c'hlient-mañ : <a href=\"%assocationLink%\">%assocationName%</a>"
+            already_exists: "Ur c'hevreadur gant an anv-mañ zo anezhañ dija, gallout a rit mont da welet anezhi en ur glikañ war ar c'hlient-mañ : <a href=\"{assocationLink}\">{assocationName}</a>"
     pre_new:
         confirm: Fellout a ra din krouiñ ur bajenn gevredigezh nevez
     add:
@@ -95,7 +94,7 @@ association:
         save: Enrollañ ar bajenn gevredigezh-mañ
         cancel: Nullañ ha distreiñ d'ar gêr
     edit:
-        title: Kemmañ ar bajenn eus %association%
+        title: Kemmañ ar bajenn eus {association}
         save: Enrollañ ar c'hemmoù
         cancel: Nullañ ha distreiñ d'ar bajenn gevredigezh
         confirm: Kemmet eo bet an titouroù.
@@ -111,7 +110,7 @@ association:
                 title: En em enskrivañ
                 modal:
                     title: Ouzhpennañ un enskrivadur
-                    body: Emaoc'h o paouez en em enskrivañ war bajenn "%association%".
+                    body: Emaoc'h o paouez en em enskrivañ war bajenn "{association}".
                     actions:
                         cancel: Nullañ
                         confirm: En em enskrivañ a ran
@@ -119,7 +118,7 @@ association:
                 title: Digoumanantiñ
                 modal:
                     title: Dilemel un enskrivadur
-                    body: Digoumanantet e viot diouzh pajenn "%association%".
+                    body: Digoumanantet e viot diouzh pajenn "{association}".
                     actions:
                         cancel: Nullañ
                         confirm: Digoumanantiñ a ran
@@ -130,6 +129,18 @@ association:
             no_user: Ret eo deoc'h bezañ kevreet evit koumanantiñ d'ur bajenn.
     unsubscription:
         success: Tennet eo bet ho koumanant d'ar bajenn-mañ.
+
+revision:
+    title: Stummoù kent
+    created_at: Krouet d'an {createdAt}
+    created_at_by: Krouet d'an {createdAt} gant {createdBy}
+    modal:
+        title: Rakwelet un adwelet
+        content:
+            title: Kemmoù degaset {createdAt} gant "{createdBy}"
+        actions:
+            cancel: Arabat ober netra
+            apply: Adderaouekaat ar stumm-mañ
 
 login:
     title: Kevrekañ
@@ -149,11 +160,11 @@ register:
     login: Enrollet oc'h dija ? Kevreañ
 
 event:
-    start_only: D'an %date% da %start%
-    single_day: D'an %date% eus %start% da %end%
-    multiple_days: Eus an %start_date% da %start_hour% betek an %end_date% da %end_hour%
+    start_only: D'an {date} da {start}
+    single_day: D'an {date} eus {start} da {end}
+    multiple_days: Eus an {start_date} da {start_hour} betek an {end_date} da {end_hour}
     show:
-        back: Distreiñ d'ar bajenn %association%
+        back: Distreiñ d'ar bajenn {association}
         actions:
             edit: Da gemmañ
     add:
@@ -163,7 +174,7 @@ event:
             confirm: Ouzhpennet eo bet an darvoud gant berzh
             back: Nullañ ha distreiñ d'ar bajenn gevredigezh
     edit:
-        title: Kemmañ an darvoud %title%
+        title: Kemmañ an darvoud {title}
         form:
             submit: Evit hizivaat
             confirm: Hizivaet eo bet an darvoud gant berzh.
@@ -212,5 +223,5 @@ user_subscriptions:
     empty_list: N'hoc'h eus koumanant ebet.
 
 search:
-    title: Disoc'hoù klask evit "<em>%searchTerm%</em>"
+    title: Disoc'hoù klask evit "<em>{searchTerm}</em>"
     empty_results: Kevredigezh ebet ne glot gant ho klask.

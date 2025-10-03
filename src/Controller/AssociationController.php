@@ -3,18 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Association;
-use App\Entity\AssociationRevision;
 use App\Entity\User;
+use App\Factory\AssociationFactory;
 use App\Form\AssociationType;
 use App\Repository\AssociationRevisionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +19,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 #[Route('/association')]
 class AssociationController extends AbstractController
@@ -31,6 +28,7 @@ class AssociationController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly EntityManagerInterface $em,
         private readonly AuthorizationCheckerInterface $authChecker,
+        private readonly AssociationFactory $associationFactory,
     ) {
     }
 
@@ -72,8 +70,6 @@ class AssociationController extends AbstractController
     #[Route('/nouvelle', name: 'association_new')]
     public function new(
         Request $request,
-        SluggerInterface $slugger,
-        #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory,
     ): Response {
         $association = new Association();
         if ($name = $request->query->get('name')) {
@@ -83,20 +79,7 @@ class AssociationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = strtolower($slugger->slug($association->getName()));
-            $association->setSlug($slug);
-            $association->setCreatedBy($request->server->get('REMOTE_ADDR'));
-            $association->setUpdatedBy($request->server->get('REMOTE_ADDR'));
-            if ($this->getUser() instanceof User) {
-                $association->setOwner($this->getUser());
-                $association->setCreatedBy($this->getUser()->getUsername());
-                $association->setUpdatedBy($this->getUser()->getUsername());
-            }
-
-            $this->processAssociationLogo($association, $form, $slugger, $uploadsDirectory);
-
-            $this->em->persist($association);
-            $this->em->flush();
+            $this->associationFactory->populateAssociation($association, $request, $form);
 
             $this->addFlash('success', $this->translator->trans('association.add.confirm'));
 
@@ -124,32 +107,13 @@ class AssociationController extends AbstractController
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
         Request $request,
-        SluggerInterface $slugger,
-        #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory,
     ): Response {
+        $beforeAssociation = clone $association;
         $formAssociation = $this->createForm(AssociationType::class, $association);
         $formAssociation->handleRequest($request);
 
         if ($formAssociation->isSubmitted() && $formAssociation->isValid()) {
-            $revision = new AssociationRevision();
-            $revision->setAssociation($association);
-            $revision->setContentBefore($association->getContent());
-            $revision->setContentAfter($formAssociation->get('content')->getData());
-            $revision->setApproved($this->isGranted('ROLE_MODERATOR'));
-
-            $this->processAssociationLogo($association, $formAssociation, $slugger, $uploadsDirectory);
-
-            $association->setUpdatedAt(new \DateTimeImmutable());
-            $association->setUpdatedBy($request->server->get('REMOTE_ADDR'));
-            $revision->setCreatedBy($request->server->get('REMOTE_ADDR'));
-            if ($this->getUser() instanceof User) {
-                $association->setUpdatedBy($this->getUser()->getUsername());
-                $revision->setCreatedBy($this->getUser()->getUsername());
-            }
-
-            $this->em->persist($revision);
-            $this->em->persist($association);
-            $this->em->flush();
+            $this->associationFactory->createRevision($beforeAssociation, $association, $request, $formAssociation);
 
             $this->addFlash('success', $this->translator->trans('association.edit.confirm'));
 
@@ -162,30 +126,13 @@ class AssociationController extends AbstractController
         ]);
     }
 
-    private function processAssociationLogo(Association $association, FormInterface $formAssociation, SluggerInterface $slugger, string $uploadsDirectory): void
-    {
-        /** @var UploadedFile $logoFile */
-        $logoFile = $formAssociation->get('logo')->getData();
-        if ($logoFile) {
-            $originalFilename = pathinfo($logoFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$logoFile->guessExtension();
-
-            try {
-                $logoFile->move($uploadsDirectory, $newFilename);
-                $association->setLogoFilename($newFilename);
-            } catch (FileException) {
-                $formAssociation->get('logo')->addError(new FormError($this->translator->trans('association.form.error.logo')));
-            }
-        }
-    }
-
     #[Route('/{slug}/revision/{revisionId}/apercu', name: 'association_rollback_preview')]
     public function rollbackPreview(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
         int $revisionId,
         AssociationRevisionRepository $revRepo,
+        Environment $twig,
     ): Response {
         $revision = $revRepo->find($revisionId);
 
@@ -193,42 +140,37 @@ class AssociationController extends AbstractController
             return new JsonResponse('Révision invalide.');
         }
 
-        return new JsonResponse($revision->getContentAfter());
+        $before = json_decode($revision->getContentBefore(), true);
+        $after = json_decode($revision->getContentAfter(), true);
+
+        return new JsonResponse($twig->render('revision/diff.html.twig', [
+            'revision' => $revision,
+            'before' => $before,
+            'after' => $after,
+            'association' => $association,
+        ]));
     }
 
     #[Route('/{slug}/revision/{revisionId}/confirmer', name: 'association_rollback')]
     public function rollbackConfirm(
+        Request $request,
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
         int $revisionId,
         AssociationRevisionRepository $revRepo,
     ): Response {
-        if (!$this->authChecker->isGranted('ASSOCIATION_EDIT', $association)) {
-            throw $this->createAccessDeniedException();
-        }
-
         $revision = $revRepo->find($revisionId);
-
         if (!$revision || $revision->getAssociation()->getId() !== $association->getId()) {
             $this->addFlash('danger', 'Révision invalide.');
 
             return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
         }
 
+        $beforeAssociation = clone $association;
+        $this->associationFactory->applyRevision($revision, $association);
+
         // Créer une nouvelle révision pour le rollback
-        $rollbackRevision = new AssociationRevision();
-        $rollbackRevision->setAssociation($association);
-        $rollbackRevision->setContentBefore($association->getContent());
-        $rollbackRevision->setContentAfter($revision->getContentAfter());
-        $rollbackRevision->setApproved(true);
-        $rollbackRevision->setCreatedBy($this->getUser());
-
-        $association->setContent($revision->getContentAfter());
-        $association->setUpdatedAt(new \DateTimeImmutable());
-
-        $this->em->persist($rollbackRevision);
-        $this->em->persist($association);
-        $this->em->flush();
+        $this->associationFactory->createRevision($beforeAssociation, $association, $request);
 
         $this->addFlash('success', 'Rollback effectué avec succès.');
 

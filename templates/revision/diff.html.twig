@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h5 class="mb-4">
+            {{ 'revision.modal.content.title'|trans({'createdAt': format_date(revision.createdAt)|lower, 'createdBy': revision.createdBy}) }}
+        </h5>
+
+        <div>
+            <a class="btn btn-primary" href="{{ path('association_rollback', {'slug': association.slug, 'revisionId': revision.id}) }}">
+                {{ 'revision.modal.actions.apply'|trans }}
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 20%;">Champ</th>
+                <th>Avant</th>
+                <th>Après</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set excluded = ['slug', 'logoFilename'] %}
+            {% for field, beforeValue in before %}
+                {% if field not in excluded %}
+                    {% set afterValue = after[field] ?? '' %}
+                    {% if field == 'categories' %}
+                        {% set categoriesTranslated = [] %}
+                        {% for category in beforeValue|split(',') %}
+                            {% set categoriesTranslated = categoriesTranslated|merge([('association.category.' ~ category)|trans]) %}
+                        {% endfor %}
+                        {% set beforeValue = categoriesTranslated|join(', ') %}
+
+                        {% set categoriesTranslated = [] %}
+                        {% for category in afterValue|split(',') %}
+                            {% set categoriesTranslated = categoriesTranslated|merge([('association.category.' ~ category)|trans]) %}
+                        {% endfor %}
+                        {% set afterValue = categoriesTranslated|join(', ') %}
+                    {% endif %}
+                    {% if beforeValue != afterValue %}
+                        <tr>
+                            <td><span class="fw-bold">{{ ('association.form.'~field|u.snake|replace({'_': '.'}))|trans }}</span></td>
+                            <td>
+                                <span class="text-danger text-decoration-line-through">
+                                    {{ beforeValue|raw }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="text-success fw-bold">
+                                    {{ afterValue|raw }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ ('association.form.'~field|u.snake|replace({'_': '.'}))|trans }}</td>
+                            <td colspan="2" class="text-center">{{ beforeValue|raw }}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

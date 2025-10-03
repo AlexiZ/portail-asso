@@ -99,7 +99,7 @@
                             <ul class="dropdown-menu dropdown-menu-end px-2" id="searchDropdownContent" aria-labelledby="searchDropdown">
                                 <li>
                                     <form method="GET" action="{{ path('search') }}" class="d-flex">
-                                        <input class="form-control me-2" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search" autocomplete="false">
+                                        <input class="form-control me-2" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search" autocomplete="off">
                                         <button class="btn btn-outline-success" type="submit">{{ 'nav.search.title'|trans }}</button>
                                     </form>
                                 </li>
@@ -131,17 +131,18 @@
             {% block body %}{% endblock %}
         </div>
 
-        <div class="modal" id="revision-preview-modal" tabindex="-1">
+        <div class="modal" id="revisionPreviewModal" tabindex="-1">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Prévisualisation d'une révision</h5>
+                        <h5 class="modal-title">{{ 'revision.modal.title'|trans }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne rien faire</button>
-                        <button type="button" class="btn btn-primary">Appliquer cette révision</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            {{ 'revision.modal.actions.cancel'|trans }}
+                        </button>
                     </div>
                 </div>
             </div>

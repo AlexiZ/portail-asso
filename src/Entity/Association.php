@@ -66,6 +66,7 @@ class Association
     private string $content;
 
     #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private Collection $revisions;
 
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
@@ -109,7 +110,7 @@ class Association
         return [
             'name' => $this->name,
             'slug' => $this->slug,
-            'categories' => implode(',', $this->categories),
+            'categories' => implode(',', $this->getCategoriesValues()),
             'logoFilename' => $this->logoFilename,
             'contactName' => $this->contactName,
             'contactFunction' => $this->contactFunction,
@@ -121,9 +122,30 @@ class Association
             'networkInstagram' => $this->networkInstagram,
             'networkOther' => $this->networkOther,
             'content' => $this->content,
-            'events' => $this->events->toArray(),
-            'owner' => $this->owner,
         ];
+    }
+
+    public function unserialize(array $data): self
+    {
+        $this->name = $data['name'];
+        $this->slug = $data['slug'];
+        $this->categories = array_map(
+            fn (string $value) => Category::from($value),
+            explode(',', $data['categories']) ?? []
+        );
+        $this->logoFilename = $data['logoFilename'];
+        $this->contactName = $data['contactName'];
+        $this->contactFunction = $data['contactFunction'];
+        $this->contactEmail = $data['contactEmail'];
+        $this->contactPhone = $data['contactPhone'];
+        $this->contactAddress = $data['contactAddress'];
+        $this->networkWebsite = $data['networkWebsite'];
+        $this->networkFacebook = $data['networkFacebook'];
+        $this->networkInstagram = $data['networkInstagram'];
+        $this->networkOther = $data['networkOther'];
+        $this->content = $data['content'];
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -165,6 +187,17 @@ class Association
     public function getCategories(): ?array
     {
         return $this->categories;
+    }
+
+    public function getCategoriesValues(): ?array
+    {
+        $categories = [];
+        /** @var Category $category */
+        foreach ($this->categories as $category) {
+            $categories[] = $category->value;
+        }
+
+        return $categories;
     }
 
     public function setCategories(?array $categories): self

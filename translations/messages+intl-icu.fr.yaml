@@ -30,9 +30,9 @@ home:
             Cette page a pour vocation de rendre plus accessible la richesse de la vie associative et citoyenne locale, et d’offrir un outil concret pour s’y engager.
             <br>
             Votre association n’apparaît pas encore dans la liste ? Ajoutez-la facilement en cliquant sur le bouton ci-dessous.
-    agenda_days: Agenda des %days% prochains jours
+    agenda_days: Agenda des {days} prochains jours
     events:
-        none: Aucun événement prévu dans les %days% prochains jours.
+        none: Aucun événement prévu dans les {days} prochains jours.
     associations:
         title: Associations
         list:
@@ -41,14 +41,13 @@ home:
             title: Ajouter une association
 
 charter:
-    title: Charte d'édition
     content: >
         Plabennec en Transition propose à chaque association (culturelle, sportive, caritative, sociale, de bien-être, …), chaque groupe d’activité ou d’initiative citoyenne d’alimenter sa propre présentation sur le wiki.
         <br>
         Sur cette base collaborative, toutes les contributions partageront l’objectif d’offrir aux abonnés une communication claire, sincère et conforme aux exigences de la vie en société.
         <br>
         Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et des valeurs de Plabennec en Transition soient préservés sur le wiki.
-
+    title: Charte d'édition
 
 association:
     category:
@@ -84,12 +83,11 @@ association:
             facebook: Page Facebook
             instagram: Page Instagram
             other: Autre réseau social
-        content:
-            label: Description de l'association
-            help: Vous pouvez indiquer ici l'objet de l'association et son mode de fonctionnement mais également décrire les activités proposées, les modalités d'adhésion, le nombre de membres, la date de création, etc...
+        content: Description de l'association
+        content_help: Vous pouvez indiquer ici l'objet de l'association et son mode de fonctionnement mais également décrire les activités proposées, les modalités d'adhésion, le nombre de membres, la date de création, etc...
         error:
             logo: Impossible de charger le logo, une erreur est survenue
-            already_exists: "Une association portant ce nom existe déjà, vous pouvez la consulter en cliquant sur ce client : <a href=\"%assocationLink%\">%assocationName%</a>"
+            already_exists: "Une association portant ce nom existe déjà, vous pouvez la consulter en cliquant sur ce client : <a href=\"{assocationLink}\">{assocationName}</a>"
     pre_new:
         confirm: Je veux créer une nouvelle page association
     add:
@@ -98,7 +96,7 @@ association:
         cancel: Annuler et revenir à l'accueil
         confirm: Nouvelle association créée avec succès.
     edit:
-        title: Modifier la page de %association%
+        title: Modifier la page de {association}
         save: Enregistrer les modifications
         cancel: Annuler et revenir sur la page de l'association
         confirm: Les informations ont bien été modifiées.
@@ -115,7 +113,7 @@ association:
                 title: S'abonner
                 modal:
                     title: Ajouter un abonnement
-                    body: Vous êtes sur le point de vous abonner à la page de "%association%".
+                    body: Vous êtes sur le point de vous abonner à la page de "{association}".
                     actions:
                         cancel: Annuler
                         confirm: Je m'abonne
@@ -123,7 +121,7 @@ association:
                 title: Se désabonner
                 modal:
                     title: Supprimer un abonnement
-                    body: Vous allez être désabonné de la page de "%association%".
+                    body: Vous allez être désabonné de la page de "{association}".
                     actions:
                         cancel: Annuler
                         confirm: Je me désabonne
@@ -134,6 +132,18 @@ association:
             no_user: Vous devez être connecté pour vous abonner à une page.
     unsubscription:
         success: Votre abonnement à cette page a été supprimé.
+
+revision:
+    title: Versions antérieures
+    created_at: Créée le {createdAt}
+    created_at_by: Créée le {createdAt} par {createdBy}
+    modal:
+        title: Prévisualisation d'une révision
+        content:
+            title: Changements faits {createdAt} par "{createdBy}"
+        actions:
+            cancel: Ne rien faire
+            apply: Restaurer cette version
 
 login:
     title: Connexion
@@ -153,11 +163,11 @@ register:
     login: Déjà inscrit ? Se connecter
 
 event:
-    start_only: Le %date% à %start%
-    single_day: Le %date% de %start% à %end%
-    multiple_days: Du %start_date% à %start_hour% au %end_date% à %end_hour%
+    start_only: Le {date} à {start}
+    single_day: Le {date} de {start} à {end}
+    multiple_days: Du {start_date} à {start_hour} au {end_date} à {end_hour}
     show:
-        back: Retour à la page de %association%
+        back: Retour à la page de {association}
         actions:
             edit: Modifier
     add:
@@ -167,7 +177,7 @@ event:
             confirm: Événement ajouté avec succès.
             back: Annuler et revenir sur la page de l'association
     edit:
-        title: Modifier l'événement %title%
+        title: Modifier l'événement {title}
         form:
             submit: Mettre à jour
             confirm: Événement mis à jour avec succès.
@@ -217,5 +227,5 @@ user_subscriptions:
     empty_list: Vous n'avez aucun abonnement.
 
 search:
-    title: Résultats de recherche pour "<em>%searchTerm%</em>"
+    title: Résultats de recherche pour "<em>{searchTerm}</em>"
     empty_results: Aucune association ne correspond à votre recherche.

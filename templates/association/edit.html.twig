@@ -12,10 +12,19 @@
                     Versions antérieures
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                    {% for revision in association.revisions %}
+                    {% for revision in association.revisions|reverse|slice(0, 5) %}
                         <li>
                             <a class="dropdown-item revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: association.slug, revisionId: revision.id}) }}">
-                                Créée le {{ revision.createdAt|date('Y-m-d \\à H:i:s') }}{% if revision.createdBy|default %} par {{ revision.createdBy }}{% endif %}{% if loop.index == loop.last %} (actuelle){% endif %}
+                                {% if revision.createdBy|default %}
+                                    {{ 'revision.created_at_by'|trans({
+                                        'createdAt': revision.createdAt|date('Y-m-d \\à H:i:s'),
+                                        'createdBy': revision.createdBy
+                                    }) }}
+                                {% else %}
+                                    {{ 'revision.created_at'|trans({
+                                        'createdAt': revision.createdAt|date('Y-m-d \\à H:i:s')
+                                    }) }}
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}

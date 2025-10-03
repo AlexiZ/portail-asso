@@ -1,4 +1,4 @@
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import TomSelect from 'tom-select';
 import Routing from 'fos-router';
 
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         revisionPreviews.forEach(revisionPreview => {
             revisionPreview.addEventListener('click', () => {
                 const url = revisionPreview.dataset.href;
-                const modalElement = document.getElementById('revision-preview-modal');
+                const modalElement = document.getElementById('revisionPreviewModal');
                 const modalBody = modalElement.querySelector('.modal-body');
 
                 fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})

@@ -1,6 +1,6 @@
 {{ form_start(formAssociation) }}
     <div class="mb-3">
-        {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control', 'autocomplete': false}}) }}
+        {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
     </div>
 
     {% if formAssociation.categories is defined %}
@@ -72,8 +72,8 @@
     {% if formAssociation.content is defined %}
         <div class="mb-3">
             <fieldset>
-                <legend>{{ 'association.form.content.label'|trans }}</legend>
-                <p>{{ 'association.form.content.help'|trans }}</p>
+                <legend>{{ 'association.form.content'|trans }}</legend>
+                <p>{{ 'association.form.content_help'|trans }}</p>
                 {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
             </fieldset>
         </div>
