@@ -205,4 +205,49 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    const eventsViewSelector = document.getElementById('eventsViewSelector');
+    if (eventsViewSelector) {
+        eventsViewSelector.addEventListener('change', () => {
+            const eventsViews = document.querySelectorAll('[data-events]');
+            const view = eventsViewSelector.value;
+            localStorage.setItem('events-view', view);
+            if (view && eventsViews) {
+                eventsViews.forEach(eventsView => {
+                    eventsView.classList.add('d-none');
+                    if (view === eventsView.dataset.events) {
+                        eventsView.classList.remove('d-none');
+                    }
+                });
+            }
+        });
+
+        const eventsView = localStorage.getItem('events-view');
+        if (eventsView) {
+            eventsViewSelector.value = eventsView;
+            eventsViewSelector.dispatchEvent(new Event('change'));
+        }
+    }
+
+    const calendarEventsLink = document.querySelectorAll('.calendar .event-link.has-element');
+    if (calendarEventsLink) {
+        calendarEventsLink.forEach(calendarEventLink => {
+            const eventDate = calendarEventLink.dataset.date;
+            calendarEventLink.addEventListener('click', () => {
+                calendarEventsLink.forEach(otherCalendarEventLink => {
+                    otherCalendarEventLink.classList.remove('selected');
+                });
+                calendarEventLink.classList.add('selected');
+
+                const allEventsDetails = document.querySelectorAll('.calendar .event-list');
+                if (allEventsDetails) {
+                    allEventsDetails.forEach(allEventDetails => {
+                        allEventDetails.classList.add('d-none');
+                        if (eventDate === allEventDetails.dataset.date) {
+                            allEventDetails.classList.remove('d-none');
+                        }
+                    });
+                }
+            });
+        });
+    }
 });

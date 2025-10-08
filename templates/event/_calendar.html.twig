@@ -1,0 +1,78 @@
+<div class="d-none" data-events="calendar">
+    <div class="calendar">
+        <div class="col leftCol text-white">
+            <div class="content p-4">
+                <h3>{{ "now"|format_datetime(pattern: "EEEE d LLLL") }}</h3>
+
+                {% set eventDates = [] %}
+                {% if events|length > 0 %}
+                    <p>
+                        {{ events|length }} événements dans les jours à venir.
+                        <br><small><em>(cliquez sur un jour en surbrillance pour en lister les événements)</em></small>
+                    </p>
+
+                    {% for event in events %}
+                        {% set eventDates = eventDates|merge([event.startAt|date('Y-m-d')]) %}
+                        <div class="event-list d-none" data-date="{{ event.startAt|date('Y-m-d') }}">
+                            <div class="card mb-2">
+                                <div class="card-header">
+                                    <h4 class="mb-0">
+                                        <a class="text-decoration-none text-black" href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="fw-bold">
+                                        <a href="{{ path('event_show', {id: event.id}) }}">{{ event.title }}</a>
+                                        <br>
+                                        <small>{{ format_date(event.startAt, event.endAt) }}</small>
+                                    </div>
+                                    <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
+                                </div>
+                            </div>
+
+                            {% if is_granted('ASSOCIATION_EDIT', event.association) %}
+                                <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun événement à venir</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col rightCol">
+            <div class="content">
+                <h4 class="m-4">{{ 'now'|date('Y') }}</h4>
+
+                <div class="d-flex flex-column">
+                    <ul class="weekday">
+                        {% set weekdays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'] %}
+                        {% for day in weekdays %}
+                            <li><a>{{ day|trans }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                    <ul class="days">
+                        {% set weekday_index = "now"|date("N") - 1 %}
+                        {# On ajoute des cases vides pour caler le bon jour sous son libellé #}
+                        {% for i in 0..(weekday_index - 1) %}
+                            <li><a class="empty">&nbsp;</a></li>
+                        {% endfor %}
+
+                        {% for i in 0..29 %}
+                            {% set date = "now"|date_modify("+"~i~" days") %}
+                            <li>
+                                <a href="javascript:void(0);" class="day event-link{% if date|date('Y-m-d') in eventDates %} has-element" data-date="{{ date|date('Y-m-d') }}{% endif %}">
+                                    {{ date|date('j') }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

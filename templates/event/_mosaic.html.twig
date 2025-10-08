@@ -1,0 +1,29 @@
+<div class="row" data-events="mosaic">
+    {% for event in events %}
+        <div class="col-md-12 col-lg-6 mb-2">
+            <div class="card h-100" style="background:linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('/uploads/{{ event.association.logoFilename }}') right no-repeat;background-size:contain;">
+                <div class="card-body d-flex justify-content-between">
+                    <div class="d-flex flex-column justify-content-lg-between">
+                        <h5>
+                            <a href="{{ path('event_show', {id: event.id}) }}">{{ event.title }}</a>
+                            <br>
+                            <small>{{ format_date(event.startAt, event.endAt) }}</small>
+                        </h5>
+                        <p class="mb-1">{{ event.shortDescription|raw }}</p>
+                        <small>
+                            Par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+                        </small>
+                    </div>
+
+                    <div>
+                        {% if is_granted('ASSOCIATION_EDIT', event.association) %}
+                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

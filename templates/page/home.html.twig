@@ -13,41 +13,22 @@
         </div>
     </div>
 
-    <h2 class="mb-4">{{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}</h2>
+    <div class="d-flex justify-content-between">
+        <h2 class="mb-4">
+            {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
+        </h2>
+        {% include 'event/_selector.html.twig' %}
+    </div>
 
-    {% if events is not empty %}
-        <div class="row mb-5">
-            {% for event in events %}
-                <div class="col-md-12 col-lg-6">
-                    <div class="card h-100">
-                        <div class="card-body d-flex justify-content-between">
-                            <div class="d-flex flex-column justify-content-lg-between">
-                                <h5>
-                                    <a href="{{ path('event_show', {id: event.id}) }}">{{ event.title }}</a>
-                                    <br>
-                                    <small>{{ format_date(event.startAt, event.endAt) }}</small>
-                                </h5>
-                                <p class="mb-1">{{ event.shortDescription|raw }}</p>
-                                <small>
-                                    Par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
-                                </small>
-                            </div>
-
-                            <div>
-                                {% if is_granted('ASSOCIATION_EDIT', event.association) %}
-                                    <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
-    {% endif %}
+    <div class="mb-5">
+        {% if events is not empty %}
+            {% include 'event/_mosaic.html.twig' with {events: events} %}
+            {% include 'event/_list.html.twig' with {events: events} %}
+            {% include 'event/_calendar.html.twig' with {events: events} %}
+        {% else %}
+            <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
+        {% endif %}
+    </div>
 
     <h2 class="mb-3">{{ 'home.associations.title'|trans }}</h2>
 

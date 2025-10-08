@@ -47,6 +47,7 @@
         "symfony/webpack-encore-bundle": "^2.3",
         "symfony/yaml": "7.3.*",
         "twig/extra-bundle": "^3.21",
+        "twig/intl-extra": "^3.21",
         "twig/string-extra": "^3.21",
         "twig/twig": "^2.12|^3.21.1",
         "vich/uploader-bundle": "^2.8.1"

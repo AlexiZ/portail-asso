@@ -49,21 +49,143 @@ body {
     width: 500px;
 }
 
-.table-diff td {
-    vertical-align: top;
-    white-space: pre-wrap; /* conserve les retours ligne */
+.table-diff {
+    td {
+        vertical-align: top;
+        white-space: pre-wrap; /* conserve les retours ligne */
+    }
+
+    .text-danger {
+        background-color: $danger;
+        display: inline-block;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+    }
+
+    .text-success {
+        background-color: $success;
+        display: inline-block;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+    }
 }
 
-.table-diff .text-danger {
-    background-color: #ffe5e5;
-    display: inline-block;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
-}
 
-.table-diff .text-success {
-    background-color: #e6ffed;
-    display: inline-block;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
+.calendar {
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    height: 400px;
+    background-color: #ffffff;
+    color: #333333;
+
+    h3, h4 {
+        font-weight: 300;
+        font-size: 26px;
+        line-height: 28px;
+        text-transform: uppercase;
+        margin: 0 0 20px 0;
+    }
+
+    h3 span {
+        display: block;
+    }
+
+    .col {
+        float: left;
+        height: 100%;
+    }
+
+    ul {
+        margin: 0;
+
+        li {
+            list-style: none;
+        }
+    }
+
+    .leftCol {
+        width: 40%;
+        background-color: $info;
+
+        .content {
+            overflow-y: scroll;
+            max-height: 100%;
+
+            .event-list {
+                h4 {
+                    text-transform: none;
+                }
+            }
+        }
+    }
+
+    .rightCol {
+        width: 60%;
+
+        h4 {
+            color: #C7BEBE;
+            text-align: right;
+            margin-bottom: 70px;
+        }
+
+        .weekday, .days {
+            li {
+                width: 14%;
+                float: left;
+                text-transform: uppercase;
+            }
+
+            a {
+                display: block;
+                color: #747978;
+                text-align: center;
+            }
+        }
+
+        .weekday {
+            margin-bottom: 20px;
+
+            li a {
+                font-size: 12px;
+            }
+        }
+
+        .days li {
+            width: 14%;
+
+            a {
+                width: 36px;
+                height: 24px;
+                text-align: center;
+                font-size: 12px;
+                font-weight: bold;
+                border-radius: 5px;
+                margin: auto auto 10px;
+                padding-top: 3px;
+
+                &:hover {
+                    background-color: #EEEDE9;
+                }
+
+                &.selected {
+                    background-color: $warning !important;
+                    color: white;
+                }
+                &.event-link {
+                    text-decoration: none;
+                    font-weight: normal;
+                    &.has-element {
+                        font-weight: bold;
+                        background-color: $info;
+                        color: white;
+                    }
+                }
+            }
+
+            .event {
+                color: $warning;
+            }
+        }
+    }
 }
