@@ -27,9 +27,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'createdBy', cascade: ['persist'])]
-    private Collection $revisions;
-
     /** @var Collection<int, Association> */
     #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'subscribers')]
     #[ORM\JoinTable(name: 'subscriptions')]
@@ -37,7 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->revisions = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
     }
 
@@ -111,30 +107,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AssociationRevision>
-     */
-    public function getRevisions(): Collection
-    {
-        return $this->revisions;
-    }
-
-    public function addRevision(AssociationRevision $revision): static
-    {
-        if (!$this->revisions->contains($revision)) {
-            $this->revisions->add($revision);
-        }
-
-        return $this;
-    }
-
-    public function removeRevision(AssociationRevision $revision): static
-    {
-        $this->revisions->removeElement($revision);
 
         return $this;
     }

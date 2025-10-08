@@ -2,6 +2,15 @@ wiki_plab:
     long: Porched ar c'hevredigezhioù Plabennek
     short: Porched
 
+day:
+    monday: lun
+    tuesday: meurzh
+    wednesday: merc'her
+    thursday: yaou
+    friday: gwener
+    saturday: sadorn
+    sunday: sul
+
 nav:
     login: Kevrekañ
     register: Enskrivañ
@@ -33,6 +42,14 @@ home:
     agenda_days: Deiziataer evit an {days} devezh da zont
     events:
         none: Abadenn ebet aozet e-kerzh an {days} devezh da zont.
+        selector:
+            mosaic: Gwel mozaik
+            list: Gwel ar roll
+            calendar: Gwel an deiziadur
+        calendar:
+            upcoming:
+                title: "{events} abadenn en devezhioù o tont."
+                help: (klikit war un deiz merket evit listenniñ an darvoudoù anezhañ)
     associations:
         title: Kevredigezhioù
         list:

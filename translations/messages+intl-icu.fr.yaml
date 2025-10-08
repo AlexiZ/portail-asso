@@ -2,6 +2,15 @@ wiki_plab:
     long: Portail des associations Plabennecoises
     short: Portail
 
+day:
+    monday: lundi
+    tuesday: mardi
+    wednesday: mercredi
+    thursday: jeudi
+    friday: vendredi
+    saturday: samedi
+    sunday: dimanche
+
 nav:
     login: Connexion
     register: Inscription
@@ -33,6 +42,14 @@ home:
     agenda_days: Agenda des {days} prochains jours
     events:
         none: Aucun événement prévu dans les {days} prochains jours.
+        selector:
+            mosaic: Vue mosaïque
+            list: Vue liste
+            calendar: Vue calendrier
+        calendar:
+            upcoming:
+                title: "{events} événements dans les jours à venir."
+                help: (cliquez sur un jour en surbrillance pour en lister les événements)
     associations:
         title: Associations
         list:

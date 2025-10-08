@@ -7,8 +7,8 @@
                 {% set eventDates = [] %}
                 {% if events|length > 0 %}
                     <p>
-                        {{ events|length }} événements dans les jours à venir.
-                        <br><small><em>(cliquez sur un jour en surbrillance pour en lister les événements)</em></small>
+                        {{ 'home.events.calendar.upcoming.title'|trans({'events': events|length}) }}
+                        <br><small><em>{{ 'home.events.calendar.upcoming.help'|trans }}</em></small>
                     </p>
 
                     {% for event in events %}
@@ -38,7 +38,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p>Aucun événement à venir</p>
+                    <p>{{ 'home.events.none'|trans({days: 30}) }}</p>
                 {% endif %}
             </div>
         </div>
@@ -49,9 +49,9 @@
 
                 <div class="d-flex flex-column">
                     <ul class="weekday">
-                        {% set weekdays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'] %}
+                        {% set weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
                         {% for day in weekdays %}
-                            <li><a>{{ day|trans }}</a></li>
+                            <li><a>{{ ('day.'~day)|trans }}</a></li>
                         {% endfor %}
                     </ul>
 
