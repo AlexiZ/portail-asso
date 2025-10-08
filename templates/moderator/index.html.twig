@@ -16,15 +16,19 @@
             </tr>
             </thead>
             <tbody>
-            {% for rev in revisions %}
+            {% for revision in revisions %}
                 <tr>
-                    <td>{{ rev.association.name }}</td>
-                    <td>{{ rev.createdBy ? rev.createdBy.email : 'Anonyme' }}</td>
-                    <td>{{ rev.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>{{ revision.association.name }}</td>
+                    <td>{{ revision.createdBy|default('Anonyme') }}</td>
+                    <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ path('moderator_approve_revision', { id: rev.id }) }}" class="btn btn-sm btn-success text-white">
-                            <i class="fa fa-check"></i> Approuver
-                        </a>
+                        {% if not revision.approved %}
+                            <a href="{{ path('moderator_approve_revision', { id: revision.id }) }}" class="btn btn-sm btn-success text-white">
+                                <i class="fa fa-check"></i> Approuver
+                            </a>
+                        {% else %}
+                            <span class="text-info">Approuvée</span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
