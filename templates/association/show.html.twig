@@ -146,16 +146,32 @@
                         {% if association.hasAnyNetwork|default %}
                             <ul class="list-unstyled">
                                 {% if association.networkWebsite|default %}
-                                    <li><a href="{{ association.networkWebsite }}">{{ association.networkWebsite }}</a></li>
+                                    <li>
+                                        <a href="https://{{ association.networkWebsite }}" class="text-decoration-none">
+                                            <i class="fa fa-globe fs-5"></i>&nbsp;{{ association.networkWebsite }}
+                                        </a>
+                                    </li>
                                 {% endif %}
                                 {% if association.networkFacebook|default %}
-                                    <li><a href="{{ association.networkFacebook }}">{{ association.networkFacebook }}</a></li>
+                                    <li>
+                                        <a href="https://www.facebook.com/{{ association.networkFacebook }}" class="text-decoration-none">
+                                            <i class="fa-brands fa-facebook fs-5"></i>&nbsp;{{ association.networkFacebook }}
+                                        </a>
+                                    </li>
                                 {% endif %}
                                 {% if association.networkInstagram|default %}
-                                    <li><a href="{{ association.networkInstagram }}">{{ association.networkInstagram }}</a></li>
+                                    <li>
+                                        <a href="https://www.instagram.com/{{ association.networkInstagram }}" class="text-decoration-none">
+                                            <i class="fa-brands fa-instagram fs-5"></i>&nbsp;{{ association.networkInstagram }}
+                                        </a>
+                                    </li>
                                 {% endif %}
                                 {% if association.networkOther|default %}
-                                    <li><a href="{{ association.networkOther }}">{{ association.networkOther }}</a></li>
+                                    <li>
+                                        <a href="{{ association.networkOther }}" class="text-decoration-none">
+                                            {{ association.networkOther }}
+                                        </a>
+                                    </li>
                                 {% endif %}
                             </ul>
                         {% else %}
