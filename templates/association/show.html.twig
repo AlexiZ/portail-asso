@@ -146,23 +146,26 @@
                         {% if association.hasAnyNetwork|default %}
                             <ul class="list-unstyled">
                                 {% if association.networkWebsite|default %}
+                                    {% set web = web_link(association.networkWebsite) %}
                                     <li>
-                                        <a href="https://{{ association.networkWebsite }}" class="text-decoration-none">
-                                            <i class="fa fa-globe fs-5"></i>&nbsp;{{ association.networkWebsite }}
+                                        <a href="{{ web.href }}" class="text-decoration-none">
+                                            <i class="fa fa-globe fs-5"></i>&nbsp;{{ web.label }}
                                         </a>
                                     </li>
                                 {% endif %}
                                 {% if association.networkFacebook|default %}
+                                    {% set fb = facebook_link(association.networkFacebook) %}
                                     <li>
-                                        <a href="https://www.facebook.com/{{ association.networkFacebook }}" class="text-decoration-none">
-                                            <i class="fa-brands fa-facebook fs-5"></i>&nbsp;{{ association.networkFacebook }}
+                                        <a href="{{ fb.href }}" class="text-decoration-none">
+                                            <i class="fa-brands fa-facebook fs-5"></i>&nbsp;{{ fb.label }}
                                         </a>
                                     </li>
                                 {% endif %}
                                 {% if association.networkInstagram|default %}
+                                    {% set ig = instagram_link(association.networkFacebook) %}
                                     <li>
-                                        <a href="https://www.instagram.com/{{ association.networkInstagram }}" class="text-decoration-none">
-                                            <i class="fa-brands fa-instagram fs-5"></i>&nbsp;{{ association.networkInstagram }}
+                                        <a href="{{ ig.href }}" class="text-decoration-none">
+                                            <i class="fa-brands fa-instagram fs-5"></i>&nbsp;{{ ig.label }}
                                         </a>
                                     </li>
                                 {% endif %}

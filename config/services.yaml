@@ -27,3 +27,7 @@ services:
 
     App\Twig\DateExtension:
         tags: [ 'twig.extension' ]
+    App\Twig\LinkExtension:
+        tags: [ 'twig.extension' ]
+    App\Twig\MarkExtension:
+        tags: [ 'twig.extension' ]
