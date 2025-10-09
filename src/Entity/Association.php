@@ -27,7 +27,7 @@ class Association
     #[Groups(['autocomplete'])]
     private string $slug;
 
-    #[ORM\Column(type: Types::JSON, enumType: Category::class)]
+    #[ORM\Column(type: Types::JSON, nullable: true, enumType: Category::class)]
     #[Groups(['autocomplete'])]
     private ?array $categories = [];
 
