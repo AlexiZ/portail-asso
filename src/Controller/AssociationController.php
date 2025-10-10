@@ -126,6 +126,23 @@ class AssociationController extends AbstractController
         ]);
     }
 
+    #[Route('/{slug}/delete', name: 'association_delete', requirements: ['id' => '\d+'])]
+    public function delete(
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Association $association,
+    ): Response {
+        if (!$this->authChecker->isGranted('ASSOCIATION_DELETE', $association)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $this->em->remove($association);
+        $this->em->flush();
+
+        $this->addFlash('success', $this->translator->trans('association.delete.confirm'));
+
+        return $this->redirectToRoute('homepage');
+    }
+
     #[Route('/{slug}/revision/{revisionId}/apercu', name: 'association_rollback_preview')]
     public function rollbackPreview(
         #[MapEntity(mapping: ['slug' => 'slug'])]

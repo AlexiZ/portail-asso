@@ -105,4 +105,22 @@ class EventController extends AbstractController
             'event' => $event,
         ]);
     }
+
+    #[Route('/{id}/delete', name: 'event_delete')]
+    public function delete(
+        Event $event,
+    ): Response {
+        if (!$this->authChecker->isGranted('ASSOCIATION_DELETE', $event->getAssociation())) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $association = clone $event->getAssociation();
+
+        $this->em->remove($event);
+        $this->em->flush();
+
+        $this->addFlash('success', $this->translator->trans('event.delete.confirm'));
+
+        return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
+    }
 }

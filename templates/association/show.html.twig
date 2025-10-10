@@ -41,6 +41,11 @@
                     <i class="fa fa-calendar-plus"></i>&nbsp;{{ 'association.show.actions.new_event'|trans }}
                 </a>
             {% endif %}
+            {% if is_granted('ASSOCIATION_DELETE', association) %}
+                <a href="{{ path('association_delete', { slug: association.slug }) }}" class="btn btn-danger ms-2 text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': association.name}) }}')">
+                    <i class="fa fa-trash"></i>
+                </a>
+            {% endif %}
             {% if app.user|default %}
                 {% if app.user.isSubscribedTo(association) %}
                     <button type="button" class="btn btn-info text-white ms-2" data-bs-toggle="modal" data-bs-target="#unsubscriptionModal">
@@ -208,8 +213,13 @@
                     </div>
                     <div>
                         {% if is_granted('ASSOCIATION_EDIT', event.association) %}
-                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary">
-                                <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
+                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ASSOCIATION_DELETE', event.association) %}
+                            <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
+                                <i class="fa fa-trash"></i>
                             </a>
                         {% endif %}
                         <a href="{{ path('event_show', {id: event.id}) }}" class="btn btn-info text-white" title="{{ 'association.show.actions.show'|trans }}">

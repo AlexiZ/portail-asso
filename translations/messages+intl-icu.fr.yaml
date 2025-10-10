@@ -124,6 +124,9 @@ association:
             no_events: Aucun événement prévu.
         actions:
             edit: Modifier
+            delete:
+                title: Supprimer
+                confirm: Êtes-vous certain de vouloir supprimer définitivement "{element}" ? Cette action est irréversible.
             show: Détails
             new_event: Nouvel événement
             subscribe:
@@ -142,6 +145,8 @@ association:
                     actions:
                         cancel: Annuler
                         confirm: Je me désabonne
+    delete:
+        confirm: La page association a bien été supprimée.
     subscription:
         info: Vous êtes abonné à cette page
         success: Vous avez été abonné à cette page avec succès.
@@ -199,6 +204,8 @@ event:
             submit: Mettre à jour
             confirm: Événement mis à jour avec succès.
             back: Annuler et revenir sur la page de l'association
+    delete:
+        confirm: L'événement a bien été supprimé.
     form:
         title: Titre
         short_description: Description courte
