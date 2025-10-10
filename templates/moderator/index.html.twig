@@ -22,13 +22,9 @@
                     <td>{{ revision.createdBy|default('Anonyme') }}</td>
                     <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
                     <td>
-                        {% if not revision.approved %}
-                            <a href="{{ path('moderator_approve_revision', { id: revision.id }) }}" class="btn btn-sm btn-success text-white">
-                                <i class="fa fa-check"></i> Approuver
-                            </a>
-                        {% else %}
-                            <span class="text-info">Approuvée</span>
-                        {% endif %}
+                        <a class="btn btn-sm btn-success text-white revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}">
+                            Voir les changements
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
