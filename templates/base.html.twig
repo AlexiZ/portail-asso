@@ -17,10 +17,14 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ 'wiki_plab.long'|trans }}" height="50" class="d-inline-block align-text-top">
-                    <span class="ps-3 pt-3 align-middle">{{ 'wiki_plab.long'|trans }}</span>
+                    <span class="ps-3 pt-3 align-middle d-none d-md-inline-block">{{ 'wiki_plab.long'|trans }}</span>
+                    <span class="ps-3 pt-3 align-middle d-sm-inline-block d-md-none">{{ 'wiki_plab.short'|trans }}</span>
                 </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMenu" aria-controls="navbarTogglerMenu" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                <div class="collapse navbar-collapse">
+                <div class="collapse navbar-collapse" id="navbarTogglerMenu">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item border-end px-1">
                             <a class="nav-link" href="{{ path('publishing_charter') }}">{{ 'charter.title'|trans }}</a>
