@@ -15,9 +15,14 @@
         <div class="mb-3">
             {{ form_row(form.roles) }}
         </div>
+        <div class="mb-3">
+            {{ form_row(form.chairedAssociations, {'attr': {'class': 'form-select js-tomselect'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.associations, {'attr': {'class': 'form-select js-tomselect'}}) }}
+        </div>
 
         <button class="btn btn-primary mt-2">Enregistrer les modifications</button>
-        <a href="{{ path('admin_index') }}" class="btn btn-secondary mt-2">Annuler</a>
+        <a href="{{ path('admin_index') }}" class="btn btn-secondary mt-2">Retour</a>
     {{ form_end(form) }}
-
 {% endblock %}

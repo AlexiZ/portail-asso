@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Association;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -34,6 +36,7 @@ class AdminUserType extends AbstractType
                         'class' => 'form-control',
                     ],
                 ],
+                'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôle',
@@ -48,6 +51,23 @@ class AdminUserType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'mapped' => false,
+            ])
+            ->add('associations', EntityType::class, [
+                'label' => 'Membre des associations',
+                'class' => Association::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+            ])
+            ->add('chairedAssociations', EntityType::class, [
+                'label' => 'Président(e) des associations',
+                'class' => Association::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+                'by_reference' => false,
             ])
         ;
     }

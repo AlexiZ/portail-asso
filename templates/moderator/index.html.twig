@@ -6,28 +6,28 @@
     <h1>Modération des contributions</h1>
 
     {% if revisions is not empty %}
-        <table class="table table-striped">
+        <table class="table table-bordered table-hover">
             <thead>
-            <tr>
-                <th>Association</th>
-                <th>Créateur</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Association</th>
+                    <th>Créateur</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
-            {% for revision in revisions %}
-                <tr>
-                    <td>{{ revision.association.name }}</td>
-                    <td>{{ revision.createdBy|default('Anonyme') }}</td>
-                    <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
-                    <td>
-                        <a class="btn btn-sm btn-success text-white revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}">
-                            Voir les changements
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
+                {% for revision in revisions %}
+                    <tr>
+                        <td>{{ revision.association.name }}</td>
+                        <td>{{ revision.createdBy|default('Anonyme') }}</td>
+                        <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-success text-white revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}">
+                                Voir les changements
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     {% else %}

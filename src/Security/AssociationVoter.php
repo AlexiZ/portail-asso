@@ -17,6 +17,9 @@ class AssociationVoter extends Voter
         return in_array($attribute, [self::EDIT, self::DELETE]) && $subject instanceof Association;
     }
 
+    /**
+     * @param Association $subject
+     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -33,7 +36,7 @@ class AssociationVoter extends Voter
             return true;
         }
 
-        // Propriétaire de l'association
-        return $subject->getOwner()?->getId() === $user->getId();
+        // Créateur ou membre du bureau de l'association
+        return $subject->getOwner()?->getId() === $user->getId() || $subject->getMembers()->contains($user);
     }
 }

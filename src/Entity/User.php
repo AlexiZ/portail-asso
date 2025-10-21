@@ -32,9 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'subscriptions')]
     private Collection $subscriptions;
 
+    /** @var Collection<int, Association> */
+    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'members')]
+    private Collection $associations;
+
+    #[ORM\OneToMany(targetEntity: Association::class, mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private Collection $chairedAssociations;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     public function getUsername(): string
@@ -143,5 +151,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isSubscribedTo(Association $association): bool
     {
         return $this->subscriptions->contains($association);
+    }
+
+    /**
+     * @return Collection<int, Association>
+     */
+    public function getAssociations(): Collection
+    {
+        return $this->associations;
+    }
+
+    public function addAssociation(Association $association): static
+    {
+        if (!$this->associations->contains($association)) {
+            $this->associations->add($association);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociation(Association $association): static
+    {
+        $this->associations->removeElement($association);
+
+        return $this;
+    }
+
+    public function getChairedAssociations(): Collection
+    {
+        return $this->chairedAssociations;
+    }
+
+    public function setChairedAssociations(Collection $chairedAssociations): User
+    {
+        $this->chairedAssociations = $chairedAssociations;
+
+        return $this;
     }
 }

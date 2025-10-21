@@ -72,7 +72,7 @@ class Association
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
     private Collection $events;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'chairedAssociations')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $owner = null;
 
@@ -90,11 +90,13 @@ class Association
     #[Groups(['autocomplete'])]
     private string $updatedBy;
 
-    /**
-     * @var Collection<int, User>
-     */
+    /** @var Collection<int, User> */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'subscriptions')]
     private Collection $subscribers;
+
+    /** @var Collection<int, User> */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'associations')]
+    private Collection $members;
 
     public function __construct()
     {
@@ -103,6 +105,7 @@ class Association
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->subscribers = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function serialize(): array
@@ -455,6 +458,33 @@ class Association
     {
         if ($this->subscribers->removeElement($subscriber)) {
             $subscriber->removeSubscription($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->addAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            $member->removeAssociation($this);
         }
 
         return $this;
