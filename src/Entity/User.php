@@ -20,6 +20,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $email;
 
+    #[ORM\Column(length: 128, nullable: true)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 128, nullable: true)]
+    private ?string $lastname = null;
+
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
@@ -27,26 +33,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    /** @var Collection<int, Association> */
-    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'subscribers')]
-    #[ORM\JoinTable(name: 'subscriptions')]
+    /** @var Collection<int, Subscription> */
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
     private Collection $subscriptions;
-
-    /** @var Collection<int, Association> */
-    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'members')]
-    private Collection $associations;
 
     #[ORM\OneToMany(targetEntity: Association::class, mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private Collection $chairedAssociations;
 
+    /** @var Collection<int, Membership> */
+    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'user')]
+    private Collection $memberships;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
-        $this->associations = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function getUsername(): string
     {
+        if (!empty($this->firstname) && !empty($this->lastname)) {
+            return $this->firstname.' '.$this->lastname;
+        }
+
         $emailParts = explode('@', $this->email);
 
         return $emailParts[0];
@@ -65,6 +74,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): static
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): static
+    {
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -153,30 +186,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->subscriptions->contains($association);
     }
 
-    /**
-     * @return Collection<int, Association>
-     */
-    public function getAssociations(): Collection
-    {
-        return $this->associations;
-    }
-
-    public function addAssociation(Association $association): static
-    {
-        if (!$this->associations->contains($association)) {
-            $this->associations->add($association);
-        }
-
-        return $this;
-    }
-
-    public function removeAssociation(Association $association): static
-    {
-        $this->associations->removeElement($association);
-
-        return $this;
-    }
-
     public function getChairedAssociations(): Collection
     {
         return $this->chairedAssociations;
@@ -185,6 +194,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setChairedAssociations(Collection $chairedAssociations): User
     {
         $this->chairedAssociations = $chairedAssociations;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Membership>
+     */
+    public function getMemberships(): Collection
+    {
+        return $this->memberships;
+    }
+
+    public function getMembership(Association $association): ?Membership
+    {
+        foreach ($this->memberships as $membership) {
+            if ($association === $membership->getAssociation()) {
+                return $membership;
+            }
+        }
+
+        return null;
+    }
+
+    public function addMembership(Membership $membership): static
+    {
+        if (!$this->memberships->contains($membership)) {
+            $this->memberships->add($membership);
+            $membership->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembership(Membership $membership): static
+    {
+        if ($this->memberships->removeElement($membership)) {
+            // set the owning side to null (unless already changed)
+            if ($membership->getUser() === $this) {
+                $membership->setUser(null);
+            }
+        }
 
         return $this;
     }

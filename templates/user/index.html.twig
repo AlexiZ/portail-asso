@@ -7,24 +7,45 @@
         <div class="container-fluid py-3">
             <h1 class="fw-bold">{{ 'user_account.title'|trans }}</h1>
 
-            <p><strong>{{ 'user_account.content.identifier'|trans }} :</strong> {{ user.userIdentifier }}</p>
-            <p>
-                <strong>{{ 'user_account.content.roles'|trans }} :</strong> {{ ('user.role.' ~ app.user.highestRole|lower)|trans }}
-            </p>
+            <p><strong>{{ 'user_account.content.email'|trans }} :</strong> {{ user.email }}</p>
+            {% if app.user.highestRole != 'ROLE_USER' %}
+                <p><strong>{{ 'user_account.content.roles'|trans }} :</strong> {{ ('user.role.' ~ app.user.highestRole|lower)|trans }}</p>
+            {% endif %}
 
             <hr>
 
-            <h2>{{ 'user_account.change_password.title'|trans }}</h2>
+            <h2>{{ 'user_account.edit.title'|trans }}</h2>
             {{ form_start(form) }}
-                <div class="mb-3">
-                    {{ form_row(form.plainPassword.first, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="mb-3">
+                            {{ form_row(form.firstname, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <div class="mb-3">
+                            {{ form_row(form.lastname, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    {{ form_row(form.plainPassword.second, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="mb-3">
+                            {{ form_row(form.plainPassword.first, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <div class="mb-3">
+                            {{ form_row(form.plainPassword.second, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <button class="btn btn-success text-white"><i class="fa fa-save"></i>&nbsp;{{ 'user_account.change_password.submit'|trans }}</button>
+                    <button class="btn btn-success text-white"><i class="fa fa-save"></i>&nbsp;{{ 'user_account.edit.submit'|trans }}</button>
                 </div>
             {{ form_end(form) }}
 

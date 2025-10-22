@@ -6,22 +6,44 @@
     <h1>{{ 'register.title'|trans }}</h1>
 
     {{ form_start(registrationForm) }}
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="mb-3">
+                    {{ form_label(registrationForm.firstname) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="mb-3">
+                    {{ form_label(registrationForm.lastname) }}
+                    {{ form_widget(registrationForm.lastname, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+            </div>
+        </div>
+
         <div class="mb-3">
             {{ form_label(registrationForm.email) }}
             {{ form_widget(registrationForm.email, {'attr': {'class':'form-control'}}) }}
             {{ form_errors(registrationForm.email) }}
         </div>
 
-        <div class="mb-3">
-            {{ form_label(registrationForm.plainPassword.first) }}
-            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class':'form-control'}}) }}
-            {{ form_errors(registrationForm.plainPassword.first) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(registrationForm.plainPassword.second) }}
-            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class':'form-control'}}) }}
-            {{ form_errors(registrationForm.plainPassword.second) }}
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword.first) }}
+                    {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword.second) }}
+                    {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class':'form-control'}}) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+            </div>
         </div>
 
         <button class="btn btn-success text-white" type="submit">

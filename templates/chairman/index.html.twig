@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'chairman.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'chairman.title'|trans }}</h1>
+
+    {{ 'chairman.intro'|trans|raw }}
+
+    {% if associations|default is not empty %}
+        <div class="row">
+            {% for association in associations %}
+                <div class="col-sm-12 col-md-{{ associations|length > 1 ? '6' : '12' }}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>{{ association.name }}</h2>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ path('association_show', {'slug': association.slug}) }}" class="btn btn-link px-0" target="_blank">
+                                <i class="fa fa-external-link"></i>&nbsp;{{ 'chairman.association.link'|trans({'association': association.name}) }}
+                            </a>
+                            {% if association.membershipsByStatus('accepted')|length > 0 %}
+                                <fieldset>
+                                    <legend>{{ 'chairman.memberships.accepted.title'|trans }}</legend>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ 'chairman.memberships.accepted.username'|trans }}</th>
+                                                <th>{{ 'chairman.memberships.accepted.actions'|trans }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for membership in association.membershipsByStatus('accepted') %}
+                                                <tr>
+                                                    <td>{{ membership.user.username }}</td>
+                                                    <td>
+                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-danger text-white" title="{{ 'chairman.memberships.accepted.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            {% else %}
+                                <p><em>{{ 'chairman.memberships.accepted.none'|trans }}</em></p>
+                            {% endif %}
+
+                            <details {% if association.membershipsByStatus('pending')|length > 0 %}open{% endif %}>
+                                <summary>{{ 'chairman.memberships.pending.title'|trans}} ({{ association.membershipsByStatus('pending')|length }})</summary>
+                                {% if association.membershipsByStatus('pending')|length > 0 %}
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ 'chairman.memberships.pending.username'|trans }}</th>
+                                                <th>{{ 'chairman.memberships.pending.actions'|trans }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for membership in association.membershipsByStatus('pending') %}
+                                                <tr>
+                                                    <td>{{ membership.user.username }}</td>
+                                                    <td>
+                                                        <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-success text-white" title="{{ 'chairman.memberships.pending.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
+                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-danger text-white" title="{{ 'chairman.memberships.pending.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <p><em>{{ 'chairman.memberships.pending.none'|trans }}</em></p>
+                                {% endif %}
+                            </details>
+
+                            <details>
+                                <summary>{{ 'chairman.memberships.refused.title'|trans }} ({{ association.membershipsByStatus('refused')|length }})</summary>
+                                {% if association.membershipsByStatus('refused')|length > 0 %}
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ 'chairman.memberships.refused.username'|trans}}</th>
+                                                <th>{{ 'chairman.memberships.refused.actions'|trans}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for membership in association.membershipsByStatus('refused') %}
+                                                <tr>
+                                                    <td>{{ membership.user.username }}</td>
+                                                    <td>
+                                                        <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-success text-white" title="{{ 'chairman.memberships.refused.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <p><em>{{ 'chairman.memberships.refused.none'|trans }}</em></p>
+                                {% endif %}
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">{{ 'chairman.association.none'|trans }}</div>
+    {% endif %}
+{% endblock %}

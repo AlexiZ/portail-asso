@@ -18,6 +18,10 @@ body {
     background-color: #fbfaf9;
 }
 
+.navbar-nav > li.nav-item:hover {
+    background-color: var(--bs-border-color);
+}
+
 #btn-back-to-top {
     position: fixed;
     bottom: 20px;

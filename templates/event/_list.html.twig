@@ -9,7 +9,7 @@
                 </div>
                 <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
 
-                {% if is_granted('ASSOCIATION_EDIT', event.association) %}
+                {% if is_granted('edit', event.association) %}
                     <p class="mb-0">
                         <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
                             <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}

@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Modération des contributions</h1>
 
-    {% if revisions is not empty %}
+    {% if revisions|default is not empty %}
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>

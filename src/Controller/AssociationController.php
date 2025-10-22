@@ -131,7 +131,7 @@ class AssociationController extends AbstractController
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('ASSOCIATION_DELETE', $association)) {
+        if (!$this->authChecker->isGranted('delete', $association)) {
             throw $this->createAccessDeniedException();
         }
 

@@ -12,10 +12,10 @@ class Subscription
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'subscriptions')]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Association::class)]
+    #[ORM\ManyToOne(targetEntity: Association::class, inversedBy: 'subscriptions')]
     private Association $association;
 
     #[ORM\Column(type: 'datetime')]

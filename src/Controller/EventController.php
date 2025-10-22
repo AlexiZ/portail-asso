@@ -54,7 +54,7 @@ class EventController extends AbstractController
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('ASSOCIATION_EDIT', $association)) {
+        if (!$this->authChecker->isGranted('edit', $association)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -85,7 +85,7 @@ class EventController extends AbstractController
         Request $request,
         Event $event,
     ): Response {
-        if (!$this->authChecker->isGranted('ASSOCIATION_EDIT', $event->getAssociation())) {
+        if (!$this->authChecker->isGranted('edit', $event->getAssociation())) {
             throw $this->createAccessDeniedException();
         }
 
@@ -110,7 +110,7 @@ class EventController extends AbstractController
     public function delete(
         Event $event,
     ): Response {
-        if (!$this->authChecker->isGranted('ASSOCIATION_DELETE', $event->getAssociation())) {
+        if (!$this->authChecker->isGranted('delete', $event->getAssociation())) {
             throw $this->createAccessDeniedException();
         }
 

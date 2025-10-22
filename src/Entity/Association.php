@@ -90,13 +90,13 @@ class Association
     #[Groups(['autocomplete'])]
     private string $updatedBy;
 
-    /** @var Collection<int, User> */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'subscriptions')]
-    private Collection $subscribers;
+    /** @var Collection<int, Subscription> */
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'association')]
+    private Collection $subscriptions;
 
-    /** @var Collection<int, User> */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'associations')]
-    private Collection $members;
+    /** @var Collection<int, Membership> */
+    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'association')]
+    private Collection $memberships;
 
     public function __construct()
     {
@@ -104,8 +104,8 @@ class Association
         $this->events = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
-        $this->subscribers = new ArrayCollection();
-        $this->members = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function serialize(): array
@@ -437,26 +437,25 @@ class Association
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Subscription>
      */
-    public function getSubscribers(): Collection
+    public function getSubscriptions(): Collection
     {
-        return $this->subscribers;
+        return $this->subscriptions;
     }
 
-    public function addSubscriber(User $subscriber): static
+    public function addSubscription(Subscription $subscriber): static
     {
-        if (!$this->subscribers->contains($subscriber)) {
-            $this->subscribers->add($subscriber);
-            $subscriber->addSubscription($this);
+        if (!$this->subscriptions->contains($subscriber)) {
+            $this->subscriptions->add($subscriber);
         }
 
         return $this;
     }
 
-    public function removeSubscriber(User $subscriber): static
+    public function removeSubscription(User $subscriber): static
     {
-        if ($this->subscribers->removeElement($subscriber)) {
+        if ($this->subscriptions->removeElement($subscriber)) {
             $subscriber->removeSubscription($this);
         }
 
@@ -464,27 +463,42 @@ class Association
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Membership>
      */
-    public function getMembers(): Collection
+    public function getMemberships(): Collection
     {
-        return $this->members;
+        return $this->memberships;
     }
 
-    public function addMember(User $member): static
+    /**
+     * @return Collection<int, Membership>
+     */
+    public function getMembershipsByStatus(string $status): Collection
     {
-        if (!$this->members->contains($member)) {
-            $this->members->add($member);
-            $member->addAssociation($this);
+        return new ArrayCollection(
+            $this->memberships
+                ->filter(fn ($membership) => $membership->getStatus() === $status)
+                ->toArray()
+        );
+    }
+
+    public function addMembership(Membership $membership): static
+    {
+        if (!$this->memberships->contains($membership)) {
+            $this->memberships->add($membership);
+            $membership->setAssociation($this);
         }
 
         return $this;
     }
 
-    public function removeMember(User $member): static
+    public function removeMembership(Membership $membership): static
     {
-        if ($this->members->removeElement($member)) {
-            $member->removeAssociation($this);
+        if ($this->memberships->removeElement($membership)) {
+            // set the owning side to null (unless already changed)
+            if ($membership->getAssociation() === $this) {
+                $membership->setAssociation(null);
+            }
         }
 
         return $this;

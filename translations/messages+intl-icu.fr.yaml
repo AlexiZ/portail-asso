@@ -20,6 +20,7 @@ nav:
         logout: Déconnexion
         admin: Espace Admin
         moderation: Espace Modération
+        chairman: Gérer mes associations
     lang:
         french: Français
         breton: Breton
@@ -123,12 +124,16 @@ association:
             title: Événements à venir
             no_events: Aucun événement prévu.
         actions:
+            title: Actions
             edit: Modifier
             delete:
                 title: Supprimer
                 confirm: Êtes-vous certain de vouloir supprimer définitivement "{element}" ? Cette action est irréversible.
             show: Détails
             new_event: Nouvel événement
+            become_member:
+                title: Devenir membre
+                placeholder: Demander les droits de gestion à l'administrateur
             subscribe:
                 title: S'abonner
                 modal:
@@ -178,6 +183,8 @@ login:
 register:
     title: Inscription
     form:
+        firstname: Prénom
+        lastname: Nom
         email: Adresse e-mail
         password: Mot de passe
         confirm_password: Confirmer le mot de passe
@@ -222,25 +229,31 @@ user:
 user_account:
     title: Mon Compte
     content:
-        identifier: Votre identifiant
-        roles: Vos droits d'accès
-    change_password:
-        title: Changer mon mot de passe
-        submit: Enregistrer le nouveau mot de passe
+        email: Mon email
+        identifier: Mon identifiant
+        roles: Mes droits d'accès
+    edit:
+        title: Modifier mes informations
+        submit: Enregistrer
         form:
+            firstname: Prénom
+            lastname: Nom
             plain_password: Nouveau mot de passe
             confirm_password: Confirmez le mot de passe
             error:
                 password_mismatch: Les mots de passe ne correspondent pas.
             constraint:
-                password_not_blank: Veuillez entrer un mot de passe.
                 password_min_length: Le mot de passe doit contenir au moins 6 caractères.
-            success: Mot de passe modifié avec succès.
+            success: Informations enregistrées avec succès.
     delete_account:
         title: Supprimer mon compte
         confirm: Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
         submit: Supprimer mon compte
         success: Votre compte a été supprimé.
+    ask_membership:
+        success: Votre demande a bien été enregistrée. Un administrateur va s'en occuper prochainement.
+        refused: Votre demande a été refusée.
+        pending: Votre demande est en attente de traitement par un administrateur.
 
 user_subscriptions:
     title: Mes Abonnements
@@ -253,3 +266,42 @@ user_subscriptions:
 search:
     title: Résultats de recherche pour "<em>{searchTerm}</em>"
     empty_results: Aucune association ne correspond à votre recherche.
+
+membership:
+    status:
+        pending: Demande en attente de validation
+        accepted: Demande acceptée
+        refused: Demande refusée
+    accept:
+        success: L'utilisateur "{user}" a été autorisé à gérer votre page "{association}".
+    refuse:
+        success: L'utilisateur "{user}" s'est vu retiré les droits de gestion de votre page "{association}".
+
+chairman:
+    title: Gérer mes pages associations
+    intro: >
+        <p>Vous trouverez ci-dessous la liste des associations dont vous avez la charge. Cela peut être des pages que vous avez créées vous-mêmes ou bien qui vous ont été attribuées par un administrateur du portail.</p>
+        <p>Pour chacune d'entre elle, vous pouvez en retirer les membres. Un utilisateur membre d'une association peut en modifier les événements, c'est donc un rôle important alors n'ayez pas peur de retirer ce droit. Sur cette page, vous pouvez également inviter un utilisateur existant à gérer l'association.</p>
+    association:
+        link: Voir la page de {association}
+        none: Vous n'avez aucune association à gérer.
+    memberships:
+        accepted:
+            title: Liste des utilisateurs de l'association
+            username: Nom d'utilisateur
+            actions: Actions
+            refuse: Retirer des membres
+            none: Aucun utilisateur n'est membre de cette association.
+        pending:
+            title: Demandes en attente de validation
+            username: Nom d'utilisateur
+            actions: Actions
+            accept: Accepter la demande
+            refuse: Refuser la demande
+            none: Aucune demande de gestion pour cette association.
+        refused:
+            title: Demandes refusées
+            username: Nom d'utilisateur
+            actions: Actions
+            accept: Accepter la demande
+            none: Aucun refus de demande de gestion pour cette association.

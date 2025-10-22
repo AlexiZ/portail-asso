@@ -32,8 +32,8 @@
 
                         {% if app.user %}
                             <li class="nav-item dropdown border-end px-1">
-                                <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ app.user.email }}
+                                <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ app.user.email }}">
+                                    {{ app.user.username }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                                     <li>
@@ -60,6 +60,14 @@
                                                 </a>
                                             </li>
                                         {% endif %}
+                                    {% endif %}
+                                    {% if is_granted('ROLE_USER') and app.user.chairedAssociations|default|length > 0 %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('chairman_index') }}">
+                                                <i class="fa fa-lock me-2"></i>{{ 'nav.user.chairman'|trans }}
+                                            </a>
+                                        </li>
                                     {% endif %}
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
@@ -157,11 +165,14 @@
                 © {{ 'now'|date('Y') }} | Copyright
                 <a class="text-body" href="https://www.plabennecentransition.fr/">Plabennec en Transition</a>
 
-                <a class="mx-2 text-body" href="https://www.facebook.com/people/Plabennec-en-Transition/61566179664596/" role="button">
+                <a class="mx-2 text-body text-decoration-none" href="https://www.facebook.com/people/Plabennec-en-Transition/61566179664596/" role="button">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a class="mx-2 text-body" href="https://www.instagram.com/plabennecentransition/" role="button">
+                <a class="mx-2 text-body text-decoration-none" href="https://www.instagram.com/plabennecentransition/" role="button">
                     <i class="fab fa-instagram"></i>
+                </a>
+                <a class="mx-2 text-body text-decoration-none" href="https://github.com/AlexiZ/wiki-plab" role="button">
+                    <i class="fab fa-github"></i>
                 </a>
             </div>
         </footer>

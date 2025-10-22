@@ -20,6 +20,7 @@ nav:
         logout: Diskenn
         admin: Egor merour
         moderation: Egor ar moderadur
+        chairman: Merañ ma c'hevredigezhioù
     lang:
         french: Galleg
         breton: Brezhoneg
@@ -120,9 +121,13 @@ association:
             title: Darvoudoù da zont
             no_events: Abadenn ebet rakwelet.
         actions:
+            title: Oberoù
             edit: Da gemmañ
             show: Munudoù
             new_event: Darvoud nevez
+            become_member:
+                title: Dont da vezañ ezel
+                placeholder: Goulenn gwirioù merañ digant ar merour
             subscribe:
                 title: En em enskrivañ
                 modal:
@@ -170,6 +175,8 @@ login:
 register:
     title: Enskrivañ
     form:
+        firstname: Anv-bihan
+        lastname: Anv
         email: Chomlec'h postel
         password: Ger-tremen
         confirm_password: Kadarnaat ar ger-tremen
@@ -211,25 +218,31 @@ user:
 user_account:
     title: Ma c'hont
     content:
-        identifier: Hoc'h anv implijer
-        roles: Ho gwirioù mont e-barzh
-    change_password:
-        title: Cheñchit ma ger-tremen
-        submit: Enrollañ ar ger-tremen nevez
+        email: Ma postel
+        identifier: Ma anv implijer
+        roles: Ma gwirioù mont e-barzh
+    edit:
+        title: Kemmañ ma titouroù
+        submit: Saveteiñ
         form:
+            firstname: Anv-bihan
+            lastname: Anv
             plain_password: Ger-tremen nevez
             confirm_password: Kadarnaat ar ger-tremen
             error:
                 password_mismatch: Ne glot ket ar gerioù-tremen.
             constraint:
-                password_not_blank: Lakait ur ger-tremen mar plij.
                 password_min_length: Ret eo d'ar ger-tremen kaout 6 arouezenn d'an nebeutañ.
-            success: Kemmet eo bet ar ger-tremen gant berzh.
+            success: Enrollet eo bet an titouroù gant berzh.
     delete_account:
         title: Dilemel ma c'hont
         confirm: Ha sur oc'h e fell deoc'h dilemel ho kont ? Dic'hortoz eo an ober-mañ.
         submit: Dilemel ma c'hont
         success: Dilamet eo bet ho kont.
+    ask_membership:
+        success: Enrollet eo bet ho koulenn. Ur merour a raio war-dro an dra-se a-benn nebeut.
+        refused: Nac'het eo bet ho koulenn.
+        pending: Emañ ho koulenn o c'hortoz bezañ degemeret gant ur merour.
 
 user_subscriptions:
     title: Ma koumanantoù
@@ -242,3 +255,42 @@ user_subscriptions:
 search:
     title: Disoc'hoù klask evit "<em>{searchTerm}</em>"
     empty_results: Kevredigezh ebet ne glot gant ho klask.
+
+membership:
+    status:
+        pending: Goulenn o c'hortoz bezañ kadarnaet
+        accepted: Degemeret eo bet ar goulenn
+        refused: Nac'het eo bet ar goulenn
+    accept:
+        success: Aotreet eo bet an implijer "{user}" da verañ ho pajenn "{association}".
+    refuse:
+        success: An arveriad "{user}" zo bet tennet e wirioù merañ diouzh ho pajenn "{association}".
+
+chairman:
+    title: Merañ ma fajennoù kevredigezh
+    intro: >
+        <p>Setu amañ dindan roll ar c'hevredigezhioù a zo karget ac'hanoc'h. Pajennoù bet krouet ganeoc'h hoc'h-unan pe roet deoc'h gant merour ar porched e c'hallont bezañ.</p>
+        <p>Evit pep hini anezho e c'hallit lemel izili. Un arveriad hag a zo ezel eus ur gevredigezh a c'hall kemmañ hec'h darvoudoù, neuze eo ur perzh pouezus, neuze n'ho pet ket aon da lemel ar gwir-mañ. War ar bajenn-mañ e c'hallit ivez pediñ un implijer zo anezhañ anezhañ da verañ ar gevredigezh.</p>
+    association:
+        link: Sellit ouzh ar bajenn {association}
+        none: N'hoc'h eus kevredigezh ebet da verañ.
+    memberships:
+        accepted:
+            title: Roll implijerien ar gevredigezh
+            username: Anv implijer
+            actions: Oberoù
+            refuse: Dilemel an izili
+            none: N'eus implijer ebet ezel eus ar gevredigezh-mañ.
+        pending:
+            title: Goulennoù o c'hortoz bezañ kadarnaet
+            username: Anv implijer
+            actions: Oberoù
+            accept: Degemer ar goulenn
+            refuse: Nac'h ar goulenn
+            none: Goulennoù merañ ebet evit ar gevredigezh-mañ.
+        refused:
+            title: Nac'het eo bet ar goulennoù
+            username: Anv implijer
+            actions: Oberoù
+            accept: Degemer ar goulenn
+            none: Nac'het goulennoù merañ ebet evit ar gevredigezh-mañ.
