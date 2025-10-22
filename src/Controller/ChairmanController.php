@@ -30,12 +30,12 @@ class ChairmanController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        if (0 === $user->getChairedAssociations()->count()) {
+        if (!$this->isGranted('ROLE_ADMIN') && 0 === $user->getChairedAssociations()->count()) {
             return $this->redirectToRoute('homepage');
         }
 
         return $this->render('chairman/index.html.twig', [
-            'associations' => $user->getChairedAssociations(),
+            'associations' => $this->isGranted('ROLE_ADMIN') ? $this->entityManager->getRepository(Association::class)->findAllWithMemberships() : $user->getChairedAssociations(),
         ]);
     }
 

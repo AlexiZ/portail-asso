@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\AdminUserType;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -60,7 +60,7 @@ class AdminController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $user = new User();
-        $form = $this->createForm(AdminUserType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,7 +68,7 @@ class AdminController extends AbstractController
             $hashed = $hasher->hashPassword($user, $plainPassword);
             $user->setPassword($hashed);
 
-            $user->setRoles([$form->get('roles')->getData()]);
+            $user->setRoles(['ROLE_USER']);
 
             $this->em->persist($user);
             $this->em->flush();
@@ -92,7 +92,7 @@ class AdminController extends AbstractController
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $form = $this->createForm(AdminUserType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -100,10 +100,6 @@ class AdminController extends AbstractController
             if (!empty($plainPassword)) {
                 $hashed = $hasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashed);
-            }
-
-            if (!empty($form->get('roles')->getData())) {
-                $user->setRoles([$form->get('roles')->getData()]);
             }
 
             $this->em->persist($user);

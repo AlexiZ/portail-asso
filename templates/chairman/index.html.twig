@@ -10,7 +10,7 @@
     {% if associations|default is not empty %}
         <div class="row">
             {% for association in associations %}
-                <div class="col-sm-12 col-md-{{ associations|length > 1 ? '6' : '12' }}">
+                <div class="col-sm-12 col-md-{{ associations|length > 1 ? '6' : '12' }} mb-4">
                     <div class="card">
                         <div class="card-header">
                             <h2>{{ association.name }}</h2>

@@ -61,7 +61,7 @@
                                             </li>
                                         {% endif %}
                                     {% endif %}
-                                    {% if is_granted('ROLE_USER') and app.user.chairedAssociations|default|length > 0 %}
+                                    {% if is_granted('ROLE_ADMIN') or app.user.chairedAssociations|default|length > 0 %}
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <a class="dropdown-item" href="{{ path('chairman_index') }}">

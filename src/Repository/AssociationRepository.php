@@ -39,4 +39,14 @@ class AssociationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllWithMemberships(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.memberships', 'm')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

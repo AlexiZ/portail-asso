@@ -5,24 +5,5 @@
 {% block body %}
     <h1>Modifier l'utilisateur {{ user.email }}</h1>
 
-    {{ form_start(form) }}
-        <div class="mb-3">
-            {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="mb-3">
-            {{ form_row(form.plainPassword) }}
-        </div>
-        <div class="mb-3">
-            {{ form_row(form.roles) }}
-        </div>
-        <div class="mb-3">
-            {{ form_row(form.chairedAssociations, {'attr': {'class': 'form-select js-tomselect'}}) }}
-        </div>
-        <div class="mb-3">
-            {{ form_row(form.associations, {'attr': {'class': 'form-select js-tomselect'}}) }}
-        </div>
-
-        <button class="btn btn-primary mt-2">Enregistrer les modifications</button>
-        <a href="{{ path('admin_index') }}" class="btn btn-secondary mt-2">Retour</a>
-    {{ form_end(form) }}
+    {% include 'user/form.html.twig' %}
 {% endblock %}
