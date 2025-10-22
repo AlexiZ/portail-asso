@@ -50,7 +50,7 @@
                             </a>
                         </li>
                     {% else %}
-                        {% if not app.user.membership(association) %}
+                        {% if app.user|default and not app.user.membership(association) %}
                             <li>
                                 <a class="dropdown-item" href="{{ path('user_ask_membership', { association: association.slug }) }}">
                                     <i class="fa fa-id-card"></i>&nbsp;{{ 'association.show.actions.become_member.title'|trans }}
