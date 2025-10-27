@@ -61,15 +61,19 @@
                     <ul class="days">
                         {% set weekday_index = "now"|date("N") - 1 %}
                         {# On ajoute des cases vides pour caler le bon jour sous son libellé #}
-                        {% for i in 0..(weekday_index - 1) %}
-                            <li><a class="empty">&nbsp;</a></li>
-                        {% endfor %}
+                        {% if weekday_index > 0 %}
+                            {% for i in 0..(weekday_index - 1) %}
+                                <li><a class="empty">&nbsp;</a></li>
+                            {% endfor %}
+                        {% endif %}
 
                         {% for i in 0..29 %}
                             {% set date = "now"|date_modify("+"~i~" days") %}
+                            {% set occurrences = eventDates|filter(v => v == date|date('Y-m-d'))|length %}
                             <li>
                                 <a href="javascript:void(0);" class="day event-link{% if date|date('Y-m-d') in eventDates %} has-element" data-date="{{ date|date('Y-m-d') }}{% endif %}">
                                     {{ date|date('j') }}
+                                    {#{% if occurrences > 1 %}&nbsp;<span class="badge rounded-pill text-bg-light">{{ occurrences }}</span>{% endif %}#}
                                 </a>
                             </li>
                         {% endfor %}
