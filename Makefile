@@ -6,7 +6,7 @@
 
 # Parameters
 SHELL         			= sh
-PROJECT       			= Wiki Plab
+PROJECT       			= Portail Plab
 GIT_AUTHOR    			= AlexiZ
 HTTP_PORT     			= 8000
 REMOTE_USER   			= #
@@ -108,6 +108,9 @@ load-fixtures: ## Build the DB, control the schema validity, load fixtures and c
 
 init-snippet: ## Initialize a new snippet
 	@$(SYMFONY) $(PROJECT):init-snippet
+
+database: ## Pull REMOTE database to local instance
+	@$(DEP) db:pull $(REMOTE)
 
 ## —— Tests ✅ —————————————————————————————————————————————————————————————————
 test: ## Run tests
