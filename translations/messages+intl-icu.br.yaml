@@ -290,9 +290,10 @@ chairman:
         <p>Evit pep hini anezho e c'hallit lemel izili. Un arveriad hag a zo ezel eus ur gevredigezh a c'hall kemmañ hec'h darvoudoù, neuze eo ur perzh pouezus, neuze n'ho pet ket aon da lemel ar gwir-mañ. War ar bajenn-mañ e c'hallit ivez pediñ un implijer zo anezhañ anezhañ da verañ ar gevredigezh.</p>
     association:
         link: Digeriñ ar bajenn en un ivinell nevez
+        set_owner: Cheñch ar brezidantelezh
         none: N'hoc'h eus kevredigezh ebet da verañ.
     memberships:
-        owner: prezidant
+        owner: Prezidant
         accepted:
             title: Roll implijerien ar gevredigezh
             username: Anv implijer

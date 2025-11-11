@@ -183,7 +183,7 @@
                                 {% if association.networkWebsite|default %}
                                     {% set web = web_link(association.networkWebsite) %}
                                     <li>
-                                        <a href="{{ web.href }}" class="text-decoration-none">
+                                        <a href="{{ web.href }}" class="text-decoration-none" target="_blank">
                                             <i class="fa fa-globe fs-5"></i>&nbsp;{{ web.label }}
                                         </a>
                                     </li>
@@ -191,7 +191,7 @@
                                 {% if association.networkFacebook|default %}
                                     {% set fb = facebook_link(association.networkFacebook) %}
                                     <li>
-                                        <a href="{{ fb.href }}" class="text-decoration-none">
+                                        <a href="{{ fb.href }}" class="text-decoration-none" target="_blank">
                                             <i class="fa-brands fa-facebook fs-5"></i>&nbsp;{{ fb.label }}
                                         </a>
                                     </li>
@@ -199,14 +199,14 @@
                                 {% if association.networkInstagram|default %}
                                     {% set ig = instagram_link(association.networkFacebook) %}
                                     <li>
-                                        <a href="{{ ig.href }}" class="text-decoration-none">
+                                        <a href="{{ ig.href }}" class="text-decoration-none" target="_blank">
                                             <i class="fa-brands fa-instagram fs-5"></i>&nbsp;{{ ig.label }}
                                         </a>
                                     </li>
                                 {% endif %}
                                 {% if association.networkOther|default %}
                                     <li>
-                                        <a href="{{ association.networkOther }}" class="text-decoration-none">
+                                        <a href="{{ association.networkOther }}" class="text-decoration-none" target="_blank">
                                             {{ association.networkOther }}
                                         </a>
                                     </li>

@@ -23,4 +23,15 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function textualSearch(string $term)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.firstname LIKE :q OR u.lastname LIKE :q OR u.email LIKE :q')
+            ->setParameter('q', '%'.$term.'%')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

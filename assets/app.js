@@ -17,44 +17,6 @@ function initTomSelects() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const wysiwygs = document.querySelectorAll('textarea.wysiwyg');
-    if (wysiwygs) {
-        wysiwygs.forEach((el) => {
-            CKEDITOR.plugins.loaded['version'] = null;
-            CKEDITOR.replace(el, {
-                fullPage: false,
-                versionCheck: false,
-                allowedContent: true,
-                removePlugins: 'elementspath',
-                extraPlugins: 'colorbutton,colordialog,justify',
-                language: 'fr',
-                height: el.dataset.height || 300,
-                toolbar: [
-                    {name: 'clipboard', items: ['Undo', 'Redo']},
-                    {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline']},
-                    {name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent']},
-                    {name: 'alignment', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
-                    {name: 'links', items: ['Link', 'Unlink']},
-                    {name: 'insert', items: ['Image', 'Table']},
-                    {name: 'colors', items: ['TextColor', 'BGColor']},
-                    {name: 'tools', items: ['Maximize', 'Source']}
-                ]
-            });
-
-            CKEDITOR.instances[el.id].on('instanceReady', function (evt) {
-                if (!evt.editor.getData().trim() && el.classList.contains('page-template')) {
-                    evt.editor.setData(`
-                    <h2>Description</h2>
-                    <p>Décrivez votre association...</p>
-
-                    <h2>Autres informations utiles</h2>
-                    <p>Ajoutez ici toute information que vous jugez utile.</p>
-                `);
-                }
-            });
-        });
-    }
-
     const backToTop = document.getElementById("btn-back-to-top");
     if (backToTop) {
         // When the user scrolls down 20px from the top of the document, show the button
@@ -248,6 +210,62 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 }
             });
+        });
+    }
+
+    const ownerModals = document.querySelectorAll('.owner-modal');
+    if (ownerModals) {
+        ownerModals.forEach(ownerModal => {
+            const formSearchMember = ownerModal.querySelector('form[data-search]');
+            const searchInput = formSearchMember.querySelector('#searchMember');
+            const hiddenInput = formSearchMember.querySelector('input[name="user"]');
+            const resultsDiv = ownerModal.querySelector('#resultsMember');
+            const searchUrl = formSearchMember.getAttribute('data-search');
+            let timeout = null;
+
+            searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            clearTimeout(timeout);
+            resultsDiv.innerHTML = '';
+
+            if (query.length < 2) return;
+
+            timeout = setTimeout(() => {
+                fetch(`${searchUrl}?q=${encodeURIComponent(query)}`, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                    .then(response => {
+                        if (!response.ok) throw new Error('HTTP error ' + response.status);
+
+                        return response.json();
+                    })
+                    .then(users => {
+                        resultsDiv.innerHTML = '';
+
+                        if (!Array.isArray(users) || users.length === 0) {
+                            resultsDiv.innerHTML = '<p>Aucun utilisateur trouvé.</p>';
+
+                            return;
+                        }
+
+                        users.forEach(user => {
+                            const button = document.createElement('button');
+                            button.type = 'submit';
+                            button.className = 'btn btn-link';
+                            button.textContent = `${user.firstname || ''} ${user.lastname || ''} (${user.email})`;
+                            button.addEventListener('click', e => {
+                                e.preventDefault();
+
+                                hiddenInput.value = user.id;
+                                formSearchMember.submit();
+                            });
+
+                            resultsDiv.appendChild(button);
+                        });
+                    })
+                    .catch(() => {
+                        resultsDiv.innerHTML = '<p>Erreur lors de la recherche.</p>';
+                    });
+            }, 300);
+        });
         });
     }
 });

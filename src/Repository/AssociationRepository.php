@@ -49,4 +49,15 @@ class AssociationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllWithoutMemberships(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.memberships', 'm')
+            ->where('m.id IS NULL')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
