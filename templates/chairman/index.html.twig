@@ -12,16 +12,16 @@
             {% for association in associations %}
                 <div class="col-sm-12 col-md-{{ associations|length > 1 ? '6' : '12' }} mb-4">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between">
                             <h2>{{ association.name }}</h2>
+                            <a href="{{ path('association_show', {'slug': association.slug}) }}" class="btn btn-link px-0" target="_blank" title="{{ 'chairman.association.link'|trans }}">
+                                <i class="fa fa-external-link"></i>
+                            </a>
                         </div>
                         <div class="card-body">
-                            <a href="{{ path('association_show', {'slug': association.slug}) }}" class="btn btn-link px-0" target="_blank">
-                                <i class="fa fa-external-link"></i>&nbsp;{{ 'chairman.association.link'|trans({'association': association.name}) }}
-                            </a>
-                            {% if association.membershipsByStatus('accepted')|length > 0 %}
+                            {% if association.membershipsByStatus('accepted')|length > 0 or association.owner|default %}
                                 <fieldset>
-                                    <legend>{{ 'chairman.memberships.accepted.title'|trans }}</legend>
+                                    <legend class="fs-5">{{ 'chairman.memberships.accepted.title'|trans }}</legend>
                                     <table class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -30,6 +30,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% if association.owner|default %}
+                                                <tr>
+                                                    <td>{{ association.owner.username }} ({{ 'chairman.memberships.owner'|trans }})</td>
+                                                    <td></td>
+                                                </tr>
+                                            {% endif %}
                                             {% for membership in association.membershipsByStatus('accepted') %}
                                                 <tr>
                                                     <td>{{ membership.user.username }}</td>

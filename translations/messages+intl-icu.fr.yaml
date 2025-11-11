@@ -291,9 +291,9 @@ membership:
         accepted: Demande acceptée
         refused: Demande refusée
     accept:
-        success: L'utilisateur "{user}" a été autorisé à gérer votre page "{association}".
+        success: L'utilisateur "{user}" est membre de votre page "{association}".
     refuse:
-        success: L'utilisateur "{user}" s'est vu retiré les droits de gestion de votre page "{association}".
+        success: L'utilisateur "{user}" n'a plus les droits de gestion de votre page "{association}".
 
 chairman:
     title: Gérer les pages associations
@@ -301,11 +301,12 @@ chairman:
         <p>Vous trouverez ci-dessous la liste des associations dont vous avez la charge. Cela peut être des pages que vous avez créées vous-mêmes ou bien qui vous ont été attribuées par un administrateur du portail.</p>
         <p>Pour chacune d'entre elle, vous pouvez en retirer les membres. Un utilisateur membre d'une association peut en modifier les événements, c'est donc un rôle important alors n'ayez pas peur de retirer ce droit. Sur cette page, vous pouvez également inviter un utilisateur existant à gérer l'association.</p>
     association:
-        link: Voir la page de {association}
+        link: Ouvrir la page dans un nouvel onglet
         none: Vous n'avez aucune association à gérer.
     memberships:
+        owner: présidence
         accepted:
-            title: Liste des utilisateurs de l'association
+            title: Membres de l'association
             username: Nom d'utilisateur
             actions: Actions
             refuse: Retirer des membres

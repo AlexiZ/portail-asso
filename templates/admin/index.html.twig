@@ -13,75 +13,75 @@
 
             <table class="table table-bordered table-hover">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Rôles</th>
-                    <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Identifiant</th>
+                        <th>Rôles</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for user in users %}
-                    <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.roles|default|join(', ') }}</td>
-                        <td>
-                            <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-sm btn-primary" title="Modifier">
-                                <i class="fa fa-pen"></i>
-                            </a>
-                            <a href="{{ path('admin_toggle_role', { id: user.id }) }}" class="btn btn-sm btn-warning text-white" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
-                                {% if 'ROLE_MODERATOR' in user.roles %}
-                                    <i class="fa fa-user-xmark"></i>
-                                {% else %}
-                                    <i class="fa fa-user-shield"></i>
-                                {% endif %}
-                            </a>
-                            <a href="{{ path('homepage', { '_switch_user': user.email }) }}" class="btn btn-sm btn-info text-white" title="Se connecter en tant que">
-                                <i class="fa fa-address-card"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#managePagesModal{{ user.id }}" title="Voir les pages association">
-                                <i class="fa fa-file-lines"></i>
-                            </a>
-                            <div class="modal fade" id="managePagesModal{{ user.id }}" tabindex="-1" aria-labelledby="managePagesModalLabel{{ user.id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="managePagesModalLabel{{ user.id }}">List des pages association de {{ user.email }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            {% if user.chairedAssociations|default|length > 0 %}
-                                                <p>"{{ user.username }}" préside les associations suivantes :</p>
-                                                <ul>
-                                                    {% for chairedAssociation in user.chairedAssociations %}
-                                                        <li>{{ chairedAssociation.name }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% else %}
-                                                <p>"{{ user.username }}" ne préside aucune association.</p>
-                                            {% endif %}
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.firstname|default() }} {{ user.lastname|default() }} &#60;{{ user.email }}&#62;</td>
+                            <td>{{ user.roles|default|join(', ') }}</td>
+                            <td>
+                                <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-sm btn-primary" title="Modifier">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="{{ path('admin_toggle_role', { id: user.id }) }}" class="btn btn-sm btn-warning text-white" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
+                                    {% if 'ROLE_MODERATOR' in user.roles %}
+                                        <i class="fa fa-user-xmark"></i>
+                                    {% else %}
+                                        <i class="fa fa-user-shield"></i>
+                                    {% endif %}
+                                </a>
+                                <a href="{{ path('homepage', { '_switch_user': user.email }) }}" class="btn btn-sm btn-info text-white" title="Se connecter en tant que">
+                                    <i class="fa fa-address-card"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#managePagesModal{{ user.id }}" title="Voir les pages association">
+                                    <i class="fa fa-file-lines"></i>
+                                </a>
+                                <div class="modal fade" id="managePagesModal{{ user.id }}" tabindex="-1" aria-labelledby="managePagesModalLabel{{ user.id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="managePagesModalLabel{{ user.id }}">List des pages association de {{ user.email }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% if user.chairedAssociations|default|length > 0 %}
+                                                    <p>Associations présidées :</p>
+                                                    <ul>
+                                                        {% for chairedAssociation in user.chairedAssociations %}
+                                                            <li>{{ chairedAssociation.name }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% else %}
+                                                    <p>Ne préside aucune association.</p>
+                                                {% endif %}
 
-                                            {% if user.memberships|default|length > 0 %}
-                                                <p>"{{ user.username }}" est déjà lié aux associations suivantes :</p>
-                                                <ul>
-                                                    {% for membership in user.memberships %}
-                                                        <li>{{ membership.association.name }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% else %}
-                                                <p>"{{ user.username }}" n'est lié à aucune association.</p>
-                                            {% endif %}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">J'ai compris</button>
+                                                {% if user.memberships|default|length > 0 %}
+                                                    <p>Membre des associations :</p>
+                                                    <ul>
+                                                        {% for membership in user.memberships %}
+                                                            <li>{{ membership.association.name }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% else %}
+                                                    <p>N'est membre d'aucune association.</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">J'ai compris</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 
