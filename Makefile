@@ -112,6 +112,9 @@ init-snippet: ## Initialize a new snippet
 database: ## Pull REMOTE database to local instance
 	@$(DEP) db:pull $(REMOTE)
 
+medias:
+	@$(DEP) download_medias $(REMOTE)
+
 ## —— Tests ✅ —————————————————————————————————————————————————————————————————
 test: ## Run tests
 	@$(PHPUNIT) --stop-on-failure --configuration phpunit.xml
