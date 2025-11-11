@@ -20,12 +20,18 @@
             <input type="password" name="_password" id="inputPassword" class="form-control" required>
         </div>
 
-        <button class="btn btn-success text-white" type="submit">
-            <i class="fa fa-sign-in-alt"></i>&nbsp;{{ 'login.form.submit'|trans }}
-        </button>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-success text-white" type="submit">
+                <i class="fa fa-sign-in-alt"></i>&nbsp;{{ 'login.form.submit'|trans }}
+            </button>
+
+            <a class="btn btn-info text-white" href="{{ path('app_register') }}">{{ 'login.register'|trans }}</a>
+        </div>
     </form>
 
     <p class="mt-3">
-        <a href="{{ path('app_register') }}">{{ 'login.register'|trans }}</a>
+        <a class="btn btn-link p-0" href="{{ path('app_forgot_password') }}">
+            {{ 'login.form.forgotten_password'|trans }}
+        </a>
     </p>
 {% endblock %}

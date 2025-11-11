@@ -84,6 +84,7 @@ association:
         solidarity-social-action: Kevredigezh hag obererezh sokial
         spirituality: Speredelezh
         sport: Sportoù
+    wip: Cette page est en cours de construction
     form:
         name: Anv ar gevredigezh
         logo: Logo ar gevredigezh
@@ -117,9 +118,16 @@ association:
         cancel: Nullañ ha distreiñ d'ar bajenn gevredigezh
         confirm: Kemmet eo bet an titouroù.
     show:
+        wip: >
+            O sevel emañ ar bajenn gevredigezh-mañ, ar pezh a dalvez n'eo ket hizivaet an titouroù c'hoazh gant hec'h izili.
+            <br>
+            Gallout a rit kemmañ ar bajenn-mañ en ur zibab "<i class="fa fa-edit"></i>&nbsp;Da gemmañ" diwar roll an oberoù.
         events:
-            title: Darvoudoù da zont
-            no_events: Abadenn ebet rakwelet.
+            future:
+                title: Darvoudoù da zont
+                no_events: Abadenn ebet rakwelet.
+            past:
+                title: Darvoudoù tremenet
         actions:
             title: Oberoù
             edit: Da gemmañ
@@ -144,6 +152,7 @@ association:
                     actions:
                         cancel: Nullañ
                         confirm: Digoumanantiñ a ran
+        creation: Pajenn krouet {createdAt} gant {createdBy} - hizivaet {updatedAt} Gwengolo gant {updatedBy}
     subscription:
         info: Enskrivet oc'h er bajenn-mañ
         success: Enrollet oc'h bet d'ar bajenn-mañ gant berzh.
@@ -182,6 +191,14 @@ register:
         confirm_password: Kadarnaat ar ger-tremen
         submit: Krouiñ ma c'hont
     login: Enrollet oc'h dija ? Kevreañ
+
+forgot_password:
+    title: Ankounac'haet hoc'h eus ho ker-tremen
+    send: Kas al liamm adloc'hañ
+
+reset_password:
+    title: Adderaouekaat ar ger-tremen
+    submit: Adderaouekaat ar ger-tremen
 
 event:
     start_only: D'an {date} da {start}

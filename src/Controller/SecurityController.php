@@ -3,13 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ForgotPasswordFormType;
 use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -59,6 +65,80 @@ class SecurityController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/forgot-password', name: 'app_forgot_password')]
+    public function forgotPassword(Request $request, UserRepository $userRepository, MailerInterface $mailer, UrlGeneratorInterface $urlGenerator): Response
+    {
+        $form = $this->createForm(ForgotPasswordFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->get('email')->getData();
+            $user = $userRepository->findOneBy(['email' => $email]);
+
+            if ($user) {
+                $resetToken = bin2hex(random_bytes(32));
+                $user->setResetToken($resetToken);
+                $user->setResetTokenExpiresAt((new \DateTimeImmutable())->modify('+1 hour'));
+
+                $userRepository->save($user, true);
+
+                $resetUrl = $urlGenerator->generate('app_reset_password', ['token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $emailMessage = (new Email())
+                    ->from('no-reply@example.com')
+                    ->to($user->getEmail())
+                    ->subject('Réinitialisation de votre mot de passe')
+                    ->html(sprintf(
+                        '<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="%s">%s</a></p>',
+                        $resetUrl,
+                        $resetUrl
+                    ))
+                ;
+
+                $mailer->send($emailMessage);
+            }
+
+            $this->addFlash('info', 'Un email vient de vous être envoyé pour réinitialiser votre mot de passe.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/forgot_password.html.twig', [
+            'forgotPasswordForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/reset-password/{token}', name: 'app_reset_password')]
+    public function resetPassword(Request $request, string $token, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $user = $userRepository->findOneBy(['resetToken' => $token]);
+
+        if (!$user || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
+            throw $this->createNotFoundException('Token invalide ou expiré.');
+        }
+
+        $form = $this->createForm(ResetPasswordFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
+            );
+            $user->setResetToken(null);
+            $user->setResetTokenExpiresAt(null);
+
+            $userRepository->save($user, true);
+
+            $this->addFlash('info', 'Votre mot de passe a bien été réinitialisé. Vous pouvez dès à présent vous connecter avec celui-ci.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/reset_password.html.twig', [
+            'resetPasswordForm' => $form->createView(),
         ]);
     }
 }

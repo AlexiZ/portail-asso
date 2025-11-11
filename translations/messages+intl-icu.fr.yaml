@@ -20,13 +20,13 @@ nav:
         logout: Déconnexion
         admin: Espace Admin
         moderation: Espace Modération
-        chairman: Gérer mes associations
+        chairman: Gestion des associations
     lang:
         french: Français
         breton: Breton
     search:
         title: Rechercher
-        placeholder: Une page association...
+        placeholder: Rechercher une association...
 
 home:
     title: Accueil
@@ -84,6 +84,7 @@ association:
         solidarity-social-action: Solidarité et Action sociale
         spirituality: Spiritualité
         sport: Sport
+    wip: Cette page est en cours de construction
     form:
         name: Nom de l’association
         categories: Catégories
@@ -120,9 +121,16 @@ association:
         confirm: Les informations ont bien été modifiées.
         forbidden: Vous n’êtes pas autorisé à modifier cette association.
     show:
+        wip: >
+            Cette page association est en cours de construction, ce qui signifie que ses membres n'en ont pas encore mis à jour les informations.
+            <br>
+            Vous pouvez modifier cette page en choisissant "<i class="fa fa-edit"></i>&nbsp;Modifier" dans la liste des actions.
         events:
-            title: Événements à venir
-            no_events: Aucun événement prévu.
+            future:
+                title: Nos événements à venir
+                no_events: Aucun événement prévu.
+            past:
+                title: Événements passés
         actions:
             title: Actions
             edit: Modifier
@@ -150,6 +158,7 @@ association:
                     actions:
                         cancel: Annuler
                         confirm: Je me désabonne
+        creation: Page créée {createdAt} - dernière mise à jour {updatedAt}
     delete:
         confirm: La page association a bien été supprimée.
     subscription:
@@ -178,7 +187,8 @@ login:
         username: Adresse e-mail
         password: Mot de passe
         submit: Se connecter
-    register: Créer un compte
+        forgotten_password: Mot de passe oublié ?
+    register: Vous n'avez pas de compte ? Inscrivez-vous ici
 
 register:
     title: Inscription
@@ -189,7 +199,15 @@ register:
         password: Mot de passe
         confirm_password: Confirmer le mot de passe
         submit: Créer mon compte
-    login: Déjà inscrit ? Se connecter
+    login: Déjà inscrit ? Connectez-vous ici
+
+forgot_password:
+    title: Mot de passe oublié
+    send: Envoyer le lien de réinitialisation
+
+reset_password:
+    title: Réinitialisation du mot de passe
+    submit: Réinitialiser le mot de passe
 
 event:
     start_only: Le {date} à {start}
@@ -278,7 +296,7 @@ membership:
         success: L'utilisateur "{user}" s'est vu retiré les droits de gestion de votre page "{association}".
 
 chairman:
-    title: Gérer mes pages associations
+    title: Gérer les pages associations
     intro: >
         <p>Vous trouverez ci-dessous la liste des associations dont vous avez la charge. Cela peut être des pages que vous avez créées vous-mêmes ou bien qui vous ont été attribuées par un administrateur du portail.</p>
         <p>Pour chacune d'entre elle, vous pouvez en retirer les membres. Un utilisateur membre d'une association peut en modifier les événements, c'est donc un rôle important alors n'ayez pas peur de retirer ce droit. Sur cette page, vous pouvez également inviter un utilisateur existant à gérer l'association.</p>
