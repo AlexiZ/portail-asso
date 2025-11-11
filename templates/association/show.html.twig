@@ -3,6 +3,12 @@
 {% block title %}{{ association.name }}{% endblock %}
 
 {% block body %}
+    {% if association.wip %}
+        <div class="alert alert-info">
+            {{ 'association.show.wip'|trans|raw }}
+        </div>
+    {% endif %}
+
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>{{ association.name }}</h1>
 
@@ -77,55 +83,55 @@
                                     <i class="fa fa-bell"></i>&nbsp;{{ 'association.show.actions.subscribe.title'|trans }}
                                 </button>
                             {% endif %}
-
-                            {% if app.user.isSubscribedTo(association) %}
-                                <div class="modal fade" id="unsubscriptionModal" tabindex="-1" aria-labelledby="unsubscriptionModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="unsubscriptionModalLabel">{{ 'association.show.actions.unsubscribe.modal.title'|trans }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>{{ 'association.show.actions.unsubscribe.modal.body'|trans({'%association%': association.name}) }}</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
-                                                <a class="btn btn-info text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
-                                                    {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="subscriptionModalLabel">{{ 'association.show.actions.subscribe.modal.title'|trans }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>{{ 'association.show.actions.subscribe.modal.body'|trans({'%association%': association.name}) }}</p>
-                                                <p><small>{{ 'user_subscriptions.intro'|trans|raw }}</small></p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
-                                                <a class="btn btn-warning text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
-                                                    {{ 'association.show.actions.subscribe.modal.actions.confirm'|trans }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
                         </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </div>
+
+    {% if app.user.isSubscribedTo(association) %}
+        <div class="modal fade" id="unsubscriptionModal" tabindex="-1" aria-labelledby="unsubscriptionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="unsubscriptionModalLabel">{{ 'association.show.actions.unsubscribe.modal.title'|trans }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ 'association.show.actions.unsubscribe.modal.body'|trans({'%association%': association.name}) }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
+                        <a class="btn btn-info text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
+                            {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="subscriptionModalLabel">{{ 'association.show.actions.subscribe.modal.title'|trans }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ 'association.show.actions.subscribe.modal.body'|trans({'%association%': association.name}) }}</p>
+                        <p><small>{{ 'user_subscriptions.intro'|trans|raw }}</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
+                        <a class="btn btn-warning text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
+                            {{ 'association.show.actions.subscribe.modal.actions.confirm'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <div class="mb-3">
         {% for category in association.categories %}
@@ -223,10 +229,11 @@
         </div>
     {% endif %}
 
-    <h2 class="h4 mt-4">{{ 'association.show.events.title'|trans }}</h2>
-    {% if association.events|default|length > 0 %}
+    <h2 class="h4 mt-4">{{ 'association.show.events.future.title'|trans }}</h2>
+
+    {% if association.futureEvents|default|length > 0 %}
         <ul class="list-group">
-            {% for event in association.events %}
+            {% for event in association.futureEvents %}
                 <li class="list-group-item d-flex justify-content-between">
                     <div>
                         <strong>{{ event.title }}</strong><br>
@@ -254,10 +261,47 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p class="text-muted">{{ 'association.show.events.no_events'|trans }}</p>
+        <p class="text-muted">{{ 'association.show.events.future.no_events'|trans }}</p>
+    {% endif %}
+
+    {% if association.pastEvents|default|length > 0 %}
+        <details class="mt-2">
+            <summary>{{ 'association.show.events.past.title'|trans }} ({{ association.pastEvents|length }})</summary>
+            <ul class="list-group mt-2">
+                {% for event in association.pastEvents %}
+                    <li class="list-group-item background-default d-flex justify-content-between">
+                        <div>
+                            <strong>{{ event.title }}</strong><br>
+                            <small>
+                                {{ format_date(event.startAt, event.endAt) }}
+                            </small>
+                            <p class="mb-0">{{ event.shortDescription|raw }}</p>
+                        </div>
+                        <div>
+                            {% if is_granted('edit', event.association) %}
+                                <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            {% endif %}
+                            {% if is_granted('delete', event.association) %}
+                                <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            {% endif %}
+                            <a href="{{ path('event_show', {id: event.id}) }}" class="btn btn-info text-white" title="{{ 'association.show.actions.show'|trans }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
     {% endif %}
 
     <p class="mt-3 text-center fst-italic">
-        Page créée {{ format_date(association.createdAt)|lower }} par {{ association.createdBy }} - dernière mise à jour {{ format_date(association.updatedAt)|lower }} par {{ association.updatedBy }}
+        {{ 'association.show.creation'|trans({
+            createdAt: format_date(association.createdAt)|lower,
+            updatedAt: format_date(association.updatedAt)|lower,
+        }) }}
     </p>
 {% endblock %}

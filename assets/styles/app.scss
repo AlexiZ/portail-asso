@@ -5,6 +5,11 @@ $success: #2BB989;
 $danger: #EA5188FF;
 $info: #A169CCFF;
 $primary: #077C5DFF;
+$default: #EAEAEA;
+
+.background-default {
+    background-color: $default !important;
+}
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/maps";
@@ -36,6 +41,10 @@ body {
     .col {
         display: inline-block; /* pour que les blocs s’empilent correctement */
         width: 100%;
+
+        .wip {
+            background-color: $default;
+        }
     }
 }
 

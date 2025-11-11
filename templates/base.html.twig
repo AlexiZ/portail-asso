@@ -65,7 +65,7 @@
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <a class="dropdown-item" href="{{ path('chairman_index') }}">
-                                                <i class="fa fa-lock me-2"></i>{{ 'nav.user.chairman'|trans }}
+                                                <i class="fa fa-clipboard-list me-2"></i>{{ 'nav.user.chairman'|trans }}
                                             </a>
                                         </li>
                                     {% endif %}
@@ -164,15 +164,19 @@
             <div class="container text-center p-3">
                 © {{ 'now'|date('Y') }} | Copyright
                 <a class="text-body" href="https://www.plabennecentransition.fr/" target="_blank">Plabennec en Transition</a>
-
-                <a class="mx-2 text-body text-decoration-none" href="https://www.facebook.com/people/Plabennec-en-Transition/61566179664596/" role="button" target="_blank">
+                |
+                <a class="ms-1 me-2 text-body text-decoration-none" href="https://www.facebook.com/people/Plabennec-en-Transition/61566179664596/" role="button" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a class="mx-2 text-body text-decoration-none" href="https://www.instagram.com/plabennecentransition/" role="button" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a class="mx-2 text-body text-decoration-none" href="https://github.com/AlexiZ/portail-plab" role="button" target="_blank">
+                <a class="ms-2 me-1 text-body text-decoration-none" href="https://github.com/AlexiZ/portail-plab" role="button" target="_blank">
                     <i class="fab fa-github"></i>
+                </a>
+                |
+                <a href="mailto:contact@plabennecentransition.fr" class="text-body">
+                    Nous contacter
                 </a>
             </div>
         </footer>

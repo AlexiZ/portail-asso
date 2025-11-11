@@ -62,8 +62,8 @@ class Association
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $networkOther = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private string $content;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $content = null;
 
     #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['id' => 'ASC'])]
@@ -149,6 +149,11 @@ class Association
         $this->content = $data['content'];
 
         return $this;
+    }
+
+    public function isWip(): bool
+    {
+        return $this->updatedBy = 'batch' && str_starts_with($this->updatedAt->format('Y-m-d H:i:s'), '2025-09-25 17:');
     }
 
     public function getId(): ?int
@@ -340,12 +345,12 @@ class Association
         return !empty($this->networkWebsite) || !empty($this->networkFacebook) || !empty($this->networkInstagram) || !empty($this->networkOther);
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
@@ -367,6 +372,26 @@ class Association
     public function getEvents(): Collection
     {
         return $this->events;
+    }
+
+    public function getPastEvents(): Collection
+    {
+        $now = new \DateTimeImmutable();
+
+        return $this->events->filter(function (Event $event) use ($now) {
+            return $event->getStartAt() < $now;
+        });
+    }
+
+    public function getFutureEvents(): Collection
+    {
+        $now = new \DateTimeImmutable();
+        $sixMonthsAgo = $now->sub(new \DateInterval('P6M'));
+
+        return $this->events->filter(function (Event $event) use ($now, $sixMonthsAgo) {
+            $startAt = $event->getStartAt();
+            return $startAt < $now && $startAt >= $sixMonthsAgo;
+        });
     }
 
     public function setEvents(Collection $events): self
