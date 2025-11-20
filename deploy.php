@@ -19,8 +19,8 @@ if (file_exists(__DIR__.'/deploy_secrets.php')) {
 }
 
 // Config
-set('application', 'portail-plab');
-set('repository', 'git@github.com:AlexiZ/portail-plab.git');
+set('application', 'portail-asso');
+set('repository', 'git@github.com:AlexiZ/portail-asso.git');
 set('branch', 'main');
 set('keep_releases', 5);
 set('composer_path', '{{deploy_path}}/.dep/composer.phar');

@@ -1,6 +1,6 @@
 # Portail des associations et initiatives locales
 
-**Portail-Plab** est un portail web destiné aux habitants d’un territoire pour découvrir les associations locales et leurs activités. Chaque association peut gérer sa page, publier ses événements et partager ses informations avec la communauté. Bien que le projet ait été initialement conçu pour Plabennec, il est facilement adaptable à d’autres communes ou territoires.
+**Portail-Asso** est un portail web destiné aux habitants d’un territoire pour découvrir les associations locales et leurs activités. Chaque association peut gérer sa page, publier ses événements et partager ses informations avec la communauté. Bien que le projet ait été initialement conçu pour Plabennec, il est facilement adaptable à d’autres communes ou territoires.
 
 ---
 
@@ -37,8 +37,8 @@ Les contributions sont les bienvenues. Pour contribuer :
 
 1. Cloner le dépôt :
 ```bash
-git clone git@github.com:AlexiZ/portail-plab.git
-cd portail-plab
+git clone git@github.com:AlexiZ/portail-asso.git
+cd portail-asso
 ```
 
 2. Installer les dépendances :
