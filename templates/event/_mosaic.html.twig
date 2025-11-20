@@ -5,17 +5,17 @@
                 <div class="card-body row">
                     <div class="col-sm-12 col-md-8 d-flex flex-column justify-content-lg-between">
                         <h5>
-                            <a href="{{ path('event_show', {id: event.id}) }}">{{ event.title }}</a>
+                            <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
                             <br>
                             <small>{{ format_date(event.startAt, event.endAt) }}</small>
                         </h5>
-                        <p class="mb-1">{{ event.shortDescription|raw }}</p>
+                        {% if event.shortDescription|default %}<div class="mb-1">{{ event.shortDescription|striptags|raw }}</div>{% endif %}
                         <small>
                             Par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
                         </small>
                     </div>
 
-                    <div class="d-sm-none d-md-block col-md-4 mx-auto">
+                    <div class="d-sm-none d-md-block col-md-4 m-auto">
                         <img src="{{ asset('/uploads/' ~ event.association.logoFilename) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
 
                         {% if is_granted('edit', event.association) %}
