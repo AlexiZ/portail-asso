@@ -1,26 +1,28 @@
-<ul class="list-group d-none" data-events="list">
-    {% for event in events %}
-        <li class="list-group-item d-flex justify-content-between align-items-start row">
-            <div class="col-sm-12 col-md-11">
-                <div class="fw-bold">
-                    <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
-                    <br>
-                    <small>{{ format_date(event.startAt, event.endAt) }}</small> par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+<div class="{% if events|default|length > 2%}scroll-wrapper{% endif%} d-none" data-events="list">
+    <ul class="list-group">
+        {% for event in events %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="col-sm-12 col-md-11">
+                    <div class="fw-bold">
+                        <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
+                        <br>
+                        <small>{{ format_date(event.startAt, event.endAt) }}</small> par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+                    </div>
+                    <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
+
+                    {% if is_granted('edit', event.association) %}
+                        <p class="mb-0">
+                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                                <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
+                            </a>
+                        </p>
+                    {% endif %}
                 </div>
-                <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
 
-                {% if is_granted('edit', event.association) %}
-                    <p class="mb-0">
-                        <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
-                            <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
-                        </a>
-                    </p>
-                {% endif %}
-            </div>
-
-            <div class="d-sm-none d-md-block col-md-1 m-auto">
-                <img src="{{ asset('/uploads/' ~ event.association.logoFilename) }}" alt="{{ event.title }}">
-            </div>
-        </li>
-    {% endfor %}
-</ul>
+                <div class="d-sm-none d-md-block col-md-1 m-auto">
+                    <img src="{{ asset('/uploads/' ~ event.association.logoFilename) }}" alt="{{ event.title }}">
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

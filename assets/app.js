@@ -1,6 +1,9 @@
 import * as bootstrap from 'bootstrap';
 import TomSelect from 'tom-select';
 import Routing from 'fos-router';
+import EmblaCarousel from 'embla-carousel';
+import { addPrevNextBtnsClickHandlers } from './plugins/EmblaCarouselArrowButtons';
+import Autoplay from 'embla-carousel-autoplay';
 
 import './styles/app.scss';
 
@@ -266,6 +269,44 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
             }, 300);
         });
+        });
+    }
+
+    const emblaCarousels = document.querySelectorAll('.embla');
+    if (emblaCarousels) {
+        const OPTIONS = { loop: true, slidesToScroll: 'auto' }
+
+        emblaCarousels.forEach(emblaNode => {
+            const viewportNode = emblaNode.querySelector('.embla__viewport');
+            const prevBtnNode = emblaNode.querySelector('.embla__button--prev');
+            const nextBtnNode = emblaNode.querySelector('.embla__button--next');
+
+            const emblaApi = EmblaCarousel(viewportNode, OPTIONS, [Autoplay({
+                delay: 4000,
+                stopOnInteraction: true,
+                stopOnMouseEnter: true,
+            })]);
+
+            const onNavButtonClick = (emblaApi) => {
+                const autoplay = emblaApi?.plugins()?.autoplay;
+                if (!autoplay) return;
+
+                const resetOrStop =
+                    autoplay.options.stopOnInteraction === false
+                        ? autoplay.reset
+                        : autoplay.stop;
+
+                resetOrStop();
+            };
+
+            const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
+                emblaApi,
+                prevBtnNode,
+                nextBtnNode,
+                onNavButtonClick
+            );
+
+            emblaApi.on('destroy', removePrevNextBtnsClickHandlers);
         });
     }
 });
