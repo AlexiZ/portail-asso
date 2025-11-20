@@ -34,3 +34,4 @@ yarn-error.log
 
 /public/uploads/*
 .dep/
+deploy_secrets.php
