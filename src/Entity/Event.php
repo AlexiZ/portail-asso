@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity]
 class Event
@@ -17,6 +18,10 @@ class Event
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['title'], unique: true)]
+    private string $slug;
 
     #[ORM\Column(type: 'text')]
     private string $shortDescription;
@@ -76,9 +81,21 @@ class Event
         return $this;
     }
 
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): Event
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
     public function getLongDescription(): string
     {
-        return $this->longDescription;
+        return str_replace('<p></p>', '', $this->longDescription);
     }
 
     public function setLongDescription(string $longDescription): Event
@@ -90,7 +107,7 @@ class Event
 
     public function getShortDescription(): string
     {
-        return $this->shortDescription;
+        return str_replace('<p></p>', '', $this->shortDescription);
     }
 
     public function setShortDescription(string $shortDescription): Event

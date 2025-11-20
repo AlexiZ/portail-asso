@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
@@ -25,6 +26,7 @@ class Association
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     #[Groups(['autocomplete'])]
+    #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
     #[ORM\Column(type: Types::JSON, nullable: true, enumType: Category::class)]
@@ -379,18 +381,19 @@ class Association
         $now = new \DateTimeImmutable();
 
         return $this->events->filter(function (Event $event) use ($now) {
-            return $event->getStartAt() < $now;
+            return $event->getEndAt() < $now;
         });
     }
 
     public function getFutureEvents(): Collection
     {
         $now = new \DateTimeImmutable();
-        $sixMonthsAgo = $now->sub(new \DateInterval('P6M'));
+        $inSixMonths = $now->add(new \DateInterval('P6M'));
 
-        return $this->events->filter(function (Event $event) use ($now, $sixMonthsAgo) {
+        return $this->events->filter(function (Event $event) use ($now, $inSixMonths) {
             $startAt = $event->getStartAt();
-            return $startAt < $now && $startAt >= $sixMonthsAgo;
+
+            return $startAt > $now && $startAt <= $inSixMonths;
         });
     }
 

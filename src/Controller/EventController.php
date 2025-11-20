@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/event')]
+#[Route('/événement')]
 class EventController extends AbstractController
 {
     public function __construct(
@@ -40,9 +40,11 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'event_show', requirements: ['id' => '\d+'])]
-    public function show(Event $event): Response
-    {
+    #[Route('/{slug}', name: 'event_show')]
+    public function show(
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Event $event,
+    ): Response {
         return $this->render('event/show.html.twig', [
             'event' => $event,
         ]);
@@ -97,7 +99,7 @@ class EventController extends AbstractController
 
             $this->addFlash('success', $this->translator->trans('event.edit.form.confirm'));
 
-            return $this->redirectToRoute('event_show', ['id' => $event->getId()]);
+            return $this->redirectToRoute('event_show', ['slug' => $event->getSlug()]);
         }
 
         return $this->render('event/edit.html.twig', [
