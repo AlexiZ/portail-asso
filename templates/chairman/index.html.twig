@@ -15,29 +15,57 @@
                         <div class="card-header d-flex justify-content-between">
                             <h2 class="fs-4">{{ association.name }}</h2>
                             <div>
-                                <a href="javascript:void(0);" class="btn btn-link px-1" title="{{ 'chairman.association.set_owner'|trans }}" data-bs-toggle="modal" data-bs-target="#setOwnerModal{{ association.id }}">
+                                <a href="javascript:void(0);" class="btn btn-link px-1" title="{{ 'chairman.association.set_anonymous_edition.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setAnonymousEditionModal{{ association.id }}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <div class="modal fade" id="setAnonymousEditionModal{{ association.id }}" tabindex="-1" aria-labelledby="setAnonymousEditionModalLabel{{ association.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="setAnonymousEditionModalLabel{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.title'|trans }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ path('chairman_anonymous_edition', {'association': association.slug}) }}" method="POST">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="anonymousPageEdition{{ association.id }}" name="anonymousPageEdition" {% if association.isEditablePageAnonymously %}checked="checked"{% endif %}>
+                                                        <label class="form-check-label" for="anonymousPageEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_page_label'|trans|raw }}</label>
+                                                    </div>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="anonymousEventsEdition{{ association.id }}" name="anonymousEventsEdition" {% if association.isEditableEventsAnonymously %}checked="checked"{% endif %}>
+                                                        <label class="form-check-label" for="anonymousEventsEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_events_label'|trans|raw }}</label>
+                                                    </div>
+                                                    <div class="mt-4 d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">{{ 'chairman.association.set_anonymous_edition.cancel'|trans }}</button>
+                                                        <button type="submit" class="btn btn-primary">{{ 'chairman.association.set_anonymous_edition.submit'|trans }}</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="javascript:void(0);" class="btn btn-link px-1" title="{{ 'chairman.association.set_owner.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setOwnerModal{{ association.id }}">
                                     <i class="fa fa-crown"></i>
                                 </a>
                                 <div class="modal fade owner-modal" id="setOwnerModal{{ association.id }}" tabindex="-1" aria-labelledby="setOwnerModalLabel{{ association.id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="setOwnerModalLabel{{ association.id }}">Modifier l'utilisateur président de l'association</h5>
+                                                <h5 class="modal-title" id="setOwnerModalLabel{{ association.id }}">{{ 'chairman.association.set_owner.title'|trans }}</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form action="{{ path('chairman_set_owner', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" method="POST">
-                                                    <label for="searchMember">Rechercher et sélectionner l'utilisateur</label>
-                                                    <input type="text" id="searchMember" class="form-control" placeholder="Nom, prénom ou email" autocomplete="off">
+                                                    <label for="searchMember{{ association.id }}">{{ 'chairman.association.set_owner.search'|trans }}</label>
+                                                    <input type="text" id="searchMember{{ association.id }}" class="form-control search-member" placeholder="{{ 'chairman.association.set_owner.placeholder'|trans }}" autocomplete="off">
                                                     <input type="hidden" name="user">
                                                 </form>
-                                                <div id="resultsMember">
-
-                                                </div>
+                                                <div id="resultsMember"></div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne rien faire</button>
-                                                <button type="button" class="btn btn-primary">Enregistrer le changement</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'chairman.association.set_owner.cancel'|trans }}</button>
+                                                <button type="button" class="btn btn-primary">{{ 'chairman.association.set_owner.submit'|trans }}</button>
                                             </div>
                                         </div>
                                     </div>

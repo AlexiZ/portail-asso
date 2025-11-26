@@ -37,6 +37,8 @@
                         {% endfor %}
                     </ul>
                 </div>
+
+                {% include 'association/_revisions-preview.html.twig' %}
             {% endif %}
 
             <div class="dropdown ms-2">
@@ -44,12 +46,14 @@
                     {{ 'association.show.actions.title'|trans }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownActions">
-                    <li>
-                        <a href="{{ path('association_edit', { slug: association.slug }) }}" class="dropdown-item">
-                            <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
-                        </a>
-                    </li>
                     {% if is_granted('edit', association) %}
+                        <li>
+                            <a href="{{ path('association_edit', { slug: association.slug }) }}" class="dropdown-item">
+                                <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('new_event', association) %}
                         <li>
                             <a href="{{ path('event_new', { slug: association.slug }) }}" class="dropdown-item">
                                 <i class="fa fa-calendar-plus"></i>&nbsp;{{ 'association.show.actions.new_event'|trans }}
@@ -90,7 +94,7 @@
         </div>
     </div>
 
-    {% if app.user.isSubscribedTo(association) %}
+    {% if app.user|default and app.user.isSubscribedTo(association) %}
         <div class="modal fade" id="unsubscriptionModal" tabindex="-1" aria-labelledby="unsubscriptionModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -243,12 +247,12 @@
                         <p class="mb-0">{{ event.shortDescription|raw }}</p>
                     </div>
                     <div>
-                        {% if is_granted('edit', event.association) %}
+                        {% if is_granted('edit_event', event) %}
                             <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
                                 <i class="fa fa-edit"></i>
                             </a>
                         {% endif %}
-                        {% if is_granted('delete', event.association) %}
+                        {% if is_granted('delete_event', event) %}
                             <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
                                 <i class="fa fa-trash"></i>
                             </a>
@@ -278,12 +282,12 @@
                             <p class="mb-0">{{ event.shortDescription|raw }}</p>
                         </div>
                         <div>
-                            {% if is_granted('edit', event.association) %}
+                            {% if is_granted('edit_event', event) %}
                                 <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             {% endif %}
-                            {% if is_granted('delete', event.association) %}
+                            {% if is_granted('delete_event', event) %}
                                 <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
                                     <i class="fa fa-trash"></i>
                                 </a>

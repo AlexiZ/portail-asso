@@ -302,7 +302,20 @@ chairman:
         <p>Pour chacune d'entre elle, vous pouvez en retirer les membres. Un utilisateur membre d'une association peut en modifier les événements, c'est donc un rôle important alors n'ayez pas peur de retirer ce droit. Sur cette page, vous pouvez également inviter un utilisateur existant à gérer l'association.</p>
     association:
         link: Ouvrir la page dans un nouvel onglet
-        set_owner: Changer la présidence
+        set_anonymous_edition:
+            link: Modifier les droits d'édition
+            title: Modifier les droits d'édition
+            update_page_label: Autoriser les utilisateurs anonymes à modifier la <strong>page</strong> de l'association ?
+            update_events_label: Autoriser les utilisateurs anonymes à modifier les <strong>événements</strong> de l'association ?
+            cancel: Ne rien faire
+            submit: Enregistrer le changement
+        set_owner:
+            link: Changer la présidence
+            title: Modifier l'utilisateur président de l'association
+            search: Rechercher et sélectionner l'utilisateur
+            placeholder: Nom, prénom ou email
+            cancel: Ne rien faire
+            submit: Enregistrer le changement
         none: Vous n'avez aucune association à gérer.
     memberships:
         owner: Présidence

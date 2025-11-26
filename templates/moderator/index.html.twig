@@ -30,6 +30,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% include 'association/_revisions-preview.html.twig' with {'association': revisions[0].association} %}
     {% else %}
         <div class="alert alert-info">Aucune contribution en attente.</div>
     {% endif %}

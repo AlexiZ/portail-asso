@@ -84,6 +84,30 @@ class ChairmanController extends AbstractController
         return $this->redirectToRoute('chairman_index');
     }
 
+    #[Route('/{association}/anonymous_edition', name: 'chairman_anonymous_edition')]
+    #[IsGranted('manage', 'association')]
+    public function setAnonymousEdition(
+        #[MapEntity(mapping: ['association' => 'slug'])]
+        Association $association,
+        Request $request,
+        EntityManagerInterface $em,
+    ): Response {
+        $association->setEditablePageAnonymously(false);
+        $association->setEditableEventsAnonymously(false);
+        if ($request->get('anonymousPageEdition')) {
+            $association->setEditablePageAnonymously(true);
+        }
+        if ($request->get('anonymousEventsEdition')) {
+            $association->setEditableEventsAnonymously(true);
+        }
+        $em->persist($association);
+        $em->flush();
+
+        $this->addFlash('success', sprintf('Les droits de modification de "%s" ont été mis à jour.', $association->getName()));
+
+        return $this->redirectToRoute('chairman_index');
+    }
+
     #[Route('/_/users/list', name: 'chairman_list_users')]
     public function listUsers(Request $request, UserRepository $userRepository): Response
     {

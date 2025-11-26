@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (ownerModals) {
         ownerModals.forEach(ownerModal => {
             const formSearchMember = ownerModal.querySelector('form[data-search]');
-            const searchInput = formSearchMember.querySelector('#searchMember');
+            const searchInput = formSearchMember.querySelector('.search-member');
             const hiddenInput = formSearchMember.querySelector('input[name="user"]');
             const resultsDiv = ownerModal.querySelector('#resultsMember');
             const searchUrl = formSearchMember.getAttribute('data-search');

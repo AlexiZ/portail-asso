@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,7 +27,6 @@ class AssociationController extends AbstractController
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly EntityManagerInterface $em,
-        private readonly AuthorizationCheckerInterface $authChecker,
         private readonly AssociationFactory $associationFactory,
     ) {
     }
@@ -68,6 +67,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/nouvelle', name: 'association_new')]
+    #[IsGranted('new', 'association')]
     public function new(
         Request $request,
     ): Response {
@@ -127,14 +127,11 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/{slug}/delete', name: 'association_delete', requirements: ['id' => '\d+'])]
+    #[IsGranted('delete', 'association')]
     public function delete(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('delete', $association)) {
-            throw $this->createAccessDeniedException();
-        }
-
         $this->em->remove($association);
         $this->em->flush();
 
@@ -169,6 +166,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/{slug}/revision/{revisionId}/confirmer', name: 'association_rollback')]
+    #[IsGranted('edit', 'association')]
     public function rollbackConfirm(
         Request $request,
         #[MapEntity(mapping: ['slug' => 'slug'])]

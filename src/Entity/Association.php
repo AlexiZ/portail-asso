@@ -100,6 +100,12 @@ class Association
     #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'association')]
     private Collection $memberships;
 
+    #[ORM\Column(nullable: false, options: ['default' => true])]
+    private bool $editablePageAnonymously = true;
+
+    #[ORM\Column(nullable: false, options: ['default' => false])]
+    private bool $editableEventsAnonymously = false;
+
     public function __construct()
     {
         $this->revisions = new ArrayCollection();
@@ -528,6 +534,30 @@ class Association
                 $membership->setAssociation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isEditablePageAnonymously(): bool
+    {
+        return $this->editablePageAnonymously;
+    }
+
+    public function setEditablePageAnonymously(bool $editablePageAnonymously): static
+    {
+        $this->editablePageAnonymously = $editablePageAnonymously;
+
+        return $this;
+    }
+
+    public function isEditableEventsAnonymously(): bool
+    {
+        return $this->editableEventsAnonymously;
+    }
+
+    public function setEditableEventsAnonymously(bool $editableEventsAnonymously): static
+    {
+        $this->editableEventsAnonymously = $editableEventsAnonymously;
 
         return $this;
     }

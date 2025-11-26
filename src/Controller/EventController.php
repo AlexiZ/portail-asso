@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/événement')]
@@ -51,12 +52,13 @@ class EventController extends AbstractController
     }
 
     #[Route('/association/{slug}/new', name: 'event_new')]
+    #[IsGranted('new_event', 'association')]
     public function new(
         Request $request,
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('edit', $association)) {
+        if (!$this->authChecker->isGranted('edit', $association) && !$association->isEditableEventsAnonymously()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -83,6 +85,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'event_edit')]
+    #[IsGranted('edit_event', 'event')]
     public function edit(
         Request $request,
         Event $event,
@@ -109,6 +112,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'event_delete')]
+    #[IsGranted('delete_event', 'association')]
     public function delete(
         Event $event,
     ): Response {
