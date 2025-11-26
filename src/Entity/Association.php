@@ -8,12 +8,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
 {
+    use TimestampableEntity;
+    use BlameableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -77,20 +82,6 @@ class Association
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'chairedAssociations')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $owner = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeInterface $createdAt;
-
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
-    private string $createdBy;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Groups(['autocomplete'])]
-    private \DateTimeInterface $updatedAt;
-
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
-    #[Groups(['autocomplete'])]
-    private string $updatedBy;
 
     /** @var Collection<int, Subscription> */
     #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'association')]
@@ -418,54 +409,6 @@ class Association
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): \DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getUpdatedBy(): string
-    {
-        return $this->updatedBy;
-    }
-
-    public function setUpdatedBy(string $updatedBy): self
-    {
-        $this->updatedBy = $updatedBy;
 
         return $this;
     }

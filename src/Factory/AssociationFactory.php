@@ -62,7 +62,7 @@ readonly class AssociationFactory
             $this->processAssociationLogo($associationAfter, $form);
         }
 
-        $associationAfter->setUpdatedAt(new \DateTimeImmutable());
+        $associationAfter->setUpdatedAt(new \DateTime());
         $associationAfter->setUpdatedBy($request->server->get('REMOTE_ADDR'));
         $revision->setCreatedBy($request->server->get('REMOTE_ADDR'));
         $revision->setApproved(false);
