@@ -22,8 +22,8 @@ class AssociationVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return (in_array($attribute, [self::NEW, self::EDIT, self::MANAGE, self::DELETE]) && $subject instanceof Association)
-            || (in_array($attribute, [self::NEW_EVENT, self::EDIT_EVENT, self::DELETE_EVENT]) && $subject instanceof Event);
+        return (in_array($attribute, [self::NEW, self::NEW_EVENT, self::EDIT, self::MANAGE, self::DELETE]) && $subject instanceof Association)
+            || (in_array($attribute, [self::EDIT_EVENT, self::DELETE_EVENT]) && $subject instanceof Event);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
