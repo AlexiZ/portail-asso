@@ -67,7 +67,6 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/nouvelle', name: 'association_new')]
-    #[IsGranted('new', 'association')]
     public function new(
         Request $request,
     ): Response {

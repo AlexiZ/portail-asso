@@ -36,7 +36,7 @@ readonly class AssociationFactory
         $association->setUpdatedBy($request->server->get('REMOTE_ADDR'));
 
         /** @var User $user */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
         if ($user instanceof User) {
             $association->setOwner($user);
             $association->setCreatedBy($user->getUsername());
