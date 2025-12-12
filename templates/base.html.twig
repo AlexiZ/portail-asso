@@ -26,6 +26,8 @@
 
                 <div class="collapse navbar-collapse" id="navbarTogglerMenu">
                     <ul class="navbar-nav ms-auto">
+                        {% block shepherd %}{% endblock %}
+
                         <li class="nav-item border-end px-1">
                             <a class="nav-link" href="{{ path('publishing_charter') }}">{{ 'charter.title'|trans }}</a>
                         </li>

@@ -2,39 +2,49 @@
 
 {% block title %}{{ 'home.title'|trans }}{% endblock %}
 
+{% block shepherd %}
+    <li class="nav-item border-end px-1">
+        <a class="nav-link" id="shepherdTrigger" data-page="{{ app.request.attributes.get('_route') }}" href="javascript:void(0);"><i class="fa-regular fa-circle-question"></i></a>
+    </li>
+{% endblock %}
+
 {% block body %}
     <div class="p-3 mb-4 bg-white rounded-3 border">
         <div class="container-fluid py-3">
             <h1 class="fw-bold">{{ 'home.introduction.title'|trans }}</h1>
             <p>{{ 'home.introduction.content'|trans|raw }}</p>
-            <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3">
+            <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3" id="addAssociation">
                 <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
             </a>
         </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-        <h2 class="mb-4">
-            {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
-        </h2>
-        {% include 'event/_selector.html.twig' %}
+    <div id="agendaContainer">
+        <div class="d-flex justify-content-between">
+            <h2 class="mb-4">
+                {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
+            </h2>
+            {% include 'event/_selector.html.twig' %}
+        </div>
+
+        <div class="mb-5" id="">
+            {% if events is not empty %}
+                {% include 'event/_mosaic.html.twig' with {events: events} %}
+                {% include 'event/_list.html.twig' with {events: events} %}
+                {% include 'event/_calendar.html.twig' with {events: events} %}
+            {% else %}
+                <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
+            {% endif %}
+        </div>
     </div>
 
-    <div class="mb-5">
-        {% if events is not empty %}
-            {% include 'event/_mosaic.html.twig' with {events: events} %}
-            {% include 'event/_list.html.twig' with {events: events} %}
-            {% include 'event/_calendar.html.twig' with {events: events} %}
-        {% else %}
-            <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
-        {% endif %}
+    <div id="listAssociations">
+        <h2 class="mb-3">{{ 'home.associations.title'|trans }}</h2>
+
+        {% include 'association/_list.html.twig' with {'associations': associations} %}
+
+        <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3">
+            <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
+        </a>
     </div>
-
-    <h2 class="mb-3">{{ 'home.associations.title'|trans }}</h2>
-
-    {% include 'association/_list.html.twig' with {'associations': associations} %}
-
-    <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3">
-        <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
-    </a>
 {% endblock %}

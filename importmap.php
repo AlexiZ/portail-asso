@@ -135,4 +135,11 @@ return [
         'version' => '5.3.8',
         'type' => 'css',
     ],
+    'shepherd.js' => [
+        'version' => '14.5.1',
+    ],
+    'shepherd.js/dist/css/shepherd.min.css' => [
+        'version' => '14.5.1',
+        'type' => 'css',
+    ],
 ];
