@@ -50,10 +50,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $resetTokenExpiresAt = null;
 
+    /** @var Collection<int, Notification> */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'recipient', orphanRemoval: true)]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
         $this->memberships = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getUsername(): string
@@ -77,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -139,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return 'ROLE_USER';
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
@@ -151,7 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -197,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->chairedAssociations;
     }
 
-    public function setChairedAssociations(Collection $chairedAssociations): User
+    public function setChairedAssociations(Collection $chairedAssociations): static
     {
         $this->chairedAssociations = $chairedAssociations;
 
@@ -249,7 +254,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->resetToken;
     }
 
-    public function setResetToken(?string $resetToken): User
+    public function setResetToken(?string $resetToken): static
     {
         $this->resetToken = $resetToken;
 
@@ -261,9 +266,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->resetTokenExpiresAt;
     }
 
-    public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): User
+    public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): static
     {
         $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Notification> */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getRecipient() === $this) {
+                $notification->setRecipient(null);
+            }
+        }
 
         return $this;
     }
