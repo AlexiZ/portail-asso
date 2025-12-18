@@ -115,6 +115,9 @@ database: ## Pull REMOTE database to local instance
 medias:
 	@$(DEP) download_medias $(REMOTE)
 
+push-uploads:
+	@$(DEP) upload_medias $(REMOTE)
+
 ## —— Tests ✅ —————————————————————————————————————————————————————————————————
 test: ## Run tests
 	@$(PHPUNIT) --stop-on-failure --configuration phpunit.xml
