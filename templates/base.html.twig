@@ -199,18 +199,6 @@
                                     {name: 'tools', items: ['Maximize', 'Source']}
                                 ]
                             });
-
-                            CKEDITOR.instances[el.id].on('instanceReady', function (evt) {
-                                if (!evt.editor.getData().trim() && el.classList.contains('page-template')) {
-                                    evt.editor.setData(`
-                        <h2>Description</h2>
-                        <p>Décrivez votre association...</p>
-
-                        <h2>Autres informations utiles</h2>
-                        <p>Ajoutez ici toute information que vous jugez utile.</p>
-                    `);
-                                }
-                            });
                         });
                     }
                 });
