@@ -29,6 +29,12 @@ body {
     background-color: #fbfaf9;
 }
 
+@media (min-width: 768px) {
+    #searchBar {
+        min-width: 300px;
+    }
+}
+
 .navbar-nav > li.nav-item:hover {
     background-color: var(--bs-border-color);
 }
@@ -263,8 +269,8 @@ body {
 [data-route="association_show"] {
     @media (max-width: 768px) {
         .img-thumbnail {
-            max-width: 100px;
-            max-height: 100px;
+            max-width: 100%;
+            max-height: 200px;
         }
     }
 }
@@ -289,6 +295,9 @@ body {
     --slide-height: 19rem;
     --slide-spacing: 1rem;
     --slide-size: 50%;
+    @media (max-width: 768px) {
+        --slide-size: 100%;
+    }
     position: relative;
 
     .embla__viewport {

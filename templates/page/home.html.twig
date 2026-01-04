@@ -24,6 +24,7 @@
             <h2 class="mb-4">
                 {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
             </h2>
+
             {% include 'event/_selector.html.twig' %}
         </div>
 
@@ -39,7 +40,16 @@
     </div>
 
     <div id="listAssociations">
-        <h2 class="mb-3">{{ 'home.associations.title'|trans }}</h2>
+        <div class="d-flex justify-content-between">
+            <h2 class="mb-0">{{ 'home.associations.title'|trans }}</h2>
+
+            <form method="GET" action="{{ path('search') }}" id="searchBar">
+                <div class="input-group">
+                    <input class="form-control" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search" autocomplete="off">
+                    <button class="input-group-text btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
 
         {% include 'association/_list.html.twig' with {'associations': associations} %}
 
