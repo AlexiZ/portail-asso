@@ -108,11 +108,10 @@
 
                                 {% if association.hasAnyContactDetail|default %}
                                     <ul class="list-unstyled">
-                                        {% if association.contactName|default or association.contactFunction|default %}
-                                            <li>
-                                                {% if association.contactName|default %}{{ association.contactName }}{% endif %}
-                                                {% if association.contactFunction|default %} - {{ association.contactFunction }}{% endif %}
-                                            </li>
+                                        {% if association.contacts.count > 0 %}
+                                            {% for contact in association.contacts %}
+                                                <li>{{ contact.name }}{% if contact.function|default%} - {{ contact.function }}{% endif %}</li>
+                                            {% endfor %}
                                         {% endif %}
                                         {% if association.contactAddress|default %}
                                             <li>{{ association.contactAddress }}</li>

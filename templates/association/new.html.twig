@@ -5,11 +5,13 @@
 {% block body %}
     <h1>{{ 'association.add.title'|trans }}</h1>
 
-    {% include 'association/form.html.twig' with {formAssociation: form} %}
+    {{ form_start(form) }}
+        {% include 'association/form.html.twig' with {formAssociation: form} %}
 
-    <hr>
-
-    <a href="{{ path('homepage') }}" class="btn btn-secondary">
-        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.add.cancel'|trans }}
-    </a>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success text-white mt-3">
+                <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
+            </button>
+        </div>
+    {{ form_end(form) }}
 {% endblock %}

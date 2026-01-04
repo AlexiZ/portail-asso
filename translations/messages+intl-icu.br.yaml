@@ -103,6 +103,7 @@ association:
             other: Rouedad sokial all
         content: Deskrivadur ar gevredigezh |
         content_help: Amañ e c’hallit merkañ pal ar gevredigezh hag he doare ober, met deskrivañ ivez an obererezhioù kinniget, an doareoù da vezañ ezel, an niver a izili, an deiziad krouidigezh, h.a.
+        optional: dibar eo an holl vaeziennoù
         error:
             logo: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
             already_exists: "Ur c'hevreadur gant an anv-mañ zo anezhañ dija, gallout a rit mont da welet anezhi en ur glikañ war ar c'hlient-mañ : <a href=\"{assocationLink}\">{assocationName}</a>"
@@ -171,6 +172,12 @@ association:
             no_user: Ret eo deoc'h bezañ kevreet evit koumanantiñ d'ur bajenn.
     unsubscription:
         success: Tennet eo bet ho koumanant d'ar bajenn-mañ.
+
+contact:
+    form:
+        name: Anv an den privilejiet
+        function: Arc'hwel an den-mañ
+        remove: Dilemel an den-mañ
 
 revision:
     title: stummoù kent

@@ -1,0 +1,12 @@
+{% block contact_entry_widget %}
+    <div class="contact-entry row pe-4 position-relative">
+        <div class="col-md-6">
+            {{ form_row(form.name, {'label_attr': {'class': 'my-2'},'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.function, {'label_attr': {'class': 'my-2'},'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <span class="remove-contact py-2" title="{{ 'contact.form.remove'|trans }}"><i class="fa fa-times"></i></span>
+    </div>
+{% endblock %}

@@ -90,20 +90,19 @@ association:
         categories: Catégories
         logo: Logo de l'association
         contact:
-            title: Comment peut-on joindre l'association ? (tous les champs sont facultatifs)
-            name: Nom de la personne privilégiée
-            function: Fonction de cette personne
+            title: Comment peut-on joindre l'association ?
             address: Adresse de l'association
             email: Email de contact
             phone: Téléphone
         network:
-            title: Sur quels réseaux peut-on retrouver l'association ? (tous les champs sont facultatifs)
+            title: Sur quels réseaux peut-on retrouver l'association ?
             website: Site web
             facebook: Page Facebook
             instagram: Page Instagram
             other: Autre réseau social
         content: Description de l'association
         content_help: Vous pouvez indiquer ici l'objet de l'association et son mode de fonctionnement mais également décrire les activités proposées, les modalités d'adhésion, le nombre de membres, la date de création, etc...
+        optional: tous les champs sont facultatifs
         error:
             logo: Impossible de charger le logo, une erreur est survenue
             already_exists: "Une association portant ce nom existe déjà, vous pouvez la consulter en cliquant sur ce client : <a href=\"{assocationLink}\">{assocationName}</a>"
@@ -176,6 +175,12 @@ association:
             no_user: Vous devez être connecté pour vous abonner à une page.
     unsubscription:
         success: Votre abonnement à cette page a été supprimé.
+
+contact:
+    form:
+        name: Nom de la personne
+        function: Fonction de cette personne
+        remove: Supprimer cette personne
 
 revision:
     title: versions antérieures

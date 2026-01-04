@@ -269,6 +269,20 @@ body {
     }
 }
 
+[data-route="association_edit"] {
+    .img-thumbnail {
+        max-width: 200px;
+        max-height: 200px;
+    }
+    .remove-contact {
+        position: absolute;
+        right: 0;
+        width: auto;
+        top: 50%;
+        cursor: pointer;
+    }
+}
+
 .embla {
     max-width: 100%;
     margin: auto;

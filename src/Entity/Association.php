@@ -42,11 +42,9 @@ class Association
     #[Groups(['autocomplete'])]
     private ?string $logoFilename = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $contactName = null;
-
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $contactFunction = null;
+    /** @var Collection<int, Contact> */
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'association', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $contacts;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $contactEmail = null;
@@ -105,6 +103,7 @@ class Association
         $this->updatedAt = new \DateTimeImmutable();
         $this->subscriptions = new ArrayCollection();
         $this->memberships = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     public function serialize(): array
@@ -114,8 +113,7 @@ class Association
             'slug' => $this->slug,
             'categories' => implode(',', $this->getCategoriesValues()),
             'logoFilename' => $this->logoFilename,
-            'contactName' => $this->contactName,
-            'contactFunction' => $this->contactFunction,
+            'contacts' => implode(',', $this->getContactsValues()),
             'contactEmail' => $this->contactEmail,
             'contactPhone' => $this->contactPhone,
             'contactAddress' => $this->contactAddress,
@@ -136,8 +134,14 @@ class Association
             explode(',', $data['categories']) ?? []
         );
         $this->logoFilename = $data['logoFilename'];
-        $this->contactName = $data['contactName'];
-        $this->contactFunction = $data['contactFunction'];
+        $this->contacts = new ArrayCollection(array_map(function ($item) {
+            [$function, $name] = explode('|', $item);
+            $contact = new Contact();
+            $contact->setFunction($function);
+            $contact->setName($name);
+
+            return $contact;
+        }, explode(',', $data['contacts'])));
         $this->contactEmail = $data['contactEmail'];
         $this->contactPhone = $data['contactPhone'];
         $this->contactAddress = $data['contactAddress'];
@@ -226,26 +230,41 @@ class Association
         return $this;
     }
 
-    public function getContactName(): ?string
+    /** @return Collection<int, Contact> */
+    public function getContacts(): Collection
     {
-        return $this->contactName;
+        return $this->contacts;
     }
 
-    public function setContactName(?string $contactName): self
+    public function getContactsValues(): ?array
     {
-        $this->contactName = $contactName;
+        $contacts = [];
+        /** @var Contact $contact */
+        foreach ($this->contacts as $contact) {
+            $contacts[] = sprintf('%s|%s', $contact->getFunction(), $contact->getName());
+        }
+
+        return $contacts;
+    }
+
+    public function addContact(Contact $contact): static
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setAssociation($this);
+        }
 
         return $this;
     }
 
-    public function getContactFunction(): ?string
+    public function removeContact(Contact $contact): static
     {
-        return $this->contactFunction;
-    }
-
-    public function setContactFunction(?string $contactFunction): self
-    {
-        $this->contactFunction = $contactFunction;
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getAssociation() === $this) {
+                $contact->setAssociation(null);
+            }
+        }
 
         return $this;
     }
@@ -288,7 +307,7 @@ class Association
 
     public function hasAnyContactDetail(): bool
     {
-        return !empty($this->contactName) || !empty($this->contactFunction) || !empty($this->contactEmail) || !empty($this->contactPhone) || !empty($this->contactAddress);
+        return $this->contacts->count() > 0 || !empty($this->contactEmail) || !empty($this->contactPhone) || !empty($this->contactAddress);
     }
 
     public function getNetworkWebsite(): ?string

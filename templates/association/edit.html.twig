@@ -5,13 +5,36 @@
 {% block body %}
     <div class="d-flex justify-content-between">
         <h1>{{ 'association.edit.title'|trans({'%association%': association.name}) }}</h1>
+    </div>
+
+    {{ form_start(formAssociation) }}
+        {% include 'association/form.html.twig' with {formAssociation: formAssociation} %}
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('association_show', { slug: association.slug }) }}" class="btn btn-secondary mt-3">
+                <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.edit.cancel'|trans }}
+            </a>
+
+            <button type="submit" class="btn btn-success text-white mt-3">
+                <i class="fa fa-save"></i>&nbsp;{{ 'association.edit.save'|trans }}
+            </button>
+        </div>
+    {{ form_end(formAssociation) }}
+
+    <div class="d-flex flex-column align-items-center ">
+        <p class="mt-3 mb-1 text-center fst-italic">
+            {{ 'association.show.creation'|trans({
+                createdAt: format_date(association.createdAt)|lower,
+                updatedAt: format_date(association.updatedAt)|lower,
+            }) }}
+        </p>
 
         {% if association.revisions|default|length > 0 %}
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Versions antérieures
+            <div class="dropup m-0 p-0">
+                <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownRevisions" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ 'revision.title'|trans }}
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownRevisions">
                     {% for revision in association.revisions|reverse|slice(0, 5) %}
                         <li>
                             <a class="dropdown-item revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: association.slug, revisionId: revision.id}) }}">
@@ -30,14 +53,8 @@
                     {% endfor %}
                 </ul>
             </div>
+
+            {% include 'association/_revisions-preview.html.twig' %}
         {% endif %}
     </div>
-
-    {% include 'association/form.html.twig' with {formAssociation: formAssociation} %}
-
-    <hr>
-
-    <a href="{{ path('association_show', { slug: association.slug }) }}" class="btn btn-secondary">
-        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.edit.cancel'|trans }}
-    </a>
 {% endblock %}

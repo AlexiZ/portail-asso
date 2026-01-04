@@ -6,6 +6,7 @@ use App\Entity\Association;
 use App\Enum\Association\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,13 +39,17 @@ class AssociationType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                 ])
-                ->add('contactName', TextType::class, [
-                    'label' => 'association.form.contact.name',
+                ->add('contacts', CollectionType::class, [
                     'required' => false,
-                ])
-                ->add('contactFunction', TextType::class, [
-                    'label' => 'association.form.contact.function',
-                    'required' => false,
+                    'entry_type' => ContactType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'prototype' => true,
+                    'label' => false,
+                    'entry_options' => [
+                        'label' => false,
+                    ],
                 ])
                 ->add('contactEmail', EmailType::class, [
                     'label' => 'association.form.contact.email',

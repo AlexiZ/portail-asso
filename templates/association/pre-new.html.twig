@@ -5,7 +5,9 @@
 {% block body %}
     <h1>{{ 'association.add.title'|trans }}</h1>
 
-    {% include 'association/form.html.twig' with {formAssociation: form} %}
+    {{ form_start(form) }}
+        {% include 'association/form.html.twig' with {formAssociation: form} %}
+    {{ form_end(form) }}
 
     <div id="results" class="d-none">
         <h2>S'agit-il de l'une de ces associations ?</h2>

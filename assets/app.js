@@ -551,4 +551,32 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!confirm(confirmAction.dataset.confirm)) e.preventDefault();
         });
     });
+
+    const removeContactButtons = document.querySelectorAll('.remove-contact');
+    if (removeContactButtons) {
+        removeContactButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                this.closest('.contact-entry').remove();
+            });
+        });
+    }
+
+    const collectionHolder = document.getElementById('contacts-collection');
+    if (collectionHolder) {
+        const addButton = document.getElementById('add-contact');
+        let index = collectionHolder.children.length;
+        addButton.addEventListener('click', function () {
+            const prototype = collectionHolder.dataset.prototype;
+            const newForm = prototype.replace(/__name__/g, index);
+            const div = document.createElement('div');
+            div.classList.add('contact-entry');
+            div.innerHTML = newForm;
+            collectionHolder.appendChild(div);
+            index++;
+
+            div.querySelector('.remove-contact').addEventListener('click', function () {
+                div.remove();
+            });
+        });
+    }
 });
