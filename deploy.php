@@ -105,7 +105,30 @@ task('deploy:assets', function () {
 });
 
 task('download_medias', function () {
-    download('{{current_path}}/public/uploads/', 'public/uploads/');
+    $host = currentHost()->getHostname();
+    $user = currentHost()->getRemoteUser();
+    $port = getenv('DEPLOY_PORT');
+    $knownHosts = getenv('DEPLOY_KNOWN_HOSTS');
+
+    // Côté remote : shared/public
+    $sharedPath = get('current_path') . '/../../shared';
+
+    // Options SSH dynamiques
+    $sshOptions = [];
+    if ($port) {
+        $sshOptions[] = '-p ' . escapeshellarg($port);
+    }
+    if ($knownHosts) {
+        $sshOptions[] = '-o UserKnownHostsFile=' . escapeshellarg($knownHosts);
+    }
+    $sshArgs = implode(' ', $sshOptions);
+
+    // Remote → local
+    $cmd = "ssh $sshArgs {$user}@{$host} "
+        . "\"tar -C {$sharedPath}/public -czf - uploads\" "
+        . "| tar -xzf - -C public";
+
+    runLocally($cmd);
 });
 
 task('upload_medias', function () {
