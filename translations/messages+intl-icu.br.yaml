@@ -130,10 +130,20 @@ association:
                 title: Darvoudoù tremenet
         actions:
             title: Oberoù
-            edit: Da gemmañ
+            edit: Da gemmañ ar bajenn
             duplicate: Eilañ
+            delete:
+                title: Dilemel ar bajenn
+                confirm: Ha sur oc'h e fell deoc'h dilemel "{element}" da viken ? Dic'hortoz eo an ober-mañ.
             show: Munudoù
-            new_event: Darvoud nevez
+            event:
+                new: Darvoud nevez
+                edit: Da gemmañ
+                duplicate: Eilañ
+                delete:
+                    title: Dilemel
+                    confirm: Ha sur oc'h e fell deoc'h dilemel an darvoud-mañ da viken ? Dic'hortoz eo an ober-mañ.
+                show: Détails
             become_member:
                 title: Dont da vezañ ezel
                 placeholder: Goulenn gwirioù merañ digant ar merour
@@ -163,7 +173,7 @@ association:
         success: Tennet eo bet ho koumanant d'ar bajenn-mañ.
 
 revision:
-    title: Stummoù kent
+    title: stummoù kent
     created_at: Krouet d'an {createdAt}
     created_at_by: Krouet d'an {createdAt} gant {createdBy}
     modal:

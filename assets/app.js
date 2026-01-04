@@ -544,4 +544,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    const confirmActions = document.querySelectorAll('.confirm-action');
+    confirmActions.forEach(confirmAction => {
+        confirmAction.addEventListener('click', e => {
+            if (!confirm(confirmAction.dataset.confirm)) e.preventDefault();
+        });
+    });
 });

@@ -133,13 +133,20 @@ association:
                 title: Événements passés
         actions:
             title: Actions
-            edit: Modifier
+            edit: Modifier la page
             duplicate: Dupliquer
             delete:
-                title: Supprimer
+                title: Supprimer la page
                 confirm: Êtes-vous certain de vouloir supprimer définitivement "{element}" ? Cette action est irréversible.
             show: Détails
-            new_event: Nouvel événement
+            event:
+                new: Nouvel événement
+                edit: Modifier
+                duplicate: Dupliquer
+                delete:
+                    title: Supprimer
+                    confirm: Êtes-vous certain de vouloir supprimer définitivement cet événément ? Cette action est irréversible.
+                show: Détails
             become_member:
                 title: Devenir membre
                 placeholder: Demander les droits de gestion à l'administrateur
@@ -171,7 +178,7 @@ association:
         success: Votre abonnement à cette page a été supprimé.
 
 revision:
-    title: Versions antérieures
+    title: versions antérieures
     created_at: Créée le {createdAt}
     created_at_by: Créée le {createdAt} par {createdBy}
     modal:
