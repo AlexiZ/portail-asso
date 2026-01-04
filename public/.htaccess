@@ -89,10 +89,10 @@ Options +FollowSymlinks
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteCond %{DOCUMENT_ROOT}/maintenance/maintenance.html -f
-    RewriteCond %{REQUEST_URI} !maintenance/maintenance.html
-    RewriteRule ^(.*)$ maintenance/maintenance.html [R=503,L]
-    ErrorDocument 503 /maintenance/maintenance.html
+    # RewriteCond %{DOCUMENT_ROOT}/maintenance/maintenance.html -f
+    # RewriteCond %{REQUEST_URI} !maintenance/maintenance.html
+    # RewriteRule ^(.*)$ maintenance/maintenance.html [R=503,L]
+    # ErrorDocument 503 /maintenance/maintenance.html
 
     # Redirection http => https
     RewriteCond %{HTTPS} off
