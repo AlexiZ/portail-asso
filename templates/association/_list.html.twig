@@ -19,7 +19,9 @@
                         <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action {% if assoc.wip %}wip{% endif%} d-flex justify-content-between">
                             <div>
                                 {% if assoc.wip %}
-                                    <span title="{{ 'association.wip'|trans }}">🚧</span>
+                                    <span title="{{ 'association.wip'|trans }}">
+                                        {% include 'common/construction-cone.svg.twig' %}
+                                    </span>
                                 {% endif %}
                                 <span>
                                     {{ assoc.name|mark(searchTerm|default) }}{% if app.user|default and app.user.isSubscribedTo(assoc) %}&nbsp;<i class="fa fa-star text-warning" title="{{ 'association.subscription.info'|trans }}"></i>{% endif %}
