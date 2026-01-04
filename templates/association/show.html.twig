@@ -252,6 +252,11 @@
                                 <i class="fa fa-edit"></i>
                             </a>
                         {% endif %}
+                        {% if is_granted('edit_event', event) %}
+                            <a href="{{ path('event_duplicate', {id: event.id}) }}" class="btn btn-secondary" title="{{ 'association.show.actions.duplicate'|trans }}">
+                                <i class="fa fa-clone"></i>
+                            </a>
+                        {% endif %}
                         {% if is_granted('delete_event', event) %}
                             <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" onclick="return confirm('{{ 'association.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
                                 <i class="fa fa-trash"></i>

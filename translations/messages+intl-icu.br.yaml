@@ -131,6 +131,7 @@ association:
         actions:
             title: Oberoù
             edit: Da gemmañ
+            duplicate: Eilañ
             show: Munudoù
             new_event: Darvoud nevez
             become_member:

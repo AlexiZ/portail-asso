@@ -134,6 +134,7 @@ association:
         actions:
             title: Actions
             edit: Modifier
+            duplicate: Dupliquer
             delete:
                 title: Supprimer
                 confirm: Êtes-vous certain de vouloir supprimer définitivement "{element}" ? Cette action est irréversible.

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/événement')]
+#[Route('/event')]
 class EventController extends AbstractController
 {
     public function __construct(
@@ -58,7 +58,7 @@ class EventController extends AbstractController
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('edit', $association) && !$association->isEditableEventsAnonymously()) {
+        if (!$this->authChecker->isGranted('edit', $association)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -111,8 +111,46 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/duplicate', name: 'event_duplicate')]
+    #[IsGranted('edit_event', 'event')]
+    public function duplicate(
+        Request $request,
+        Event $event,
+    ): Response {
+        if (!$this->authChecker->isGranted('edit', $event->getAssociation())) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $duped = new Event();
+        $duped->setAssociation($event->getAssociation());
+        $duped->setCreatedBy($this->getUser());
+        $duped->setTitle($event->getTitle());
+        $duped->setSlug($event->getSlug());
+        $duped->setLongDescription($event->getLongDescription());
+        $duped->setShortDescription($event->getShortDescription());
+        $duped->setStartAt($event->getStartAt());
+        $duped->setEndAt($event->getEndAt());
+
+        $form = $this->createForm(EventType::class, $duped);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($duped);
+            $this->em->flush();
+
+            $this->addFlash('success', $this->translator->trans('event.add.form.confirm'));
+
+            return $this->redirectToRoute('event_show', ['slug' => $duped->getSlug()]);
+        }
+
+        return $this->render('event/new.html.twig', [
+            'form' => $form,
+            'event' => $duped,
+        ]);
+    }
+
     #[Route('/{id}/delete', name: 'event_delete')]
-    #[IsGranted('delete_event', 'association')]
+    #[IsGranted('delete_event', 'event')]
     public function delete(
         Event $event,
     ): Response {
