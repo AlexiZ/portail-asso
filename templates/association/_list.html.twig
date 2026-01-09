@@ -16,7 +16,7 @@
                 <h4 class="mt-3">{{ letter }}</h4>
                 <div class="list-group mb-3">
                     {% for assoc in grouped[letter]|sort((a, b) => a.name <=> b.name) %}
-                        <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action {% if assoc.wip %}wip{% endif%} d-flex justify-content-between">
+                        <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action {% if assoc.wip %}wip{% endif%} d-flex justify-content-between" data-categories="{{ assoc.categories|json_encode }}">
                             <div>
                                 {% if assoc.wip %}
                                     <span title="{{ 'association.wip'|trans }}">
@@ -41,5 +41,5 @@
         {% endfor %}
     </div>
 {% else %}
-    <div class="alert alert-info">{{ customEmptyMessage is defined ? customEmptyMessage : 'home.associations.list.none'|trans }}</div>
+    <div class="alert alert-info mt-3">{{ customEmptyMessage is defined ? customEmptyMessage : 'home.associations.list.none'|trans }}</div>
 {% endif %}

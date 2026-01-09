@@ -380,3 +380,7 @@ body {
 .shepherd-modal-overlay-container.shepherd-modal-is-visible {
     opacity: .3 !important;
 }
+
+.hoverable:hover {
+    background-color: $default;
+}

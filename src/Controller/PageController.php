@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\Association\Category;
 use App\Repository\AssociationRepository;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,7 @@ class PageController extends AbstractController
             'events' => $events,
             'associations' => $associations,
             'agendaNbDays' => 30,
+            'categories' => Category::cases(),
         ]);
     }
 

@@ -60,4 +60,15 @@ class AssociationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllWithCategory(string $category): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.categories LIKE :category')
+            ->setParameter('category', '%"'.$category.'"%')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

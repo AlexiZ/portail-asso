@@ -45,13 +45,30 @@
 
             <form method="GET" action="{{ path('search') }}" id="searchBar">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="{{ 'nav.search.placeholder'|trans }}" aria-label="{{ 'nav.search.title'|trans }}" name="search" autocomplete="off">
+                    <div class="dropdown input-group-text p-0">
+                        <button class="btn btn-default dropdown-toggle rounded-end-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-default="Catégorie">
+                            {{ 'home.associations.list.filter.category'|trans }}
+                        </button>
+                        <ul class="dropdown-menu p-0">
+                            <li class="px-2 py-1 hoverable category-filter-list" role="button" data-category="all">
+                                {{ 'home.associations.list.filter.category'|trans }}
+                            </li>
+                            {% for category in categories %}
+                                <li class="px-2 py-1 hoverable category-filter-list" role="button" data-category="{{ category.value }}">
+                                    <i class="{{ category.icon }} text-{{ category.badge }}"></i>&nbsp;{{ ('association.category.' ~ category.value)|trans }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <input class="form-control" type="search" placeholder="{{ 'home.associations.list.filter.text.placeholder'|trans }}" aria-label="{{ 'home.associations.list.filter.text.title'|trans }}" name="search" autocomplete="off">
                     <button class="input-group-text btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </form>
         </div>
 
-        {% include 'association/_list.html.twig' with {'associations': associations} %}
+        <div id="associationsList">
+            {% include 'association/_list.html.twig' with {'associations': associations} %}
+        </div>
 
         <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3">
             <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}

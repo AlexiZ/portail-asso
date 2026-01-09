@@ -1,10 +1,13 @@
 import * as bootstrap from 'bootstrap';
 import TomSelect from 'tom-select';
-import Routing from 'fos-router';
 import EmblaCarousel from 'embla-carousel';
 import { addPrevNextBtnsClickHandlers } from './plugins/EmblaCarouselArrowButtons';
 import Autoplay from 'embla-carousel-autoplay';
 import Shepherd from 'shepherd.js';
+import Routing from 'fos-router';
+
+import routes from '../public/js/fos_js_routes.json';
+Routing.setRoutingData(routes);
 
 import './styles/app.scss';
 
@@ -576,6 +579,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
             div.querySelector('.remove-contact').addEventListener('click', function () {
                 div.remove();
+            });
+        });
+    }
+
+    // data-categories='["heritage","arts-culture"]'
+    const categoryFilters = document.querySelectorAll('.category-filter-list');
+    const categories = document.querySelectorAll('[data-categories]');
+    if (categoryFilters && categories) {
+        categoryFilters.forEach(categoryFilter => {
+            categoryFilter.addEventListener('click', () => {
+                const triggerButton = categoryFilter.closest('.dropdown').querySelector('button');
+                triggerButton.innerHTML = categoryFilter.innerHTML;
+
+                const url = Routing.generate('association_filter', {q: categoryFilter.dataset.category});
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur HTTP : ' + response.status);
+                        }
+
+                        return response.text();
+                    })
+                    .then(data => {
+                        if (data.length !== 0) {
+                            document.getElementById('associationsList').innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur dans l’appel Ajax : ', error);
+                    })
+                ;
             });
         });
     }

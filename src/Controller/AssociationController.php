@@ -91,6 +91,18 @@ class AssociationController extends AbstractController
         ]);
     }
 
+    #[Route('/filtrer', name: 'association_filter', options: ['expose' => true])]
+    public function filter(Request $request): Response
+    {
+        $queriedCategory = $request->query->get('q');
+        $associations = $this->em->getRepository(Association::class)->findAll();
+        if ('all' !== $queriedCategory) {
+            $associations = $this->em->getRepository(Association::class)->findAllWithCategory($queriedCategory);
+        }
+
+        return $this->render('association/_list.html.twig', ['associations' => $associations]);
+    }
+
     #[Route('/{slug}', name: 'association_show', options: ['expose' => true])]
     public function show(
         #[MapEntity(mapping: ['slug' => 'slug'])]

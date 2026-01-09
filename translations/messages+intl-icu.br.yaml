@@ -24,9 +24,6 @@ nav:
     lang:
         french: Galleg
         breton: Brezhoneg
-    search:
-        title: Evit enklask
-        placeholder: Ur bajenn gevredigezh...
 
 home:
     title: Degemer mat
@@ -54,6 +51,11 @@ home:
     associations:
         title: Kevredigezhioù
         list:
+            filter:
+                category: An holl rummadoù
+                text:
+                    title: Evit enklask
+                    placeholder: Ur bajenn gevredigezh...
             none: Kevredigezh ebet enrollet evit c'hoazh.
         add:
             title: Ouzhpennañ ur gevredigezh

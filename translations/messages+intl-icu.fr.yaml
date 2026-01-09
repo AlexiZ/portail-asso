@@ -24,9 +24,6 @@ nav:
     lang:
         french: Français
         breton: Breton
-    search:
-        title: Rechercher
-        placeholder: Rechercher une association...
 
 home:
     title: Accueil
@@ -54,6 +51,11 @@ home:
     associations:
         title: Associations
         list:
+            filter:
+                category: Toutes les catégories
+                text:
+                    title: Rechercher
+                    placeholder: Rechercher une association...
             none: Aucune association enregistrée pour le moment.
         add:
             title: Ajouter une association
