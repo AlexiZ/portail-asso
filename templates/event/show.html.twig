@@ -19,7 +19,7 @@
     </p>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-{% if event.posterFilename|default %}9{% else %}12{% endif %}">
             <div class="card mb-4">
                 <div class="card-header">
                     {{ event.shortDescription|raw }}
@@ -30,11 +30,13 @@
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="text-center">
-                <img src="{{ asset('/uploads/' ~ event.posterFilename) }}" alt="{{ event.title }}" class="img-fluid img-responsive">
+        {% if event.posterFilename|default %}
+            <div class="col-md-3">
+                <div class="text-center">
+                    <img src="{{ asset('/uploads/' ~ event.posterFilename) }}" alt="{{ event.title }}" class="img-fluid img-responsive">
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 
     <p class="mt-3">
