@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tourHomepage.addStep({
             buttons: [
                 {
-                    text: '1) Démarrer la visite <i class="fa fa-arrow-right"></i>',
+                    text: 'Démarrer la visite <i class="fa fa-arrow-right"></i>',
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
                 },
@@ -341,7 +341,34 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             id: 'step-intro',
             title: 'Visite guidée',
-            text: 'Découvrez les principales fonctionnalités de ce portail pas-à-pas grâce à cette visite guidée.<br><br><small><em>Vous pouvez utiliser les flèches ← → de votre clavier pour naviguer et "Echap" pour sortir de la visite.</em></small>',
+            text: 'Découvrez les principales fonctionnalités de ce portail pas-à-pas grâce à cette visite guidée.<br><br><small><em>Vous pouvez utiliser les flèches ← → de votre clavier pour naviguer et la touche "Echap" pour sortir de la visite.</em></small>',
+        });
+        // Connexion / Inscription
+        tourHomepage.addStep({
+            attachTo: {
+                element: '.shepherd-user-login',
+                on: 'bottom',
+            },
+            buttons: [
+                {
+                    action: tourHomepage.back,
+                    classes: 'btn btn-info text-white',
+                    text: '<i class="fa fa-arrow-left"></i> Introduction',
+                },
+                {
+                    action: tourHomepage.next,
+                    classes: 'btn btn-info text-white',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
+                },
+            ],
+            cancelIcon: {
+                enabled: true,
+            },
+            extraHighlights: ['.shepherd-user-register'],
+            id: 'step-user-login',
+            scrollTo: { behavior: 'smooth', block: 'nearest' },
+            title: 'Inscription / Connexion',
+            text: 'En vous inscrivant sur ce portail, vous pourrez être informé des nouveautés sur les associations de votre choix.',
         });
         // Agenda des 30 prochains jours
         tourHomepage.addStep({
@@ -353,19 +380,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> Introduction',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '2) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
                 enabled: true,
             },
             id: 'step-agenda',
-            title: '1) Événements des 30 prochains jours',
+            title: 'Événements des 30 prochains jours',
             text: 'Les événements des 30 prochains jours ont été créés par les associations et sont visibles ici dans l\'ordre chronologique.',
         });
         // Sélecteur du mode agenda
@@ -378,19 +405,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 1) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '3) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
                 enabled: true,
             },
             id: 'step-agenda-selecteur',
-            title: '2) Sélecteur de vue pour l\'agenda',
+            title: 'Sélecteur de vue pour l\'agenda',
             text: 'Choisissez parmi les vues "mosaïque", "liste" ou "calendrier" pour votre confort. Ce choix sera conservé pour vos prochaines visites.',
         });
         // Liste des associations
@@ -403,12 +430,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 2) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '4) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
@@ -416,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             id: 'step-list-asso',
             scrollTo: { behavior: 'smooth', block: 'nearest' },
-            title: '3) Liste des associations',
+            title: 'Liste des associations',
             text: 'Cette liste des associations, par ordre alphabétique, se veut exhaustive et permet de retrouver rapidement une association.',
         });
         // Détail association active
@@ -429,19 +456,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 3) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '5) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
                 enabled: true,
             },
             id: 'step-detail-asso',
-            title: '4) Détail d\'une association',
+            title: 'Détail d\'une association',
             text: 'Chaque association est liée à une ou plusieurs catégories. Cliquez sur une ligne pour en consulter les détails.',
         });
         // Détail association en chantier
@@ -454,19 +481,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 4) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '6) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
                 enabled: true,
             },
             id: 'step-detail-asso-wip',
-            title: '5) Détail d\'une association en chantier',
+            title: 'Détail d\'une association en chantier',
             text: 'Certaines associations n\'ont pas encore été prises en main par leurs membres et sont donc indiquées "en cours de construction". Si vous êtes membre de l\'une d\'elles, n\'hésitez pas à la modifier !',
         });
         // Rechercher
@@ -479,12 +506,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 5) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
                     classes: 'btn btn-info text-white',
-                    text: '7) Suite <i class="fa fa-arrow-right"></i>',
+                    text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
             cancelIcon: {
@@ -492,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             canClickTarget: false,
             id: 'step-search-asso',
-            title: '6) Chercher une association',
+            title: 'Chercher une association',
             text: 'Pour retrouver rapidement une association, utilisez la recherche par mots-clés.',
         });
         // Ajouter une association
@@ -505,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 6) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
@@ -517,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 enabled: true,
             },
             id: 'step-add-asso',
-            title: '7) Créer une association',
+            title: 'Créer une association',
             text: 'Si votre association n\'est pas encore créée sur ce portail, vous pouvez facilement l\'ajouter.',
         });
         // Terminer le tour
@@ -526,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     action: tourHomepage.back,
                     classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> 7) Revenir en arrière',
+                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.complete,

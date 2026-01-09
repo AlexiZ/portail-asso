@@ -362,6 +362,9 @@ body {
     &[data-popper-placement="top"] {
         margin-top: -10px;
     }
+    &[data-popper-placement="bottom"] {
+        margin-top: 10px;
+    }
     &[data-popper-placement="left"] {
         margin-left: -10px;
     }
