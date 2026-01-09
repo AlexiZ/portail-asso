@@ -1,5 +1,5 @@
 wiki_plab:
-    long: Portail des associations
+    long: Portail des associations de Plabennec
     short: Portail
 
 day:
@@ -128,7 +128,7 @@ association:
             Vous pouvez modifier cette page en choisissant "<i class="fa fa-edit"></i>&nbsp;Modifier" dans la liste des actions.
         events:
             future:
-                title: Nos événements à venir
+                title: Événements à venir
                 no_events: Aucun événement prévu.
             past:
                 title: Événements passés
@@ -249,9 +249,12 @@ event:
     form:
         title: Titre
         short_description: Description courte
+        poster: Affiche de l'événement
         long_description: Description longue
         start_at: Date et heure de début
         end_at: Date et heure de fin
+        error:
+            poster: Impossible de charger le logo, une erreur est survenue
 
 user:
     role:

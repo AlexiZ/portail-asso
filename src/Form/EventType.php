@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,13 +22,18 @@ class EventType extends AbstractType
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'event.form.short_description',
                 'attr' => [
-                    'data-height' => '100',
+                    'data-height' => '200',
                 ],
+            ])
+            ->add('poster', FileType::class, [
+                'label' => 'event.form.poster',
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'event.form.long_description',
                 'attr' => [
-                    'data-height' => '300',
+                    'data-height' => '400',
                 ],
             ])
             ->add('startAt', DateTimeType::class, [

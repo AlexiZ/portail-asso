@@ -242,9 +242,14 @@ event:
             back: Nullañ ha distreiñ d'ar bajenn gevredigezh
     form:
         title: Titl
+        short_description: Deskrivadur berr
+        poster: Kartenn an darvoud
+        long_description: Deskrivadur hir
         description: Deskrivadur
         start_at: Deiziad hag eur kregiñ
         end_at: Deiziad hag eur echuiñ
+        error:
+            poster: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
 
 user:
     role:

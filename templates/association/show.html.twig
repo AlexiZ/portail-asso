@@ -191,16 +191,16 @@
                     </div>
 
                     {% if association.futureEvents|default|length > 0 %}
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush list-future-events">
                             {% for event in association.futureEvents %}
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <div>
+                                <li class="list-group-item d-flex justify-content-between rounded-1">
+                                    <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
                                         <strong>{{ event.title }}</strong><br>
                                         <small>
                                             {{ format_date(event.startAt, event.endAt) }}
                                         </small>
                                         <p class="mb-0">{{ event.shortDescription|raw }}</p>
-                                    </div>
+                                    </a>
 
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

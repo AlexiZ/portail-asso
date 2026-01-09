@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Association;
 use App\Entity\Event;
+use App\Factory\EventFactory;
 use App\Form\EventType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -57,6 +58,7 @@ class EventController extends AbstractController
         Request $request,
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
+        EventFactory $eventFactory,
     ): Response {
         if (!$this->authChecker->isGranted('edit', $association)) {
             throw $this->createAccessDeniedException();
@@ -70,6 +72,8 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $eventFactory->processPoster($event, $form);
+
             $this->em->persist($event);
             $this->em->flush();
 
@@ -89,6 +93,7 @@ class EventController extends AbstractController
     public function edit(
         Request $request,
         Event $event,
+        EventFactory $eventFactory,
     ): Response {
         if (!$this->authChecker->isGranted('edit', $event->getAssociation())) {
             throw $this->createAccessDeniedException();
@@ -98,6 +103,9 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $eventFactory->processPoster($event, $form);
+
+            $this->em->persist($event);
             $this->em->flush();
 
             $this->addFlash('success', $this->translator->trans('event.edit.form.confirm'));
@@ -126,8 +134,9 @@ class EventController extends AbstractController
         $duped->setCreatedBy($this->getUser());
         $duped->setTitle($event->getTitle());
         $duped->setSlug($event->getSlug());
-        $duped->setLongDescription($event->getLongDescription());
         $duped->setShortDescription($event->getShortDescription());
+        $duped->setLogoFilename($event->getLogoFilename());
+        $duped->setLongDescription($event->getLongDescription());
         $duped->setStartAt($event->getStartAt());
         $duped->setEndAt($event->getEndAt());
 

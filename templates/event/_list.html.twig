@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="d-sm-none d-md-block col-md-1 m-auto">
-                    <img src="{{ asset('/uploads/' ~ event.association.logoFilename) }}" alt="{{ event.title }}">
+                    <img src="{{ asset('/uploads/' ~ event.posterFilename|default(event.association.logoFilename)) }}" alt="{{ event.title }}">
                 </div>
             </li>
         {% endfor %}

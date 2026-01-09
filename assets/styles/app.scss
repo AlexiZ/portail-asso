@@ -122,8 +122,7 @@ body {
         list-style: none;
 
         img {
-            max-height: 80px;
-            max-width: 80px;
+            max-width: 100%;
         }
     }
 
@@ -273,6 +272,11 @@ body {
             max-height: 200px;
         }
     }
+    .list-future-events {
+        li:hover {
+            background-color: $default;
+        }
+    }
 }
 
 [data-route="association_edit"] {
@@ -286,6 +290,12 @@ body {
         width: auto;
         top: 50%;
         cursor: pointer;
+    }
+}
+
+[data-route="event_show"] {
+    .card-header p {
+        margin-bottom: 0;
     }
 }
 
@@ -386,4 +396,15 @@ body {
 
 .hoverable:hover {
     background-color: $default;
+}
+
+.poster-preview {
+    max-height: 200px;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .flex-column-sm {
+        flex-direction: column;
+    }
 }

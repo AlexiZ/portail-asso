@@ -20,8 +20,8 @@
     </div>
 
     <div id="agendaContainer">
-        <div class="d-flex justify-content-between">
-            <h2 class="mb-4">
+        <div class="d-flex justify-content-between mb-4 flex-column-sm">
+            <h2>
                 {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
             </h2>
 
@@ -40,8 +40,8 @@
     </div>
 
     <div id="listAssociations">
-        <div class="d-flex justify-content-between">
-            <h2 class="mb-0">{{ 'home.associations.title'|trans }}</h2>
+        <div class="d-flex justify-content-between flex-column-sm">
+            <h2>{{ 'home.associations.title'|trans }}</h2>
 
             <form method="GET" action="{{ path('search') }}" id="searchBar">
                 <div class="input-group">

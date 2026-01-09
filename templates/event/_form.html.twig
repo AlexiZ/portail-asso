@@ -1,0 +1,31 @@
+<div class="mb-3">
+    {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="row">
+    <div class="col-md-9 mb-3">
+        {{ form_row(form.shortDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}
+    </div>
+
+    <div class="col-md-3 mb-3 d-flex flex-column">
+        {{ form_row(form.poster, {'attr': {'class': 'form-control'}}) }}
+
+        {% if event|default and event.posterFilename|default %}
+            <div class="text-center mt-3">
+                <img src="{{ asset('/uploads/' ~ event.posterFilename) }}" alt="{{ event.title }}" class="img-fluid img-responsive poster-preview">
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.longDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.startAt, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.endAt, {'attr': {'class': 'form-control'}}) }}
+</div>

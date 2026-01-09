@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -26,6 +27,9 @@ class Event
     #[ORM\Column(type: 'text')]
     private string $shortDescription;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $posterFilename = null;
+
     #[ORM\Column(type: 'text')]
     private string $longDescription;
 
@@ -40,10 +44,6 @@ class Event
 
     #[ORM\Column(type: 'boolean')]
     private bool $isPublic = true;
-
-    public function __construct()
-    {
-    }
 
     public function getId(): ?int
     {
@@ -93,18 +93,6 @@ class Event
         return $this;
     }
 
-    public function getLongDescription(): string
-    {
-        return str_replace('<p></p>', '', $this->longDescription);
-    }
-
-    public function setLongDescription(string $longDescription): Event
-    {
-        $this->longDescription = $longDescription;
-
-        return $this;
-    }
-
     public function getShortDescription(): string
     {
         return str_replace('<p></p>', '', $this->shortDescription);
@@ -113,6 +101,30 @@ class Event
     public function setShortDescription(string $shortDescription): Event
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getPosterFilename(): ?string
+    {
+        return $this->posterFilename;
+    }
+
+    public function setPosterFilename(?string $posterFilename): static
+    {
+        $this->posterFilename = $posterFilename;
+
+        return $this;
+    }
+
+    public function getLongDescription(): string
+    {
+        return str_replace('<p></p>', '', $this->longDescription);
+    }
+
+    public function setLongDescription(string $longDescription): Event
+    {
+        $this->longDescription = $longDescription;
 
         return $this;
     }
