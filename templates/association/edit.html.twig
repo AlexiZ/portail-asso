@@ -10,7 +10,7 @@
     {{ form_start(formAssociation) }}
         {% include 'association/form.html.twig' with {formAssociation: formAssociation} %}
 
-        <div class="d-flex justify-content-between">
+        <div class="mt-3 d-flex justify-content-between">
             <a href="{{ path('association_show', { slug: association.slug }) }}" class="btn btn-secondary mt-3">
                 <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.edit.cancel'|trans }}
             </a>

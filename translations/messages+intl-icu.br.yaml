@@ -239,7 +239,7 @@ event:
         form:
             submit: Evit hizivaat
             confirm: Hizivaet eo bet an darvoud gant berzh.
-            back: Nullañ ha distreiñ d'ar bajenn gevredigezh
+            back: Nullañ ha distreiñ d'ar bajenn darvoud
     form:
         title: Titl
         short_description: Deskrivadur berr

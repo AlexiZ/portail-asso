@@ -22,10 +22,85 @@
     {{ form_row(form.longDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}
 </div>
 
-<div class="mb-3">
-    {{ form_row(form.startAt, {'attr': {'class': 'form-control'}}) }}
-</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.startAt, {'attr': {'class': 'form-control'}}) }}
+    </div>
 
-<div class="mb-3">
-    {{ form_row(form.endAt, {'attr': {'class': 'form-control'}}) }}
+    <div class="col-md-6 mb-3 my-auto">
+        {{ form_row(form.recurrenceRule) }}
+
+        <a class="btn btn-link text-primary d-flex gap-1 text-decoration-none" data-bs-toggle="modal" data-bs-target="#recurrenceModal" id="recurrence-summary" data-locale="{{ app.locale }}">
+            Répéter l'événement
+        </a>
+        <div class="modal fade" id="recurrenceModal" tabindex="-1" aria-labelledby="recurrenceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="recurrenceModalLabel">Récurrence personnalisée</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Répétition</label>
+                            <select id="recurrence-preset" class="form-select">
+                                <option value="">Aucune</option>
+                                <option value="3">Tous les jours</option>
+                                <option value="2">Toutes les semaines</option>
+                                <option value="1">Tous les mois</option>
+                                <option value="0">Tous les ans</option>
+                                <option value="CUSTOM">Personnaliser…</option>
+                            </select>
+                        </div>
+
+                        {# Bloc avancé masqué par défaut #}
+                        <div id="recurrence-custom" class="d-none">
+                            <div class="row">
+                                <label class="col-md-3 text-start my-auto">Répéter chaque</label>
+                                <div class="col-md-6 d-flex gap-2">
+                                    <input type="number" min="1" value="1" class="form-control" id="recurrence-interval">
+                                    <select class="form-select" id="recurrence-freq">
+                                        <option value="DAILY">jour</option>
+                                        <option value="WEEKLY">semaine</option>
+                                        <option value="MONTHLY">mois</option>
+                                        <option value="YEARLY">année</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 d-flex gap-2">
+                                <label class="my-auto">Répéter le</label>
+                                <div class="btn-group" role="group">
+                                    {% for value, label in {'MO': 'Lundi', 'TU': 'Mardi', 'WE': 'Mercredi', 'TH': 'Jeudi', 'FR': 'Vendredi', 'SA': 'Samedi', 'SU': 'Dimanche'} %}
+                                        <input type="checkbox" class="btn-check recurrence-byday" value="{{ value }}" id="dayCheck{{ value }}" autocomplete="off">
+                                        <label class="btn btn-outline-primary" for="dayCheck{{ value }}">{{ label }}</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="mt-3 row">
+                                <div class="col-md-6">
+                                    <label>Se termine</label>
+                                    <select id="recurrence-end-type" class="form-select">
+                                        <option value="">Jamais</option>
+                                        <option value="COUNT">Après X occurrences</option>
+                                        <option value="UNTIL">À une date</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mt-auto">
+                                    <input type="number" class="form-control mt-2 d-none" placeholder="Nombre d'occurrences" id="recurrence-count">
+                                    <input type="date" class="form-control mt-2 d-none" id="recurrence-until">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="recurrence-apply">Valider la récurrence</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

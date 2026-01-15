@@ -45,6 +45,9 @@ class Event
     #[ORM\Column(type: 'boolean')]
     private bool $isPublic = true;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $recurrenceRule = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -173,6 +176,18 @@ class Event
     public function setIsPublic(bool $isPublic): Event
     {
         $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    public function getRecurrenceRule(): ?string
+    {
+        return $this->recurrenceRule;
+    }
+
+    public function setRecurrenceRule(?string $recurrenceRule): Event
+    {
+        $this->recurrenceRule = $recurrenceRule;
 
         return $this;
     }

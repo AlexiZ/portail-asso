@@ -243,7 +243,7 @@ event:
         form:
             submit: Mettre à jour
             confirm: Événement mis à jour avec succès.
-            back: Annuler et revenir sur la page de l'association
+            back: Annuler et revenir sur la page de l'événement
     delete:
         confirm: L'événement a bien été supprimé.
     form:

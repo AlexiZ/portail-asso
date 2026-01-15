@@ -6,6 +6,7 @@ use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,10 +41,8 @@ class EventType extends AbstractType
                 'label' => 'event.form.start_at',
                 'widget' => 'single_text',
             ])
-            ->add('endAt', DateTimeType::class, [
-                'label' => 'event.form.end_at',
-                'widget' => 'single_text',
-                'required' => false,
+            ->add('recurrenceRule', HiddenType::class, [
+                'label' => false,
             ])
         ;
     }

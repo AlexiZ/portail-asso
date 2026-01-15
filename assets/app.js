@@ -5,6 +5,9 @@ import { addPrevNextBtnsClickHandlers } from './plugins/EmblaCarouselArrowButton
 import Autoplay from 'embla-carousel-autoplay';
 import Shepherd from 'shepherd.js';
 import Routing from 'fos-router';
+import { RRule } from 'rrule';
+import { rruleFrFr } from "./plugins/rruleFrFr";
+import { rruleBr } from "./plugins/rruleBr";
 
 import routes from '../public/js/fos_js_routes.json';
 Routing.setRoutingData(routes);
@@ -21,6 +24,17 @@ function initTomSelects() {
             maxOptions: 200,
         });
     });
+}
+
+function rRuleToText(rrule, locale) {
+    let text;
+    switch (locale) {
+        case 'fr': text = rruleFrFr(rrule); break;
+        case 'br': text = rruleBr(rrule); break;
+        default: text = rrule.toText(); break;
+    }
+
+    return String(text).charAt(0).toUpperCase() + String(text).slice(1);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -610,7 +624,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // data-categories='["heritage","arts-culture"]'
     const categoryFilters = document.querySelectorAll('.category-filter-list');
     const categories = document.querySelectorAll('[data-categories]');
     if (categoryFilters && categories) {
@@ -644,5 +657,150 @@ document.addEventListener('DOMContentLoaded', function () {
                 ;
             });
         });
+    }
+
+    const hiddenRecurrenceRule = document.querySelector('[name="event[recurrenceRule]"]');
+    if (hiddenRecurrenceRule) {
+        const presetSelect = document.getElementById('recurrence-preset');
+        const customBlock = document.getElementById('recurrence-custom');
+        const intervalInput = document.getElementById('recurrence-interval');
+        const freqSelect = document.getElementById('recurrence-freq');
+        const byDayCheckboxes = document.querySelectorAll('.recurrence-byday');
+        const endTypeSelect = document.getElementById('recurrence-end-type');
+        const countInput = document.getElementById('recurrence-count');
+        const untilInput = document.getElementById('recurrence-until');
+        const applyBtn = document.getElementById('recurrence-apply');
+        const summaryBtn = document.getElementById('recurrence-summary');
+
+        // --- helpers -------------------------------------------------------
+
+        const WEEKDAYS = {
+            MO: RRule.MO,
+            TU: RRule.TU,
+            WE: RRule.WE,
+            TH: RRule.TH,
+            FR: RRule.FR,
+            SA: RRule.SA,
+            SU: RRule.SU,
+        };
+        const FREQ_VALUES = {
+            3: 'DAILY',
+            2: 'WEEKLY',
+            1: 'MONTHLY',
+            0: 'YEARLY',
+        };
+
+        function toggleCustom(show) {
+            customBlock.classList.toggle('d-none', !show);
+        }
+
+        function toggleEndInputs(type) {
+            countInput.classList.toggle('d-none', type !== 'COUNT');
+            untilInput.classList.toggle('d-none', type !== 'UNTIL');
+        }
+
+        // --- preset logic --------------------------------------------------
+
+        presetSelect.addEventListener('change', () => {
+            toggleCustom(presetSelect.value === 'CUSTOM');
+        });
+
+        // --- end type logic ------------------------------------------------
+
+        endTypeSelect.addEventListener('change', () => {
+            toggleEndInputs(endTypeSelect.value);
+        });
+
+        // --- apply recurrence ----------------------------------------------
+
+        applyBtn.addEventListener('click', () => {
+            let options = {};
+
+            if (presetSelect.value && presetSelect.value !== 'CUSTOM') {
+                options.freq = RRule[presetSelect.value];
+                options.interval = 1;
+            } else {
+                options.freq = RRule[freqSelect.value];
+                options.interval = parseInt(intervalInput.value, 10) || 1;
+
+                const byweekday = [];
+                byDayCheckboxes.forEach(cb => {
+                    if (cb.checked) {
+                        byweekday.push(WEEKDAYS[cb.value]);
+                    }
+                });
+
+                if (byweekday.length > 0) {
+                    options.byweekday = byweekday;
+                }
+
+                if (endTypeSelect.value === 'COUNT') {
+                    options.count = parseInt(countInput.value, 10);
+                }
+
+                if (endTypeSelect.value === 'UNTIL' && untilInput.value) {
+                    options.until = new Date(untilInput.value);
+                }
+            }
+
+            if (!options.freq) {
+                hiddenRecurrenceRule.value = '';
+
+                return;
+            }
+
+            const rule = new RRule(options);
+            hiddenRecurrenceRule.value = rule.toString();
+            summaryBtn.textContent = rRuleToText(rule, summaryBtn.dataset.locale);
+        });
+
+        // --- edition: hydrate UI from existing RRULE -----------------------
+
+        if (hiddenRecurrenceRule.value) {
+            const rule = RRule.fromString(hiddenRecurrenceRule.value);
+            const o = rule.origOptions;
+
+            presetSelect.value = 'CUSTOM';
+            toggleCustom(true);
+
+            freqSelect.value = FREQ_VALUES[o.freq];
+            intervalInput.value = o.interval || 1;
+
+            if (o.byweekday) {
+                const days = Array.isArray(o.byweekday) ? o.byweekday : [o.byweekday];
+                days.forEach(d => {
+                    const cb = document.querySelector(
+                        `.recurrence-byday[value="${d.toString()}"]`
+                    );
+                    if (cb) cb.checked = true;
+                });
+            }
+
+            if (o.count) {
+                endTypeSelect.value = 'COUNT';
+                toggleEndInputs('COUNT');
+                countInput.value = o.count;
+            }
+
+            if (o.until) {
+                endTypeSelect.value = 'UNTIL';
+                toggleEndInputs('UNTIL');
+                untilInput.value = o.until.toISOString().substring(0, 10);
+            }
+
+            summaryBtn.textContent = rRuleToText(rule, summaryBtn.dataset.locale);
+        }
+    }
+
+    const eventRecurrence = document.getElementById('event-recurrence');
+    if (eventRecurrence) {
+        const rruleString = eventRecurrence.dataset.rrule;
+
+        try {
+            const rule = RRule.fromString(rruleString);
+            eventRecurrence.textContent = rRuleToText(rule, eventRecurrence.dataset.locale);
+        } catch (e) {
+            eventRecurrence.textContent = '';
+        }
     }
 });
