@@ -135,7 +135,7 @@ class EventController extends AbstractController
         $duped->setTitle($event->getTitle());
         $duped->setSlug($event->getSlug());
         $duped->setShortDescription($event->getShortDescription());
-        $duped->setLogoFilename($event->getLogoFilename());
+        $duped->setPosterFilename($event->getPosterFilename());
         $duped->setLongDescription($event->getLongDescription());
         $duped->setStartAt($event->getStartAt());
         $duped->setEndAt($event->getEndAt());
