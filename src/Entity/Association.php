@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use RRule\RRule;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
@@ -406,11 +407,34 @@ class Association
         $now = new \DateTimeImmutable();
         $inSixMonths = $now->add(new \DateInterval('P6M'));
 
-        return $this->events->filter(function (Event $event) use ($now, $inSixMonths) {
+        $results = new ArrayCollection();
+
+        foreach ($this->events as $event) {
             $startAt = $event->getStartAt();
 
-            return $startAt > $now && $startAt <= $inSixMonths;
-        });
+            if ($event->getRecurrenceRule()) {
+                $rule = new RRule($event->getRecurrenceRule());
+
+                foreach ($rule->getOccurrencesBetween($now, $inSixMonths) as $date) {
+                    $dateWithTime = (clone $date)->setTime(
+                        (int) $startAt->format('H'),
+                        (int) $startAt->format('i'),
+                        (int) $startAt->format('s')
+                    );
+
+                    $occurrence = clone $event;
+                    $occurrence->setStartAt($dateWithTime);
+
+                    $results->add($occurrence);
+                }
+            } else {
+                if ($startAt > $now && $startAt <= $inSixMonths) {
+                    $results->add($event);
+                }
+            }
+        }
+
+        return $results;
     }
 
     public function setEvents(Collection $events): self

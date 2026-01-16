@@ -177,8 +177,8 @@
 
         <div class="col-xs-12 col-md-6">
             <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="card-body {% if association.futureEvents|default|length > 3 %}scroll-wrapper{% endif%} p-0">
+                    <div class="d-flex justify-content-between align-items-center p-3">
                         <h2 class="h4">
                             {{ 'association.show.events.future.title'|trans }}
                         </h2>
@@ -193,7 +193,7 @@
                     {% if association.futureEvents|default|length > 0 %}
                         <ul class="list-group list-group-flush list-future-events">
                             {% for event in association.futureEvents %}
-                                <li class="list-group-item d-flex justify-content-between rounded-1">
+                                <li class="list-group-item d-flex justify-content-between {% if loop.last %}rounded-top-0 rounded-1{% else %}rounded-0{% endif %}">
                                     <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
                                         <strong>{{ event.title }}</strong><br>
                                         <small>

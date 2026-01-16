@@ -272,9 +272,27 @@ body {
             max-height: 200px;
         }
     }
+
+    .scroll-wrapper:after {
+        content: "";
+        position: sticky;
+        display: block;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 24px;
+        margin-top: -24px;
+        pointer-events: none;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
+        z-index: 1;
+    }
+
     .list-future-events {
+        max-height: 300px;
+        overflow: auto;
+
         li:hover {
-            background-color: $default;
+            background-color: $default ;
         }
     }
 }
