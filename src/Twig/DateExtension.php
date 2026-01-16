@@ -20,7 +20,7 @@ class DateExtension extends AbstractExtension
         ];
     }
 
-    public function formatDate(\DateTimeInterface $start, ?\DateTimeInterface $end = null): string
+    public function formatDate(\DateTimeInterface $start): string
     {
         $locale = 'fr_FR';
 
@@ -38,29 +38,9 @@ class DateExtension extends AbstractExtension
             \IntlDateFormatter::SHORT
         );
 
-        // Cas sans date de fin
-        if (!$end) {
-            return $this->translator->trans('event.start_only', [
-                '%date%' => $formatterDay->format($start),
-                '%start%' => $formatterTime->format($start),
-            ]);
-        }
-
-        // Cas même jour
-        if ($start->format('Y-m-d') === $end->format('Y-m-d')) {
-            return $this->translator->trans('event.single_day', [
-                '%date%' => $formatterDay->format($start),
-                '%start%' => $formatterTime->format($start),
-                '%end%' => $formatterTime->format($end),
-            ]);
-        }
-
-        // Cas plusieurs jours
-        return $this->translator->trans('event.multiple_days', [
-            '%start_date%' => $formatterDay->format($start),
-            '%start_hour%' => $formatterTime->format($start),
-            '%end_date%' => $formatterDay->format($end),
-            '%end_hour%' => $formatterTime->format($end),
+        return $this->translator->trans('event.date', [
+            '%date%' => $formatterDay->format($start),
+            '%start%' => $formatterTime->format($start),
         ]);
     }
 }

@@ -30,48 +30,48 @@
     <div class="col-md-6 mb-3 my-auto">
         {{ form_row(form.recurrenceRule) }}
 
-        <a class="btn btn-link text-primary d-flex gap-1 text-decoration-none" data-bs-toggle="modal" data-bs-target="#recurrenceModal" id="recurrence-summary" data-locale="{{ app.locale }}">
-            Répéter l'événement
+        <a class="btn btn-link text-primary d-flex gap-1 text-decoration-none" data-bs-toggle="modal" data-bs-target="#recurrenceModal" id="recurrence-summary" data-locale="{{ app.locale }}" data-default="{{ 'event.form.recurrence.open_modale'|trans }}">
+            {{ 'event.form.recurrence.open_modale'|trans }}
         </a>
         <div class="modal fade" id="recurrenceModal" tabindex="-1" aria-labelledby="recurrenceModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="recurrenceModalLabel">Récurrence personnalisée</h1>
+                        <h1 class="modal-title fs-5" id="recurrenceModalLabel">{{ 'event.form.recurrence.modale_title'|trans }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Répétition</label>
+                            <label class="form-label">{{ 'event.form.recurrence.preset.label'|trans }}</label>
                             <select id="recurrence-preset" class="form-select">
-                                <option value="">Aucune</option>
-                                <option value="3">Tous les jours</option>
-                                <option value="2">Toutes les semaines</option>
-                                <option value="1">Tous les mois</option>
-                                <option value="0">Tous les ans</option>
-                                <option value="CUSTOM">Personnaliser…</option>
+                                <option value="">{{ 'event.form.recurrence.preset.none'|trans }}</option>
+                                <option value="3">{{ 'event.form.recurrence.preset.daily'|trans }}</option>
+                                <option value="2">{{ 'event.form.recurrence.preset.weekly'|trans }}</option>
+                                <option value="1">{{ 'event.form.recurrence.preset.monthly'|trans }}</option>
+                                <option value="0">{{ 'event.form.recurrence.preset.yearly'|trans }}</option>
+                                <option value="CUSTOM">{{ 'event.form.recurrence.preset.custom'|trans }}</option>
                             </select>
                         </div>
 
                         {# Bloc avancé masqué par défaut #}
                         <div id="recurrence-custom" class="d-none">
                             <div class="row">
-                                <label class="col-md-3 text-start my-auto">Répéter chaque</label>
+                                <label class="col-md-3 text-start my-auto">{{ 'event.form.recurrence.custom.interval.title'|trans }}</label>
                                 <div class="col-md-6 d-flex gap-2">
                                     <input type="number" min="1" value="1" class="form-control" id="recurrence-interval">
                                     <select class="form-select" id="recurrence-freq">
-                                        <option value="DAILY">jour</option>
-                                        <option value="WEEKLY">semaine</option>
-                                        <option value="MONTHLY">mois</option>
-                                        <option value="YEARLY">année</option>
+                                        <option value="DAILY">{{ 'event.form.recurrence.custom.interval.day'|trans }}</option>
+                                        <option value="WEEKLY">{{ 'event.form.recurrence.custom.interval.week'|trans }}</option>
+                                        <option value="MONTHLY">{{ 'event.form.recurrence.custom.interval.month'|trans }}</option>
+                                        <option value="YEARLY">{{ 'event.form.recurrence.custom.interval.year'|trans }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="mt-3 d-flex gap-2">
-                                <label class="my-auto">Répéter le</label>
+                                <label class="my-auto">{{ 'event.form.recurrence.custom.byday.title'|trans }}</label>
                                 <div class="btn-group" role="group">
-                                    {% for value, label in {'MO': 'Lundi', 'TU': 'Mardi', 'WE': 'Mercredi', 'TH': 'Jeudi', 'FR': 'Vendredi', 'SA': 'Samedi', 'SU': 'Dimanche'} %}
+                                    {% for value, label in {'MO': 'day.monday'|trans|capitalize, 'TU': 'day.tuesday'|trans|capitalize, 'WE': 'day.wednesday'|trans|capitalize, 'TH': 'day.thursday'|trans|capitalize, 'FR': 'day.friday'|trans|capitalize, 'SA': 'day.saturday'|trans|capitalize, 'SU': 'day.sunday'|trans|capitalize} %}
                                         <input type="checkbox" class="btn-check recurrence-byday" value="{{ value }}" id="dayCheck{{ value }}" autocomplete="off">
                                         <label class="btn btn-outline-primary" for="dayCheck{{ value }}">{{ label }}</label>
                                     {% endfor %}
@@ -80,24 +80,24 @@
 
                             <div class="mt-3 row">
                                 <div class="col-md-6">
-                                    <label>Se termine</label>
+                                    <label>{{ 'event.form.recurrence.custom.end.title'|trans }}</label>
                                     <select id="recurrence-end-type" class="form-select">
-                                        <option value="">Jamais</option>
-                                        <option value="COUNT">Après X occurrences</option>
-                                        <option value="UNTIL">À une date</option>
+                                        <option value="">{{ 'event.form.recurrence.custom.end.never'|trans }}</option>
+                                        <option value="COUNT">{{ 'event.form.recurrence.custom.end.x_times'|trans }}</option>
+                                        <option value="UNTIL">{{ 'event.form.recurrence.custom.end.to_date'|trans }}</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-6 mt-auto">
-                                    <input type="number" class="form-control mt-2 d-none" placeholder="Nombre d'occurrences" id="recurrence-count">
+                                    <input type="number" class="form-control mt-2 d-none" placeholder="{{ 'event.form.recurrence.custom.end.number_times'|trans }}" id="recurrence-count">
                                     <input type="date" class="form-control mt-2 d-none" id="recurrence-until">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="recurrence-apply">Valider la récurrence</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'event.form.recurrence.close'|trans }}</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="recurrence-apply">{{ 'event.form.recurrence.validate'|trans }}</button>
                     </div>
                 </div>
             </div>

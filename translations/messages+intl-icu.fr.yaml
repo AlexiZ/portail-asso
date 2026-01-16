@@ -225,9 +225,7 @@ reset_password:
     submit: Réinitialiser le mot de passe
 
 event:
-    start_only: Le {date} à {start}
-    single_day: Le {date} de {start} à {end}
-    multiple_days: Du {start_date} à {start_hour} au {end_date} à {end_hour}
+    date: Le {date} à {start}
     show:
         back: Retour à la page de {association}
         actions:
@@ -252,7 +250,34 @@ event:
         poster: Affiche de l'événement
         long_description: Description longue
         start_at: Date et heure de début
-        end_at: Date et heure de fin
+        recurrence:
+            open_modale: Répéter l'événement
+            modale_title: Récurrence personnalisée
+            preset:
+                label: Répétition
+                none: Aucune
+                daily: Tous les jours
+                weekly: Toutes les semaines
+                monthly: Tous les mois
+                yearly: Tous les ans
+                custom: Personnaliser...
+            custom:
+                interval:
+                    title: Répéter chaque
+                    day: jour
+                    week: semaine
+                    month: mois
+                    year: an
+                byday:
+                    title: Répéter le
+                end:
+                    title: Se termine
+                    never: Jamais
+                    x_times: Après X occurrences
+                    to_date: À une date
+                    number_times: Nombre d'occurrences
+            close: Fermer
+            validate: Valider la récurrence
         error:
             poster: Impossible de charger le logo, une erreur est survenue
 

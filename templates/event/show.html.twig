@@ -15,7 +15,7 @@
     </div>
 
     <p class="text-muted">
-        {{ format_date(event.startAt, event.endAt) }}
+        {{ format_date(event.startAt) }}
 
         {% if event.recurrenceRule %}
             (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)

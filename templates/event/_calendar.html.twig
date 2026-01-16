@@ -24,7 +24,7 @@
                                     <div class="fw-bold">
                                         <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
                                         <br>
-                                        <small>{{ format_date(event.startAt, event.endAt) }}</small>
+                                        <small>{{ format_date(event.startAt) }}</small>
                                     </div>
                                     <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
                                 </div>

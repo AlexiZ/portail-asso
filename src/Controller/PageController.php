@@ -14,24 +14,9 @@ class PageController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(EventRepository $eventRepo, AssociationRepository $assocRepo): Response
     {
-        $events = $eventRepo->createQueryBuilder('e')
-            ->andWhere('e.startAt >= :now')
-            ->andWhere('e.startAt <= :limit')
-            ->andWhere('e.isPublic = true')
-            ->setParameter('now', new \DateTimeImmutable())
-            ->setParameter('limit', (new \DateTimeImmutable())->modify('+30 days'))
-            ->orderBy('e.startAt', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-        $associations = $assocRepo->createQueryBuilder('a')
-            ->orderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-
         return $this->render('page/home.html.twig', [
-            'events' => $events,
-            'associations' => $associations,
+            'events' => $eventRepo->getNearestEvents(),
+            'associations' => $assocRepo->findBy([], ['name' => 'ASC']),
             'agendaNbDays' => 30,
             'categories' => Category::cases(),
         ]);

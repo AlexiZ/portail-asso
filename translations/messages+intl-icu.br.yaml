@@ -221,9 +221,7 @@ reset_password:
     submit: Adderaouekaat ar ger-tremen
 
 event:
-    start_only: D'an {date} da {start}
-    single_day: D'an {date} eus {start} da {end}
-    multiple_days: Eus an {start_date} da {start_hour} betek an {end_date} da {end_hour}
+    date: D'an {date} da {start}
     show:
         back: Distreiñ d'ar bajenn {association}
         actions:
@@ -247,7 +245,34 @@ event:
         long_description: Deskrivadur hir
         description: Deskrivadur
         start_at: Deiziad hag eur kregiñ
-        end_at: Deiziad hag eur echuiñ
+        recurrence:
+            open_modale: Adkregiñ gant an darvoud
+            modale_title: Adlavaret personelaet
+            preset:
+                label: Adlavaret
+                none: Hini ebet
+                daily: Bemdez
+                weekly: Bep sizhun
+                monthly: Bep miz
+                yearly: Bep bloaz
+                custom: Personelaat...
+            custom:
+                interval:
+                    title: Adc'hrit bep
+                    day: deiz
+                    week: sizhun
+                    month: miz
+                    year: bloaz
+                byday:
+                    title: Adlavaret an
+                end:
+                    title: Echuiñ a ra
+                    never: Morse
+                    x_times: Goude X wech
+                    to_date: D'un deiziad
+                    number_times: Niver a wechoù
+            close: Serriñ
+            validate: Gwiriekaat an adlavaret
         error:
             poster: N'haller ket kargañ al logodenn, ur fazi zo c'hoarvezet
 

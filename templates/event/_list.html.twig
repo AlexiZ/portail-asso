@@ -6,7 +6,7 @@
                     <div class="fw-bold">
                         <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
                         <br>
-                        <small>{{ format_date(event.startAt, event.endAt) }}</small> par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+                        <small>{{ format_date(event.startAt) }}</small> par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
                     </div>
                     <p class="mb-0">{{ event.shortDescription|striptags|raw }}</p>
 

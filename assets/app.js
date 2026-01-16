@@ -716,6 +716,13 @@ document.addEventListener('DOMContentLoaded', function () {
         applyBtn.addEventListener('click', () => {
             let options = {};
 
+            if (!presetSelect.value) {
+                hiddenRecurrenceRule.value = '';
+                summaryBtn.textContent = summaryBtn.dataset.default;
+
+                return;
+            }
+
             if (presetSelect.value && presetSelect.value !== 'CUSTOM') {
                 options.freq = RRule[presetSelect.value];
                 options.interval = 1;
@@ -741,12 +748,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (endTypeSelect.value === 'UNTIL' && untilInput.value) {
                     options.until = new Date(untilInput.value);
                 }
-            }
-
-            if (!options.freq) {
-                hiddenRecurrenceRule.value = '';
-
-                return;
             }
 
             const rule = new RRule(options);

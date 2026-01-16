@@ -197,7 +197,7 @@
                                     <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
                                         <strong>{{ event.title }}</strong><br>
                                         <small>
-                                            {{ format_date(event.startAt, event.endAt) }}
+                                            {{ format_date(event.startAt) }}
                                         </small>
                                         <p class="mb-0">{{ event.shortDescription|raw }}</p>
                                     </a>
@@ -263,7 +263,7 @@
                         <div>
                             <strong>{{ event.title }}</strong><br>
                             <small>
-                                {{ format_date(event.startAt, event.endAt) }}
+                                {{ format_date(event.startAt) }}
                             </small>
                             <p class="mb-0">{{ event.shortDescription|raw }}</p>
                         </div>
