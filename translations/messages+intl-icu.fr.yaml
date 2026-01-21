@@ -218,6 +218,7 @@ register:
 
 forgot_password:
     title: Mot de passe oublié
+    email: Votre adresse e-mail
     send: Envoyer le lien de réinitialisation
 
 reset_password:
@@ -381,3 +382,12 @@ chairman:
             actions: Actions
             accept: Accepter la demande
             none: Aucun refus de demande de gestion pour cette association.
+
+email:
+    welcome: Bonjour {username}
+    goodbye: "À bientôt sur le portail des associations de Plabennec !<br>L'équipe de Plabennec en Transition"
+    forgot_password:
+        subject: Réinitialisation de votre mot de passe
+        content:
+            link_label: Cliquez sur le lien suivant pour réinitialiser votre mot de passe
+            link_cta: Réinitialiser mon mot de passe

@@ -7,15 +7,13 @@ use App\Form\ForgotPasswordFormType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordFormType;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -69,7 +67,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/forgot-password', name: 'app_forgot_password')]
-    public function forgotPassword(Request $request, UserRepository $userRepository, MailerInterface $mailer, UrlGeneratorInterface $urlGenerator): Response
+    public function forgotPassword(Request $request, UserRepository $userRepository, Mailer $mailer, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ForgotPasswordFormType::class);
         $form->handleRequest($request);
@@ -81,24 +79,11 @@ class SecurityController extends AbstractController
             if ($user) {
                 $resetToken = bin2hex(random_bytes(32));
                 $user->setResetToken($resetToken);
-                $user->setResetTokenExpiresAt((new \DateTimeImmutable())->modify('+1 hour'));
+                $user->setResetTokenExpiresAt((new \DateTimeImmutable())->modify('+2 hour'));
+                $em->persist($user);
+                $em->flush();
 
-                $userRepository->save($user, true);
-
-                $resetUrl = $urlGenerator->generate('app_reset_password', ['token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
-
-                $emailMessage = (new Email())
-                    ->from('no-reply@example.com')
-                    ->to($user->getEmail())
-                    ->subject('Réinitialisation de votre mot de passe')
-                    ->html(sprintf(
-                        '<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="%s">%s</a></p>',
-                        $resetUrl,
-                        $resetUrl
-                    ))
-                ;
-
-                $mailer->send($emailMessage);
+                $mailer->sendResetPassword($user);
             }
 
             $this->addFlash('info', 'Un email vient de vous être envoyé pour réinitialiser votre mot de passe.');

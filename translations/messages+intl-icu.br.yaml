@@ -214,6 +214,7 @@ register:
 
 forgot_password:
     title: Ankounac'haet hoc'h eus ho ker-tremen
+    email: Ho chomlec'h postel
     send: Kas al liamm adloc'hañ
 
 reset_password:
@@ -363,3 +364,12 @@ chairman:
             actions: Oberoù
             accept: Degemer ar goulenn
             none: Nac'het goulennoù merañ ebet evit ar gevredigezh-mañ.
+
+email:
+    welcome: Demat {username}
+    goobye: "Emgav a-benn nebeut war porched ar c'hevredigezhioù Plabennec !<br>Skipailh Plabennec en Tremen"
+    forgot_password:
+        subject: Adderaouekaat ho ker-tremen
+        content:
+            link_label: Klikit war al liamm da-heul evit adderaouekaat ho ker-tremen
+            link_cta: Adderaouekaat ma ger-tremen

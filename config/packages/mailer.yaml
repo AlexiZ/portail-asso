@@ -1,3 +1,13 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
+        dsn: 'brevo+smtp://%env(MAILER_SMTP_USER)%:%env(MAILER_SMTP_KEY)%@default'
+        envelope:
+            sender: '%env(MAILER_FROM_ADDRESS)%'
+        headers:
+            From: '%env(MAILER_FROM_NAME)% <%env(MAILER_FROM_ADDRESS)%>'
+
+when@dev:
+    framework:
+        mailer:
+            envelope:
+                recipients: ['%env(MAILER_DEV_RECIPIENT)%']
