@@ -255,6 +255,7 @@ event:
         is_public:
             label: Est-ce un événement public ?
             help: Un événement public apparaîtra sur la page d'accueil de ce Portail.
+        location: Lieu
         recurrence:
             open_modale: Répéter l'événement
             modale_title: Récurrence personnalisée

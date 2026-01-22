@@ -15,7 +15,7 @@
     </div>
 
     <p class="text-muted">
-        {{ format_date(event.startAt) }} {% if event.isPublic %}({{ 'event.show.is_public'|trans }}){% endif %}
+        {{ format_date(event.startAt) }}{% if event.isPublic %} - {{ 'event.show.is_public'|trans }}{% endif %}{% if event.location|default %} - {{ event.location }}{% endif %}
 
         {% if event.recurrenceRule %}
             (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)

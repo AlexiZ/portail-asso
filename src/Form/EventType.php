@@ -55,6 +55,10 @@ class EventType extends AbstractType
                 'required' => false,
                 'help' => 'event.form.is_public.help',
             ])
+            ->add('location', TextType::class, [
+                'label' => 'event.form.location',
+                'required' => false,
+            ])
         ;
     }
 

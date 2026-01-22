@@ -196,8 +196,8 @@
                                 <li class="list-group-item d-flex justify-content-between {% if loop.last %}rounded-top-0 rounded-1{% else %}rounded-0{% endif %}">
                                     <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
                                         <strong>{{ event.title }}</strong><br>
-                                        <small>
-                                            {{ format_date(event.startAt) }}
+                                        <small class="fst-italic">
+                                            {{ format_date(event.startAt) }}{% if event.isPublic %} - {{ 'event.show.is_public'|trans }}{% endif %}{% if event.location|default %} - {{ event.location }}{% endif %}
                                         </small>
                                         <p class="mb-0">{{ event.shortDescription|raw }}</p>
                                     </a>

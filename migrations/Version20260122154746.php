@@ -21,11 +21,13 @@ final class Version20260122154746 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE event DROP COLUMN end_at');
+        $this->addSql('ALTER TABLE event ADD location VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE event ADD COLUMN end_at DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE event DROP location');
     }
 }

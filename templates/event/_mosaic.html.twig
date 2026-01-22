@@ -9,7 +9,9 @@
                                 <h5>
                                     <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
                                     <br>
-                                    <small>{{ format_date(event.startAt) }}</small>
+                                    <small>
+                                        {{ format_date(event.startAt) }}{% if event.location|default %} - {{ event.location }}{% endif %}
+                                    </small>
                                 </h5>
                                 {% if event.shortDescription|default %}
                                     <div class="mb-1 h-100">

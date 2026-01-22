@@ -50,12 +50,15 @@ class Event
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $recurrenceRule = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $location;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): Event
+    public function setId(?int $id): static
     {
         $this->id = $id;
 
@@ -67,7 +70,7 @@ class Event
         return $this->association;
     }
 
-    public function setAssociation(Association $association): Event
+    public function setAssociation(Association $association): static
     {
         $this->association = $association;
 
@@ -79,7 +82,7 @@ class Event
         return $this->title;
     }
 
-    public function setTitle(string $title): Event
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -91,7 +94,7 @@ class Event
         return $this->slug;
     }
 
-    public function setSlug(string $slug): Event
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
@@ -103,7 +106,7 @@ class Event
         return str_replace('<p></p>', '', $this->shortDescription);
     }
 
-    public function setShortDescription(string $shortDescription): Event
+    public function setShortDescription(string $shortDescription): static
     {
         $this->shortDescription = $shortDescription;
 
@@ -127,7 +130,7 @@ class Event
         return str_replace('<p></p>', '', $this->longDescription);
     }
 
-    public function setLongDescription(string $longDescription): Event
+    public function setLongDescription(string $longDescription): static
     {
         $this->longDescription = $longDescription;
 
@@ -139,7 +142,7 @@ class Event
         return $this->startAt;
     }
 
-    public function setStartAt(\DateTimeInterface $startAt): Event
+    public function setStartAt(\DateTimeInterface $startAt): static
     {
         $this->startAt = $startAt;
 
@@ -151,7 +154,7 @@ class Event
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): Event
+    public function setCreatedBy(?User $createdBy): static
     {
         $this->createdBy = $createdBy;
 
@@ -163,7 +166,7 @@ class Event
         return $this->isPublic;
     }
 
-    public function setIsPublic(bool $isPublic): Event
+    public function setIsPublic(bool $isPublic): static
     {
         $this->isPublic = $isPublic;
 
@@ -175,9 +178,21 @@ class Event
         return $this->recurrenceRule;
     }
 
-    public function setRecurrenceRule(?string $recurrenceRule): Event
+    public function setRecurrenceRule(?string $recurrenceRule): static
     {
         $this->recurrenceRule = $recurrenceRule;
+
+        return $this;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(string $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }

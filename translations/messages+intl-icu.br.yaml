@@ -250,6 +250,7 @@ event:
         is_public:
             label: Un abadenn foran eo ?
             help: Un abadenn foran a zeuio war wel war bajenn degemer ar Porched-mañ.
+        location: Lec'h
         recurrence:
             open_modale: Adkregiñ gant an darvoud
             modale_title: Adlavaret personelaet
