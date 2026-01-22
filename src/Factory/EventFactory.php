@@ -69,8 +69,8 @@ readonly class EventFactory
         $duped->setPosterFilename($event->getPosterFilename());
         $duped->setLongDescription($event->getLongDescription());
         $duped->setStartAt($event->getStartAt());
-        $duped->setEndAt($event->getEndAt());
         $duped->setRecurrenceRule($event->getRecurrenceRule());
+        $duped->setIsPublic($event->isPublic());
 
         return $duped;
     }

@@ -398,15 +398,13 @@ class Association
         $now = new \DateTimeImmutable();
 
         return $this->events->filter(function (Event $event) use ($now) {
-            return $event->getEndAt() < $now;
+            return $event->getStartAt() < $now;
         });
     }
 
     public function getFutureEvents(): Collection
     {
         $now = new \DateTimeImmutable();
-        $inSixMonths = $now->add(new \DateInterval('P6M'));
-
         $results = new ArrayCollection();
 
         foreach ($this->events as $event) {
@@ -415,7 +413,7 @@ class Association
             if ($event->getRecurrenceRule()) {
                 $rule = new RRule($event->getRecurrenceRule());
 
-                foreach ($rule->getOccurrencesBetween($now, $inSixMonths) as $date) {
+                foreach ($rule->getOccurrencesAfter($now) as $date) {
                     $dateWithTime = (clone $date)->setTime(
                         (int) $startAt->format('H'),
                         (int) $startAt->format('i'),
@@ -428,7 +426,7 @@ class Association
                     $results->add($occurrence);
                 }
             } else {
-                if ($startAt > $now && $startAt <= $inSixMonths) {
+                if ($startAt > $now) {
                     $results->add($event);
                 }
             }

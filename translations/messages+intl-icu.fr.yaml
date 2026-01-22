@@ -231,6 +231,7 @@ event:
         back: Retour à la page de {association}
         actions:
             edit: Modifier
+        is_public: événement public
     add:
         title: Créer un nouvel événement
         form:
@@ -251,6 +252,9 @@ event:
         poster: Affiche de l'événement
         long_description: Description longue
         start_at: Date et heure de début
+        is_public:
+            label: Est-ce un événement public ?
+            help: Un événement public apparaîtra sur la page d'accueil de ce Portail.
         recurrence:
             open_modale: Répéter l'événement
             modale_title: Récurrence personnalisée

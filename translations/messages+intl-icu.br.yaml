@@ -227,6 +227,7 @@ event:
         back: Distreiñ d'ar bajenn {association}
         actions:
             edit: Da gemmañ
+        is_public: darvoud foran
     add:
         title: Ouzhpennañ un darvoud
         form:
@@ -246,6 +247,9 @@ event:
         long_description: Deskrivadur hir
         description: Deskrivadur
         start_at: Deiziad hag eur kregiñ
+        is_public:
+            label: Un abadenn foran eo ?
+            help: Un abadenn foran a zeuio war wel war bajenn degemer ar Porched-mañ.
         recurrence:
             open_modale: Adkregiñ gant an darvoud
             modale_title: Adlavaret personelaet

@@ -15,7 +15,7 @@
     </div>
 
     <p class="text-muted">
-        {{ format_date(event.startAt) }}
+        {{ format_date(event.startAt) }} {% if event.isPublic %}({{ 'event.show.is_public'|trans }}){% endif %}
 
         {% if event.recurrenceRule %}
             (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)
@@ -25,9 +25,6 @@
     <div class="row">
         <div class="col-md-{% if event.posterFilename|default %}9{% else %}12{% endif %}">
             <div class="card mb-4">
-                <div class="card-header">
-                    {{ event.shortDescription|raw }}
-                </div>
                 <div class="card-body">
                     {{ event.longDescription|raw }}
                 </div>

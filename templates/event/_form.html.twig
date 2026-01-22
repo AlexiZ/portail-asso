@@ -2,6 +2,10 @@
     {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
 </div>
 
+<div class="form-check mb-3">
+    {{ form_row(form.isPublic, {'attr': {'class': 'form-check-input'}, 'label_attr': {'class': 'form-check-label'}}) }}
+</div>
+
 <div class="row">
     <div class="col-md-9 mb-3">
         {{ form_row(form.shortDescription, {'attr': {'class': 'form-control wysiwyg'}}) }}

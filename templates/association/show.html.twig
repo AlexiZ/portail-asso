@@ -202,7 +202,7 @@
                                         <p class="mb-0">{{ event.shortDescription|raw }}</p>
                                     </a>
 
-                                    <div class="dropdown">
+                                    <div class="dropdown dropstart">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa fa-plus"></i>
                                         </button>
@@ -239,7 +239,7 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p class="text-muted">{{ 'association.show.events.future.no_events'|trans }}</p>
+                        <p class="text-muted px-3">{{ 'association.show.events.future.no_events'|trans }}</p>
                     {% endif %}
                 </div>
             </div>

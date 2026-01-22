@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Event
@@ -17,6 +18,7 @@ class Event
     #[ORM\ManyToOne(targetEntity: Association::class, inversedBy: 'events')]
     private Association $association;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
@@ -24,20 +26,20 @@ class Event
     #[Gedmo\Slug(fields: ['title'], unique: true)]
     private string $slug;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     private string $shortDescription;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $posterFilename = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     private string $longDescription;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $startAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $endAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $createdBy = null;
@@ -140,18 +142,6 @@ class Event
     public function setStartAt(\DateTimeInterface $startAt): Event
     {
         $this->startAt = $startAt;
-
-        return $this;
-    }
-
-    public function getEndAt(): ?\DateTimeInterface
-    {
-        return $this->endAt;
-    }
-
-    public function setEndAt(?\DateTimeInterface $endAt): Event
-    {
-        $this->endAt = $endAt;
 
         return $this;
     }
