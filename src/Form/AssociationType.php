@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Association;
-use App\Enum\Association\Category;
+use App\Enum\AssociationCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -27,9 +27,9 @@ class AssociationType extends AbstractType
         if (!$options['pre_new']) {
             $builder
                 ->add('categories', ChoiceType::class, [
-                    'choices' => Category::cases(),
-                    'choice_value' => fn (?Category $category) => $category?->value,
-                    'choice_label' => fn (Category $category) => 'association.category.'.$category->value,
+                    'choices' => AssociationCategory::cases(),
+                    'choice_value' => fn (?AssociationCategory $category) => $category?->value,
+                    'choice_label' => fn (AssociationCategory $category) => 'association.category.'.$category->value,
                     'multiple' => true,
                     'required' => false,
                     'label' => 'association.form.categories',

@@ -804,4 +804,29 @@ document.addEventListener('DOMContentLoaded', function () {
             eventRecurrence.textContent = '';
         }
     }
+
+    const settingsPage = document.querySelector('body[data-route="admin_settings"]');
+    if (settingsPage) {
+        const tbody = document.getElementById('settings-collection');
+        const addButton = document.getElementById('add-setting');
+        let index = tbody.children.length;
+
+        function bindRemoveButtons(scope = document) {
+            scope.querySelectorAll('.remove-setting').forEach(btn => {
+                btn.onclick = () => btn.closest('tr').remove();
+            });
+        }
+
+        bindRemoveButtons();
+
+        addButton.addEventListener('click', () => {
+            const template = addButton.dataset.template;
+            const html = template.replace(/__name__/g, index++);
+            const temp = document.createElement('tbody');
+            temp.innerHTML = html;
+            const row = temp.firstElementChild;
+            tbody.appendChild(row);
+            bindRemoveButtons(row);
+        });
+    }
 });

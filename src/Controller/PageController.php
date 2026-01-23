@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Enum\Association\Category;
+use App\Enum\AssociationCategory;
 use App\Repository\AssociationRepository;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +18,7 @@ class PageController extends AbstractController
             'events' => $eventRepo->getNearestEvents(),
             'associations' => $assocRepo->findBy([], ['name' => 'ASC']),
             'agendaNbDays' => 30,
-            'categories' => Category::cases(),
+            'categories' => AssociationCategory::cases(),
         ]);
     }
 

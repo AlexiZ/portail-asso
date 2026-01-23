@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres généraux{% endblock %}
+
+{% block body %}
+    <div class="p-3 mb-4 bg-white rounded-3 border">
+        <div class="container-fluid py-3">
+            <h1 class="fw-bold">Paramètres généraux</h1>
+
+            {{ form_start(form) }}
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Nom du paramètre</th>
+                            <th>Valeur</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="settings-collection">
+                        {% for settingForm in form.settings %}
+                            {% set disabled = settingForm.vars.value.isEditable ? '' : 'disabled' %}
+                            <tr>
+                                <td>{{ form_widget(settingForm['key'], {'attr': {'class': 'form-control '~disabled}}) }}</td>
+                                <td>{{ form_widget(settingForm['value'], {'attr': {'class': 'form-control '}}) }}</td>
+                                <td>{{ form_widget(settingForm['helpText'], {'attr': {'class': 'form-control '~disabled}}) }}</td>
+                                <td class="text-center">
+                                    {% if disabled == '' %}
+                                        <button type="button" class="btn btn-sm btn-danger text-white remove-setting">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if form.settings.children|length == 0 %}
+                    {% do form.settings.setRendered %}
+                {% endif %}
+
+                <div class="mb-3 text-end">
+                    <button type="button" class="btn btn-secondary" id="add-setting" data-template="{{ include('admin/_setting_prototype.html.twig')|e('html') }}">Ajouter un paramètre</button>
+                    <button class="btn btn-success text-white"><i class="fa fa-save"></i>&nbsp;Enregistrer les paramètres</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

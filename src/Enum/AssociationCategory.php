@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Enum\Association;
+namespace App\Enum;
 
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-enum Category: string implements TranslatableInterface
+enum AssociationCategory: string implements TranslatableInterface
 {
     case Animals = 'animals';
     case ArtsCulture = 'arts-culture';

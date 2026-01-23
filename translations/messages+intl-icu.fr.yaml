@@ -20,6 +20,7 @@ nav:
         logout: Déconnexion
         admin: Espace Admin
         moderation: Espace Modération
+        settings: Paramètres
         chairman: Gestion des associations
     lang:
         french: Français

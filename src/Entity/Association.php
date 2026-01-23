@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\Association\Category;
+use App\Enum\AssociationCategory;
 use App\Repository\AssociationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,7 +35,7 @@ class Association
     #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
-    #[ORM\Column(type: Types::JSON, nullable: true, enumType: Category::class)]
+    #[ORM\Column(type: Types::JSON, nullable: true, enumType: AssociationCategory::class)]
     #[Groups(['autocomplete'])]
     private ?array $categories = [];
 
@@ -131,7 +131,7 @@ class Association
         $this->name = $data['name'];
         $this->slug = $data['slug'];
         $this->categories = array_map(
-            fn (string $value) => Category::from($value),
+            fn (string $value) => AssociationCategory::from($value),
             explode(',', $data['categories']) ?? []
         );
         $this->logoFilename = $data['logoFilename'];
@@ -204,7 +204,7 @@ class Association
     public function getCategoriesValues(): ?array
     {
         $categories = [];
-        /** @var Category $category */
+        /** @var AssociationCategory $category */
         foreach ($this->categories as $category) {
             $categories[] = $category->value;
         }

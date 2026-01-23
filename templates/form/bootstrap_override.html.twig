@@ -1,0 +1,61 @@
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <div class="alert alert-danger mb-2">
+            <ul class="mb-0 ps-3">
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block form_help %}
+    {% if help is not empty %}
+        <div id="{{ id }}_help" class="text-muted fst-italic">
+            {{ help|trans(help_translation_parameters, translation_domain)|raw }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block _setting_collection_entry_widget %}
+    {% set renderedElements = [] %}
+    {% for child in form %}
+        <tr>
+            {% if child.vars.compound %}
+                {% for sub in child %}
+                    {% if not sub.rendered %}
+                        <td>{{ form_widget(sub, {'attr': {'class': 'form-control'}}) }}</td>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% if not child.rendered %}
+                    <td>{{ form_widget(child, {'attr': {'class': 'form-control'}}) }}</td>
+                {% endif %}
+            {% endif %}
+            <td class="text-center">
+                <button type="button" class="btn btn-sm btn-danger text-white remove-setting">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block collection_widget %}
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th>Clé</th>
+                <th>Valeur</th>
+                <th>Aide</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                {{ block('_setting_collection_entry_widget') }}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

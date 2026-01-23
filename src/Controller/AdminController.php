@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Setting;
 use App\Entity\User;
+use App\Form\SettingsCollectionType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -112,6 +116,31 @@ class AdminController extends AbstractController
 
         return $this->render('admin/user_edit.html.twig', [
             'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/settings', name: 'admin_settings')]
+    public function settings(Request $request): Response
+    {
+        $settings = new ArrayCollection($this->em->getRepository(Setting::class)->findAll());
+
+        $form = $this->createForm(SettingsCollectionType::class, [
+            'settings' => $settings,
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($form->get('settings')->getData() as $setting) {
+                $this->em->persist($setting);
+            }
+            $this->em->flush();
+
+            $this->addFlash('success', 'Paramètres enregistrés avec succès.');
+        }
+
+        return $this->render('admin/settings.html.twig', [
             'form' => $form->createView(),
         ]);
     }

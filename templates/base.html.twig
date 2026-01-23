@@ -37,7 +37,7 @@
                                 <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ app.user.email }}">
                                     {{ app.user.username }}
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                                     <li>
                                         <a class="dropdown-item" href="{{ path('user_account') }}">
                                             <i class="fa fa-user me-2"></i>{{ 'nav.user.account'|trans }}
@@ -56,6 +56,11 @@
                                             </a>
                                         </li>
                                         {% if is_granted('ROLE_ADMIN') %}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('admin_settings') }}">
+                                                    <i class="fa fa-cog me-2"></i>{{ 'nav.user.settings'|trans }}
+                                                </a>
+                                            </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{ path('admin_index') }}">
                                                     <i class="fa fa-lock me-2"></i>{{ 'nav.user.admin'|trans }}

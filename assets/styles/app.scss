@@ -428,3 +428,11 @@ body {
         flex-direction: column;
     }
 }
+
+[data-route="admin_settings"] {
+    .disabled {
+        --bs-text-opacity: 1;
+        color: var(--bs-secondary-color);
+        cursor: not-allowed;
+    }
+}
