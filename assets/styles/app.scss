@@ -430,7 +430,7 @@ body {
 }
 
 [data-route="admin_settings"] {
-    .disabled {
+    input[readonly="true"] {
         --bs-text-opacity: 1;
         color: var(--bs-secondary-color);
         cursor: not-allowed;

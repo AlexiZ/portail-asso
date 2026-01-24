@@ -47,16 +47,6 @@ readonly class EventFactory
         }
     }
 
-    protected function handleRRule(Event $event, FormInterface $form): void
-    {
-        dump($form->get('recurrenceRule')->getData());
-        $rruleData = $form->get('recurrenceRule')->getData();
-        $rrule = new RRule($rruleData);
-        dump($rrule);
-        $occurrences = $rrule->getOccurrencesAfter($event->getStartAt());
-        dump($occurrences);
-    }
-
     public function duplicate(Event $event): Event
     {
 

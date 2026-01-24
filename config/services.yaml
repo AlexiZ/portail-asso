@@ -28,6 +28,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    App\Service\SettingsService:
+        arguments:
+            $cache: '@cache.app'
+        tags:
+            - { name: 'twig.global', global: 'settings' }
+
     App\Twig\DateExtension:
         tags: [ 'twig.extension' ]
     App\Twig\LinkExtension:

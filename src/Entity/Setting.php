@@ -72,10 +72,6 @@ class Setting
 
     public function setValue(mixed $value): static
     {
-        if (!$this->isEditable) {
-            return $this;
-        }
-
         $this->value = $value;
 
         return $this;

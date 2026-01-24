@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Dto\SettingsCollection;
 use App\Entity\Setting;
 use App\Entity\User;
+use App\Factory\SettingFactory;
 use App\Form\SettingsCollectionType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -122,20 +123,15 @@ class AdminController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/settings', name: 'admin_settings')]
-    public function settings(Request $request): Response
+    public function settings(Request $request, SettingFactory $factory): Response
     {
-        $settings = new ArrayCollection($this->em->getRepository(Setting::class)->findAll());
-
-        $form = $this->createForm(SettingsCollectionType::class, [
-            'settings' => $settings,
-        ]);
+        $initialSettings = $this->em->getRepository(Setting::class)->findAll();
+        $dto = new SettingsCollection($initialSettings);
+        $form = $this->createForm(SettingsCollectionType::class, $dto);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('settings')->getData() as $setting) {
-                $this->em->persist($setting);
-            }
-            $this->em->flush();
+            $factory->update($dto, $form);
 
             $this->addFlash('success', 'Paramètres enregistrés avec succès.');
         }

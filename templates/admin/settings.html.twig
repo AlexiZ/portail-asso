@@ -19,13 +19,13 @@
                     </thead>
                     <tbody id="settings-collection">
                         {% for settingForm in form.settings %}
-                            {% set disabled = settingForm.vars.value.isEditable ? '' : 'disabled' %}
+                            {% set readonly = not settingForm.vars.value.isEditable %}
                             <tr>
-                                <td>{{ form_widget(settingForm['key'], {'attr': {'class': 'form-control '~disabled}}) }}</td>
-                                <td>{{ form_widget(settingForm['value'], {'attr': {'class': 'form-control '}}) }}</td>
-                                <td>{{ form_widget(settingForm['helpText'], {'attr': {'class': 'form-control '~disabled}}) }}</td>
+                                <td>{{ form_widget(settingForm['key'], {'attr': {'class': 'form-control', 'readonly': readonly ? 'true': false}}) }}</td>
+                                <td>{{ form_widget(settingForm['value']) }}</td>
+                                <td>{{ form_widget(settingForm['helpText'], {'attr': {'class': 'form-control', 'readonly': readonly ? 'true': false}}) }}</td>
                                 <td class="text-center">
-                                    {% if disabled == '' %}
+                                    {% if readonly == '' %}
                                         <button type="button" class="btn btn-sm btn-danger text-white remove-setting">
                                             <i class="fa fa-times"></i>
                                         </button>

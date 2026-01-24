@@ -2,9 +2,11 @@
 
 namespace App\Form;
 
+use App\Dto\SettingsCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SettingsCollectionType extends AbstractType
 {
@@ -16,6 +18,13 @@ class SettingsCollectionType extends AbstractType
             'allow_delete' => true,
             'by_reference' => false,
             'prototype' => true,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => SettingsCollection::class,
         ]);
     }
 }

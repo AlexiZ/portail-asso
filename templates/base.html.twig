@@ -98,11 +98,13 @@
                                 {{ app.request.locale|upper }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_locale': 'br'})) }}">
-                                        <img class="me-2" src="{{ asset('build/images/br.png') }}" alt="{{ 'nav.lang.breton'|trans }}">{{ 'nav.lang.breton'|trans }}
-                                    </a>
-                                </li>
+                                {% if settings.get('breton') %}
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_locale': 'br'})) }}">
+                                            <img class="me-2" src="{{ asset('build/images/br.png') }}" alt="{{ 'nav.lang.breton'|trans }}">{{ 'nav.lang.breton'|trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
                                 <li>
                                     <a class="dropdown-item" href="{{ path(app.request.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all())|merge({'_locale': 'fr'})) }}">
                                         <img class="me-2" src="{{ asset('build/images/fr.png') }}" alt="{{ 'nav.lang.french'|trans }}">{{ 'nav.lang.french'|trans }}
@@ -115,8 +117,7 @@
 
                 {% if is_granted('IS_IMPERSONATOR') %}
                     <div class="position-fixed top-0 start-50 translate-middle-x mt-2" style="z-index: 1050;">
-                        <a href="{{ path('admin_index', {'_switch_user': '_exit'}) }}"
-                           class="btn btn-danger shadow">
+                        <a href="{{ path('admin_index', {'_switch_user': '_exit'}) }}" class="btn btn-danger text-white shadow">
                             Redevenir administrateur
                         </a>
                     </div>
