@@ -238,6 +238,9 @@ event:
     edit:
         title: Kemmañ an darvoud {title}
         form:
+            book_room:
+                title: Na zisoñjit ket prenañ ar gambr
+                content: Gant an ti-kêr e vez roet kambroù d’ar c’hevredigezhioù evit netra, a c’heller prenañ betek div sizhunvezh a-raok deiziad raktreset an abadenn.
             submit: Evit hizivaat
             confirm: Hizivaet eo bet an darvoud gant berzh.
             back: Nullañ ha distreiñ d'ar bajenn darvoud

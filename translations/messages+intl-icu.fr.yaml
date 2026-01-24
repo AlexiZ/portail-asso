@@ -242,6 +242,9 @@ event:
     edit:
         title: Modifier l'événement {title}
         form:
+            book_room:
+                title: N'oubliez pas de réserver la salle
+                content: La mairie met gratuitement à disposition des associations des salles, réservables jusqu’à deux semaines avant la date prévue de l’événement.
             submit: Mettre à jour
             confirm: Événement mis à jour avec succès.
             back: Annuler et revenir sur la page de l'événement

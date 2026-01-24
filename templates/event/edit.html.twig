@@ -8,6 +8,14 @@
     {{ form_start(form) }}
         {% include 'event/_form.html.twig' with {'event': event} %}
 
+        {% if settings.get('roomReservationPlatform') %}
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading fs-5">💡 {{ 'event.edit.form.book_room.title'|trans }}</h4>
+                <p>{{ 'event.edit.form.book_room.content'|trans }}</p>
+                <hr>
+                <i class="fa-solid fa-arrow-right"></i>&nbsp;<a class="alert-link" target="_blank" href="{{ settings.get('roomReservationPlatform') }}">{{ settings.get('roomReservationPlatform') }}</a>
+            </div>
+        {% endif %}
         <div class="mt-3 d-flex justify-content-between">
             <a href="{{ path('event_show', { slug: event.slug }) }}" class="btn btn-secondary mt-3">
                 <i class="fa fa-arrow-left"></i>&nbsp;{{ 'event.edit.form.back'|trans }}
