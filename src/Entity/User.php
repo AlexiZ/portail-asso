@@ -34,14 +34,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     /** @var Collection<int, Subscription> */
-    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $subscriptions;
 
     #[ORM\OneToMany(targetEntity: Association::class, mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private Collection $chairedAssociations;
 
     /** @var Collection<int, Membership> */
-    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $memberships;
 
     #[ORM\Column(type: 'string', length: 64, nullable: true)]

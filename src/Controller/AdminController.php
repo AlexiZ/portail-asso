@@ -121,6 +121,21 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/user/{id}/delete', name: 'admin_user_delete')]
+    public function delete(
+        #[MapEntity(mapping: ['id' => 'id'])]
+        User $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $this->em->remove($user);
+        $this->em->flush();
+
+        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+
+        return $this->redirectToRoute('admin_index');
+    }
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/settings', name: 'admin_settings')]
     public function settings(Request $request, SettingFactory $factory): Response
