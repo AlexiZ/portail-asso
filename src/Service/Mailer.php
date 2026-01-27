@@ -20,7 +20,7 @@ class Mailer
     ) {
     }
 
-    public function sendResetPassword(User $user): void
+    public function resetPassword(User $user): void
     {
         $resetUrl = $this->urlGenerator->generate('app_reset_password', ['token' => $user->getResetToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
@@ -35,7 +35,7 @@ class Mailer
                 'json' => [
                     'to' => [
                         [
-                            'email' => $this->mailerDevRecipient ?? $user->getEmail(),
+                            'email' => $this->mailerDevRecipient ?: $user->getEmail(),
                         ],
                     ],
                     'templateId' => 1,

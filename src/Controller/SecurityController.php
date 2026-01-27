@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
-                $mailer->sendResetPassword($user);
+                $mailer->resetPassword($user);
             }
 
             $this->addFlash('info', 'Un email vient de vous être envoyé pour réinitialiser votre mot de passe.');
