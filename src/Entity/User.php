@@ -164,14 +164,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Association>
+     * @return Collection<int, Subscription>
      */
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
     }
 
-    public function addSubscription(Association $subscription): static
+    public function addSubscription(Subscription $subscription): static
     {
         if (!$this->subscriptions->contains($subscription)) {
             $this->subscriptions->add($subscription);
@@ -180,16 +180,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeSubscription(Association $subscription): static
+    public function removeSubscription(Subscription $subscription): static
     {
         $this->subscriptions->removeElement($subscription);
 
         return $this;
     }
 
-    public function isSubscribedTo(Association $association): bool
+    public function removeSubscriptionTo(Association $association): static
     {
-        return $this->subscriptions->contains($association);
+        foreach ($this->subscriptions as $subscription) {
+            if ($subscription->getAssociation() === $association) {
+                $this->subscriptions->removeElement($subscription);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isSubscribedTo(Association $association): ?Subscription
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if ($subscription->getAssociation() === $association) {
+                return $subscription;
+            }
+        }
+
+        return null;
     }
 
     public function getChairedAssociations(): Collection

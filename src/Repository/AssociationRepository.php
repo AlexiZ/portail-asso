@@ -32,8 +32,8 @@ class AssociationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->innerJoin('a.subscriptions', 's')
-            ->where('s.id = :userId')
-            ->setParameter('userId', $user->getId())
+            ->where('s.user = :user')
+            ->setParameter('user', $user)
             ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult()

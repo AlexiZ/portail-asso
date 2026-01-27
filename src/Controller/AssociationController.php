@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Association;
+use App\Entity\Subscription;
 use App\Entity\User;
 use App\Factory\AssociationFactory;
+use App\Factory\SubscriptionFactory;
 use App\Form\AssociationType;
 use App\Repository\AssociationRevisionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -207,6 +209,7 @@ class AssociationController extends AbstractController
     public function subscribe(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
+        SubscriptionFactory $subscriptionFactory,
     ): Response {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -215,15 +218,11 @@ class AssociationController extends AbstractController
             return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
         }
 
-        if ($user->isSubscribedTo($association)) {
-            $user->removeSubscription($association);
-            $this->addFlash('success', $this->translator->trans('association.unsubscription.success'));
-        } else {
-            $user->addSubscription($association);
+        if ($subscriptionFactory->switch($association, $user) instanceof Subscription) {
             $this->addFlash('success', $this->translator->trans('association.subscription.success'));
+        } else {
+            $this->addFlash('success', $this->translator->trans('association.unsubscription.success'));
         }
-        $this->em->persist($user);
-        $this->em->flush();
 
         return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
     }
