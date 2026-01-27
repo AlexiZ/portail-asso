@@ -115,3 +115,12 @@
         </div>
     </div>
 </div>
+
+{% if settings.get('roomReservationPlatform') %}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading fs-5">💡 {{ 'event.edit.form.book_room.title'|trans }}</h4>
+        <p>{{ 'event.edit.form.book_room.content'|trans }}</p>
+        <hr>
+        <i class="fa-solid fa-arrow-right"></i>&nbsp;<a class="alert-link" target="_blank" href="{{ settings.get('roomReservationPlatform') }}">{{ settings.get('roomReservationPlatform') }}</a>
+    </div>
+{% endif %}
