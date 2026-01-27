@@ -62,15 +62,15 @@ task('deploy:cleanup-repo', function () {
 task('upload_composer', function () {
     $composerPath = get('composer_path');
 
-    run('mkdir -p ' . escapeshellarg(dirname($composerPath)));
+    run('mkdir -p '.escapeshellarg(dirname($composerPath)));
 
     // Copie le fichier composer.phar depuis le workspace local du projet
-    run('cp {{release_path}}/composer.phar ' . escapeshellarg($composerPath));
+    run('cp {{release_path}}/composer.phar '.escapeshellarg($composerPath));
 });
 
 task('deploy:vendors', function () {
     // Installer les dépendances dans release_path
-    run("cd {{release_path}} && {{bin/composer}} install --no-interaction --prefer-dist --optimize-autoloader --verbose");
+    run('cd {{release_path}} && {{bin/composer}} install --no-interaction --prefer-dist --optimize-autoloader --verbose');
 });
 
 task('deploy:assets', function () {
@@ -111,22 +111,22 @@ task('download_medias', function () {
     $knownHosts = getenv('DEPLOY_KNOWN_HOSTS');
 
     // Côté remote : shared/public
-    $sharedPath = get('current_path') . '/../../shared';
+    $sharedPath = get('current_path').'/../../shared';
 
     // Options SSH dynamiques
     $sshOptions = [];
     if ($port) {
-        $sshOptions[] = '-p ' . escapeshellarg($port);
+        $sshOptions[] = '-p '.escapeshellarg($port);
     }
     if ($knownHosts) {
-        $sshOptions[] = '-o UserKnownHostsFile=' . escapeshellarg($knownHosts);
+        $sshOptions[] = '-o UserKnownHostsFile='.escapeshellarg($knownHosts);
     }
     $sshArgs = implode(' ', $sshOptions);
 
     // Remote → local
     $cmd = "ssh $sshArgs {$user}@{$host} "
-        . "\"tar -C {$sharedPath}/public -czf - uploads\" "
-        . "| tar -xzf - -C public";
+        ."\"tar -C {$sharedPath}/public -czf - uploads\" "
+        .'| tar -xzf - -C public';
 
     runLocally($cmd);
 });
