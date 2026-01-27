@@ -50,8 +50,8 @@ class Event
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $recurrenceRule = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $location;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $location = null;
 
     public function getId(): ?int
     {
@@ -185,12 +185,12 @@ class Event
         return $this;
     }
 
-    public function getLocation(): string
+    public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    public function setLocation(string $location): static
+    public function setLocation(?string $location): static
     {
         $this->location = $location;
 
