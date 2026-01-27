@@ -8,14 +8,12 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class SettingsService
 {
-    private EntityManagerInterface $em;
-    private CacheItemPoolInterface $cache;
     private string $cachePrefix = 'setting_';
 
-    public function __construct(EntityManagerInterface $em, CacheItemPoolInterface $cache)
-    {
-        $this->em = $em;
-        $this->cache = $cache;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CacheItemPoolInterface $cache,
+    ) {
     }
 
     /**
