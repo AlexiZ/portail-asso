@@ -71,10 +71,12 @@ class Association
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
+    /** @var Collection<int, AssociationRevision> */
     #[ORM\OneToMany(targetEntity: AssociationRevision::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['id' => 'ASC'])]
     private Collection $revisions;
 
+    /** @var Collection<int, Event> */
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'association', cascade: ['persist', 'remove'])]
     private Collection $events;
 
@@ -381,6 +383,18 @@ class Association
         return $this->revisions;
     }
 
+    public function getRevisionsSince(\DateTimeImmutable $date): Collection
+    {
+        $revisions = new ArrayCollection();
+        foreach ($this->revisions as $revision) {
+            if ($revision->getCreatedAt() > $date) {
+                $revisions->add($revision);
+            }
+        }
+
+        return $revisions;
+    }
+
     public function setRevisions(Collection $revisions): self
     {
         $this->revisions = $revisions;
@@ -391,6 +405,18 @@ class Association
     public function getEvents(): Collection
     {
         return $this->events;
+    }
+
+    public function getEventsSince(\DateTimeImmutable $date): Collection
+    {
+        $events = new ArrayCollection();
+        foreach ($this->events as $event) {
+            if ($event->getCreatedAt() > $date) {
+                $events->add($event);
+            }
+        }
+
+        return $events;
     }
 
     public function getPastEvents(): Collection

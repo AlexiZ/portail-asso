@@ -22,8 +22,28 @@ class Mailer
 
     public function resetPassword(User $user): void
     {
-        $resetUrl = $this->urlGenerator->generate('app_reset_password', ['token' => $user->getResetToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->send($user->getEmail(), [
+            'SUBJECT' => $this->translator->trans('email.forgot_password.subject'),
+            'BODY' => $this->twig->render('emails/security/forgot_password.html.twig', [
+                'username' => $user->getUsername(),
+                'resetUrl' => $this->urlGenerator->generate('app_reset_password', ['token' => $user->getResetToken()], UrlGeneratorInterface::ABSOLUTE_URL),
+            ]),
+        ]);
+    }
 
+    public function subscriptionReport(User $user, array $data): void
+    {
+        $this->send($user->getEmail(), [
+            'SUBJECT' => $this->translator->trans('email.subscriptions_report.subject'),
+            'BODY' => $this->twig->render('emails/subscriptions/report.html.twig', [
+                'username' => $user->getUsername(),
+                'data' => $data,
+            ]),
+        ]);
+    }
+
+    private function send(string $to, array $parameters): void
+    {
         $this->client->request(
             'POST',
             'https://api.brevo.com/v3/smtp/email',
@@ -35,17 +55,11 @@ class Mailer
                 'json' => [
                     'to' => [
                         [
-                            'email' => $this->mailerDevRecipient ?: $user->getEmail(),
+                            'email' => $this->mailerDevRecipient ?: $to,
                         ],
                     ],
                     'templateId' => 1,
-                    'params' => [
-                        'SUBJECT' => $this->translator->trans('email.forgot_password.subject'),
-                        'BODY' => $this->twig->render('emails/security/forgot_password.html.twig', [
-                            'username' => $user->getUsername(),
-                            'resetUrl' => $resetUrl,
-                        ]),
-                    ],
+                    'params' => $parameters,
                 ],
             ]
         );

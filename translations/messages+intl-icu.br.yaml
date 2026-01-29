@@ -382,3 +382,10 @@ email:
         content:
             link_label: Klikit war al liamm da-heul evit adderaouekaat ho ker-tremen
             link_cta: Adderaouekaat ma ger-tremen
+    subscriptions_report:
+        subject: Keleier eus ho kevredigezhioù
+        changes:
+            association: Kemmet eo bet ar bajenn {association}
+        content:
+            link: Gwelet war ar porched
+            manage_my_subscriptions: Gallout a rit merañ ho koumanantoù war pajennoù ar c'hevredigezhioù en ur glikañ war al <a href="{url}">liamm-mañ</a>.

@@ -34,4 +34,13 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function withSubscriptions(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.subscriptions', 's')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

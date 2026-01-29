@@ -400,3 +400,10 @@ email:
         content:
             link_label: Cliquez sur le lien suivant pour réinitialiser votre mot de passe
             link_cta: Réinitialiser mon mot de passe
+    subscriptions_report:
+        subject: Les actualités de vos associations
+        changes:
+            association: La page {association} a été modifiée
+        content:
+            link: Voir sur le portail
+            manage_my_subscriptions: Vous pouvez gérer vos abonnements aux pages associations en cliquant sur <a href="{url}">ce lien</a>.

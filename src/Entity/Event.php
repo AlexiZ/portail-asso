@@ -44,6 +44,9 @@ class Event
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $createdBy = null;
 
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $createdAt;
+
     #[ORM\Column(type: 'boolean')]
     private bool $isPublic = true;
 
@@ -52,6 +55,11 @@ class Event
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $location = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -157,6 +165,18 @@ class Event
     public function setCreatedBy(?User $createdBy): static
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

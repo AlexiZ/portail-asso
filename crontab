@@ -1,0 +1,4 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+
+0 8 * * 0 php bin/console --env=prod mail:subscriptions >> var/log/cron.log 2>&1

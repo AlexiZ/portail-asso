@@ -1,0 +1,26 @@
+<p>
+    {{ 'email.welcome'|trans({'%username%': username}) }},
+</p>
+<br>
+<p>
+    Que s'est-il passé pour vos associations depuis la dernière fois ?
+</p>
+<br>
+{% for association in data %}
+    <p><strong>{{ association.title }}</strong></p>
+    <ul>
+        {% for change in association.changes %}
+            <li>
+                {{ format_date(change.date) }} : {{ change.title }}. <a href="{{ change.link }}">{{ 'email.subscriptions_report.content.link'|trans }}</a>.
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+<br>
+<p>
+    {{ 'email.subscriptions_report.content.manage_my_subscriptions'|trans({'%url%': absolute_url(path('user_subscriptions'))})|raw }}
+</p>
+<br>
+<p>
+    {{ 'email.goodbye'|trans|raw }}
+</p>

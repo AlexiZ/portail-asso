@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 class Subscription
 {
     #[ORM\Id]
