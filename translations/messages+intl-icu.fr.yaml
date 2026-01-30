@@ -408,3 +408,13 @@ email:
         content:
             link: Voir sur le portail
             manage_my_subscriptions: Vous pouvez gérer vos abonnements aux pages associations en cliquant sur <a href="{url}">ce lien</a>.
+    request_membership:
+        subject: Nouvelle demande d'adhésion
+        content: >
+            Un utilisateur du portail souhaite être membre de votre association {association} sur celui-ci.<br>
+            En tant que gestionnaire, vous nous vous invitons à statuer sur cette demande depuis votre espace de gestion en cliquant sur <a href="{url}">ce lien</a>.
+    accept_membership:
+        subject: Votre demande d'adhésion a été acceptée
+        content: >
+            Votre demande d'adhésion à l'association {association} a été approuvée.<br>
+            Vous pouvez maintenant vous connecter sur le portail et consulter la <a href="{url}">page de l'association</a>.

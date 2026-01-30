@@ -30,6 +30,9 @@ doctrine:
                 alias: App
         controller_resolver:
             auto_mapping: false
+        dql:
+            string_functions:
+                JSON_CONTAINS: App\DQL\JsonContains
 
 when@test:
     doctrine:

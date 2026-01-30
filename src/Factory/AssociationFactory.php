@@ -4,7 +4,9 @@ namespace App\Factory;
 
 use App\Entity\Association;
 use App\Entity\AssociationRevision;
+use App\Entity\Membership;
 use App\Entity\User;
+use App\Repository\MembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormError;
@@ -25,6 +27,7 @@ readonly class AssociationFactory
         private EntityManagerInterface $em,
         #[Autowire('%kernel.project_dir%/public/uploads')]
         private string $uploadsDirectory,
+        private MembershipRepository $membershipRepository,
     ) {
     }
 
@@ -80,6 +83,39 @@ readonly class AssociationFactory
     public function applyRevision(AssociationRevision $revision, Association $association): void
     {
         $association->unserialize(json_decode($revision->getContentAfter(), true));
+
+        $this->em->persist($association);
+        $this->em->flush();
+    }
+
+    public function setOwner(Association $association, User $user): void
+    {
+        $association->setOwner($user);
+        $this->em->persist($association);
+
+        $membership = $this->membershipRepository->findOneBy(['association' => $association, 'user' => $user]);
+        if (!$membership instanceof Membership) {
+            $membership = new Membership();
+        }
+        $membership->setAssociation($association);
+        $membership->setUser($user);
+        $membership->setStatus(Membership::STATUS_ACCEPTED);
+        $user->addMembership($membership);
+
+        $this->em->persist($membership);
+        $this->em->flush();
+    }
+
+    public function setAnonymousEdition(Association $association, ?string $anonymousPageEdition, ?string $anonymousEventsEdition): void
+    {
+        $association->setEditablePageAnonymously(false);
+        $association->setEditableEventsAnonymously(false);
+        if ($anonymousPageEdition) {
+            $association->setEditablePageAnonymously(true);
+        }
+        if ($anonymousEventsEdition) {
+            $association->setEditableEventsAnonymously(true);
+        }
 
         $this->em->persist($association);
         $this->em->flush();

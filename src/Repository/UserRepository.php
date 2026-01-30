@@ -44,4 +44,20 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAdmins(int $limit = 0): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('JSON_CONTAINS(u.roles, :admin) = 1')
+            ->setParameter('admin', json_encode('ROLE_ADMIN'))
+        ;
+        if ($limit > 0) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

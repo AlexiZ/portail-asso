@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Association;
 use App\Entity\Membership;
 use App\Entity\User;
+use App\Factory\MembershipFactory;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -101,6 +102,7 @@ class UserController extends AbstractController
     public function askMembership(
         #[MapEntity(mapping: ['association' => 'slug'])]
         Association $association,
+        MembershipFactory $membershipFactory,
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -113,12 +115,7 @@ class UserController extends AbstractController
             'association' => $association,
         ]);
         if (!$membership instanceof Membership) {
-            $membership = new Membership();
-            $membership->setUser($user);
-            $membership->setAssociation($association);
-
-            $this->entityManager->persist($membership);
-            $this->entityManager->flush();
+            $membershipFactory->create($user, $association);
         }
 
         $this->addFlash('success', $this->translator->trans('user_account.ask_membership.success'));

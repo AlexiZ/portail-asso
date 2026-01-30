@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Association;
 use App\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -22,7 +23,7 @@ class Mailer
 
     public function resetPassword(User $user): void
     {
-        $this->send($user->getEmail(), [
+        $this->send([$user->getEmail()], [
             'SUBJECT' => $this->translator->trans('email.forgot_password.subject'),
             'BODY' => $this->twig->render('emails/security/forgot_password.html.twig', [
                 'username' => $user->getUsername(),
@@ -33,7 +34,7 @@ class Mailer
 
     public function subscriptionReport(User $user, array $data): void
     {
-        $this->send($user->getEmail(), [
+        $this->send([$user->getEmail()], [
             'SUBJECT' => $this->translator->trans('email.subscriptions_report.subject'),
             'BODY' => $this->twig->render('emails/subscriptions/report.html.twig', [
                 'username' => $user->getUsername(),
@@ -42,8 +43,37 @@ class Mailer
         ]);
     }
 
-    private function send(string $to, array $parameters): void
+    public function requestMembership(array $parameters): void
     {
+        $this->send($parameters['to'], [
+            'SUBJECT' => $this->translator->trans('email.request_membership.subject'),
+            'BODY' => $this->twig->render('emails/membership/request.html.twig', [
+                'username' => $parameters['username'],
+                'association' => $parameters['association'],
+            ]),
+        ]);
+    }
+
+    public function acceptMembership(User $user, Association $association): void
+    {
+        $this->send([$user->getEmail()], [
+            'SUBJECT' => $this->translator->trans('email.accept_membership.subject'),
+            'BODY' => $this->twig->render('emails/membership/accept.html.twig', [
+                'username' => $user->getUsername(),
+                'association' => $association,
+            ]),
+        ]);
+    }
+
+    private function send(array $to, array $parameters): void
+    {
+        $toEmail = [];
+        foreach ($to as $email) {
+            $toEmail[] = [
+                'email' => $this->mailerDevRecipient ?: $email,
+            ];
+        }
+
         $this->client->request(
             'POST',
             'https://api.brevo.com/v3/smtp/email',
@@ -53,11 +83,7 @@ class Mailer
                     'api-key' => $this->brevoApiKey,
                 ],
                 'json' => [
-                    'to' => [
-                        [
-                            'email' => $this->mailerDevRecipient ?: $to,
-                        ],
-                    ],
+                    'to' => $toEmail,
                     'templateId' => 1,
                     'params' => $parameters,
                 ],

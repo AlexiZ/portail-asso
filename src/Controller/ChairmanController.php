@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Association;
 use App\Entity\Membership;
 use App\Entity\User;
+use App\Factory\AssociationFactory;
+use App\Factory\MembershipFactory;
 use App\Repository\MembershipRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +25,8 @@ class ChairmanController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TranslatorInterface $translator,
+        private readonly AssociationFactory $associationFactory,
+        private readonly MembershipFactory $membershipFactory,
     ) {
     }
 
@@ -49,8 +53,6 @@ class ChairmanController extends AbstractController
         #[MapEntity(mapping: ['association' => 'slug'])]
         Association $association,
         Request $request,
-        EntityManagerInterface $em,
-        MembershipRepository $membershipRepository,
     ): Response {
         $userId = $request->request->get('user');
         if (!$userId) {
@@ -59,25 +61,12 @@ class ChairmanController extends AbstractController
             return $this->redirectToRoute('chairman_index');
         }
 
-        $user = $em->getRepository(User::class)->find($userId);
+        $user = $this->entityManager->getRepository(User::class)->find($userId);
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur introuvable.');
         }
 
-        $association->setOwner($user);
-        $em->persist($association);
-
-        $membership = $membershipRepository->findOneBy(['association' => $association, 'user' => $user]);
-        if (!$membership instanceof Membership) {
-            $membership = new Membership();
-        }
-        $membership->setAssociation($association);
-        $membership->setUser($user);
-        $membership->setStatus(Membership::STATUS_ACCEPTED);
-        $user->addMembership($membership);
-        $em->persist($membership);
-
-        $em->flush();
+        $this->associationFactory->setOwner($association, $user);
 
         $this->addFlash('success', sprintf('La présidence de "%s" a été mise à jour.', $association->getName()));
 
@@ -90,18 +79,8 @@ class ChairmanController extends AbstractController
         #[MapEntity(mapping: ['association' => 'slug'])]
         Association $association,
         Request $request,
-        EntityManagerInterface $em,
     ): Response {
-        $association->setEditablePageAnonymously(false);
-        $association->setEditableEventsAnonymously(false);
-        if ($request->get('anonymousPageEdition')) {
-            $association->setEditablePageAnonymously(true);
-        }
-        if ($request->get('anonymousEventsEdition')) {
-            $association->setEditableEventsAnonymously(true);
-        }
-        $em->persist($association);
-        $em->flush();
+        $this->associationFactory->setAnonymousEdition($association, $request->get('anonymousPageEdition'), $request->get('anonymousEventsEdition'));
 
         $this->addFlash('success', sprintf('Les droits de modification de "%s" ont été mis à jour.', $association->getName()));
 
@@ -143,17 +122,12 @@ class ChairmanController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $membership->setStatus(Membership::STATUS_ACCEPTED);
-
-        $this->entityManager->persist($membership);
-        $this->entityManager->flush();
+        $this->membershipFactory->accept($membership);
 
         $this->addFlash('success', $this->translator->trans('membership.accept.success', [
             'association' => $association->getName(),
             'user' => $user->getUsername(),
         ]));
-
-        // @TODO : send mail to accepted user
 
         return $this->redirectToRoute('chairman_index');
     }
@@ -173,14 +147,7 @@ class ChairmanController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $membership->setStatus(Membership::STATUS_REFUSED);
-        if ($user === $association->getOwner()) {
-            $association->setOwner(null);
-            $this->entityManager->persist($association);
-        }
-
-        $this->entityManager->persist($membership);
-        $this->entityManager->flush();
+        $this->membershipFactory->refuse($membership);
 
         $this->addFlash('success', $this->translator->trans('membership.refuse.success', [
             'association' => $association->getName(),

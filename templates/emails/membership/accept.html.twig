@@ -1,0 +1,11 @@
+<p>
+    {{ 'email.welcome'|trans({'%username%': username}) }},
+</p>
+<br>
+<p>
+    {{ 'email.accept_membership.content'|trans({'%association%': association.name, '%url%': absolute_url(path('association_show', {'slug': association.slug}))})|raw }}
+</p>
+<br>
+<p>
+    {{ 'email.goodbye'|trans|raw }}
+</p>
