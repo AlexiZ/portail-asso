@@ -390,3 +390,8 @@ email:
         content:
             link: Gwelet war ar porched
             manage_my_subscriptions: Gallout a rit merañ ho koumanantoù war pajennoù ar c'hevredigezhioù en ur glikañ war al <a href="{url}">liamm-mañ</a>.
+    accept_membership:
+        subject: Degemeret eo bet ho koulenn bezañ ezel.
+        content: >
+            Asantet eo bet ho koulenn evit mont e-barzh ar gevredigezh {association}.<br>
+            Bremañ e c'hallit mont e-barzh ar porched ha sellet ouzh pajenn ar <a href="{url}">gevredigezh</a>.
