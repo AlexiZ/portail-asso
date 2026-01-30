@@ -39,6 +39,7 @@ class UserRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
             ->innerJoin('u.subscriptions', 's')
+            ->where('u.activateWeeklyReport = 1')
             ->getQuery()
             ->getResult()
         ;

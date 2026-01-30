@@ -829,4 +829,20 @@ document.addEventListener('DOMContentLoaded', function () {
             bindRemoveButtons(row);
         });
     }
+
+    const switchWeeklyReport = document.getElementById('switchWeeklyReport');
+    if (switchWeeklyReport) {
+        switchWeeklyReport.addEventListener('change', () => {
+            const url = Routing.generate('user_subscriptions', {weekly_report: switchWeeklyReport.checked ? 1 : 0});
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .catch(error => {
+                console.error('Erreur dans l’appel Ajax : ', error);
+            });
+        });
+    }
 });

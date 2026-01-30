@@ -21,7 +21,7 @@ class SubscriptionsService
     ) {
     }
 
-    public function sendWeeklyReports(?string $from = null): void
+    public function sendWeeklyReports(?string $from = null): int
     {
         $usersWithSubscription = $this->em->getRepository(User::class)->withSubscriptions();
 
@@ -64,5 +64,7 @@ class SubscriptionsService
 
             $this->mailer->subscriptionReport($user, $data);
         }
+
+        return count($usersWithSubscription);
     }
 }

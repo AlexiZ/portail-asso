@@ -332,6 +332,7 @@ user_subscriptions:
         <b>Comment ça marche ?</b><br>
         Une fois par semaine, vous recevrez un mail vous informant des modifications et nouveaux événements sur les pages auxquelles vous êtes abonnés.<br>
         Vous ne recevrez pas de mail si les pages auxquelles vous êtes abonné n'ont pas changé.
+    cta: Cliquez ici pour activer/désactiver le mail hebdomadaire.
     empty_list: Vous n'avez aucun abonnement.
 
 search:

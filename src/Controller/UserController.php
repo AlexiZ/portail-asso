@@ -9,6 +9,7 @@ use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -71,8 +72,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/mes-abonnements', name: 'user_subscriptions')]
-    public function subscriptions(): Response
+    #[Route('/mes-abonnements', name: 'user_subscriptions', options: ['expose' => true])]
+    public function subscriptions(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -82,8 +83,17 @@ class UserController extends AbstractController
 
         $associations = $this->entityManager->getRepository(Association::class)->getUserSubs($user);
 
+        if ($request->isMethod('POST') && $request->isXmlHttpRequest() && $request->query->has('weekly_report')) {
+            $user->setActivateWeeklyReport((bool) $request->query->get('weekly_report'));
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return new JsonResponse();
+        }
+
         return $this->render('user/subscriptions.html.twig', [
             'associations' => $associations,
+            'weeklyReport' => $user->isActivateWeeklyReport(),
         ]);
     }
 

@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $resetTokenExpiresAt = null;
 
+    #[ORM\Column(nullable: false, options: ['default' => true])]
+    private bool $activateWeeklyReport = true;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
@@ -282,6 +285,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): User
     {
         $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function isActivateWeeklyReport(): bool
+    {
+        return $this->activateWeeklyReport;
+    }
+
+    public function setActivateWeeklyReport(bool $activateWeeklyReport): User
+    {
+        $this->activateWeeklyReport = $activateWeeklyReport;
 
         return $this;
     }

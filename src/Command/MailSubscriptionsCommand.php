@@ -34,9 +34,9 @@ class MailSubscriptionsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $from = $input->getOption('from');
 
-        $this->subscriptionsService->sendWeeklyReports($from);
+        $numberReportsSent = $this->subscriptionsService->sendWeeklyReports($from);
 
-        $io->success('Reports sent');
+        $io->success(sprintf('Report sent to %s users', $numberReportsSent));
 
         return Command::SUCCESS;
     }
