@@ -81,6 +81,7 @@ association:
         leisure: Dudi
         music: Sonerezh
         heritage: Hêrezh
+        other: A bep seurt
         professional-student-network : Rouedadoù micherel ha studierien
         health: Yec'hed
         science-technology: Skiantoù ha teknologiezhioù
@@ -95,6 +96,7 @@ association:
             title: Penaos mont e-barzh ar gevredigezh ? (an holl vaeziennoù a zo dibar)
             name: Anv an den privilejiet
             function: Arc'hwel an den-mañ
+            add: Ajouter une personne à contacter
             address: Chomlec'h ar gevredigezh |
             email: Postel darempred
             phone: Pellgomz
@@ -114,8 +116,11 @@ association:
         confirm: Fellout a ra din krouiñ ur bajenn gevredigezh nevez
     add:
         title: Krouiñ ur bajenn gevredigezh
+        choose_one: Unan eus ar c'hevredigezhioù-se eo hemañ ?
+        no_results: N'eus kevredigezh ebet gant an anv-mañ evit ar mare. Gallout a rit eta krouiñ ur bajenn nevez evit ar gevredigezh-mañ en ur glikañ war ar bouton amañ dindan.
         save: Enrollañ ar bajenn gevredigezh-mañ
         cancel: Nullañ ha distreiñ d'ar gêr
+        confirm: Ur gevredigezh nevez zo bet krouet gant berzh.
     edit:
         title: Kemmañ ar bajenn eus {association}
         save: Enrollañ ar c'hemmoù
@@ -183,7 +188,7 @@ contact:
         remove: Dilemel an den-mañ
 
 revision:
-    title: stummoù kent
+    title: Stummoù kent
     created_at: Krouet d'an {createdAt}
     created_at_by: Krouet d'an {createdAt} gant {createdBy}
     modal:

@@ -3,46 +3,73 @@
 {% block title %}{{ event.title }}{% endblock %}
 
 {% block body %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>{{ event.title }}</h1>
+    <div class="text-end mb-4">
         <div>
             {% if is_granted('edit_event', event) %}
-                <a href="{{ path('event_edit', { id: event.id }) }}" class="btn btn-primary">
-                    <i class="fa fa-edit"></i>&nbsp;{{ 'event.show.actions.edit'|trans }}
+                <a href="{{ path('event_edit', { id: event.id }) }}" class="btn btn-primary rounded-pill fw-semibold me-2">
+                    <i class="fa fa-edit"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'event.show.actions.edit'|trans }}</span>
+                </a>
+            {% endif %}
+            {% if is_granted('edit_event', event) %}
+                <a href="{{ path('event_duplicate', {id: event.id}) }}" class="btn btn-outline-primary rounded-pill me-2">
+                    <i class="fa fa-clone"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'event.show.actions.duplicate'|trans }}</span>
+                </a>
+            {% endif %}
+            {% if is_granted('delete_event', event) %}
+                <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-outline-primary rounded-pill" onclick="return confirm('{{ 'event.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
+                    <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'event.show.actions.delete.title'|trans }}</span>
                 </a>
             {% endif %}
         </div>
     </div>
 
-    <p class="text-muted">
-        {{ format_date(event.startAt) }}{% if event.isPublic %} - {{ 'event.show.is_public'|trans }}{% endif %}{% if event.location|default %} - {{ event.location }}{% endif %}
+    <div class="card border-secondary-subtle p-3">
+        <div class="card-body p-3">
+            <div class="row">
+                {% if event.posterFilename|default %}
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <img src="{{ asset('/uploads/' ~ event.posterFilename) }}" alt="{{ event.title }}" class="img-fluid img-responsive">
+                        </div>
+                    </div>
+                {% endif %}
 
-        {% if event.recurrenceRule %}
-            (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)
-        {% endif %}
-    </p>
+                <div class="col-md-{% if event.posterFilename|default %}9{% else %}12{% endif %}">
+                    <h1 class="fs-3 fw-semibold my-1 mb-3">{{ event.title }}</h1>
+                    <p class="my-0 mb-2">
+                        <small class="fst-italic">
+                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                            {% if event.recurrenceRule %}
+                                (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)
+                            {% endif %}
+                        </small>
+                    </p>
+                    <p class="my-0 mb-2">
+                        {% if event.location|default %}
+                            <small class="fst-italic">
+                                <i class="fa-solid fa-location-dot text-primary pe-1"></i>&nbsp;{{ event.location }}
+                            </small>
+                        {% endif %}
+                    </p>
+                    <p class="my-0">
+                        {% if event.isPublic|default %}
+                            <small class="fst-italic">
+                                <i class="fa-solid fa-users text-primary pe-1"></i>&nbsp;Événement public
+                            </small>
+                        {% endif %}
+                    </p>
 
-    <div class="row">
-        <div class="col-md-{% if event.posterFilename|default %}9{% else %}12{% endif %}">
-            <div class="card mb-4">
-                <div class="card-body">
-                    {{ event.longDescription|raw }}
+                    <div class="mt-4">
+                        {{ event.longDescription|raw }}
+                    </div>
+
+                    <p class="m-0 mt-4">
+                        <small>
+                            Par <a href="{{ path('association_show', {slug: event.association.slug}) }}" class="text-primary">{{ event.association.name }}</a>
+                        </small>
+                    </p>
                 </div>
             </div>
         </div>
-
-        {% if event.posterFilename|default %}
-            <div class="col-md-3">
-                <div class="text-center">
-                    <img src="{{ asset('/uploads/' ~ event.posterFilename) }}" alt="{{ event.title }}" class="img-fluid img-responsive">
-                </div>
-            </div>
-        {% endif %}
     </div>
-
-    <p class="mt-3">
-        <a href="{{ path('association_show', { slug: event.association.slug }) }}">
-            {{ 'event.show.back'|trans({'%association%': event.association.name}) }}
-        </a>
-    </p>
 {% endblock %}

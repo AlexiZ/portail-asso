@@ -150,14 +150,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(data => {
                         const query = associationAutocompleteField.value.trim();
                         const resultsDivContent = resultsDiv.querySelector('#content');
+                        const resultsDivMessage = resultsDiv.querySelector('#message');
 
                         resultsDivContent.innerHTML = '';
                         resultsDiv.classList.remove('d-none');
+                        resultsDivMessage.classList.remove('d-none');
 
                         if (data.length === 0) {
                             const p = document.createElement('p');
-                            p.innerHTML = '<em>Aucune page association ne porte ce nom.</em>';
+                            p.innerHTML = resultsDivContent.dataset.none;
                             resultsDivContent.appendChild(p);
+                            resultsDivMessage.classList.add('d-none');
 
                             return;
                         }
@@ -167,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         data.forEach(association => {
                             const a = document.createElement('a');
-                            a.classList.add('list-group-item', 'list-group-item-action');
+                            a.classList.add('list-group-item', 'list-group-item-action', 'border-0', 'border-bottom', 'text-black');
                             a.href = Routing.generate('association_show', {'slug': association.slug});
 
                             const regex = new RegExp(`(${query})`, 'gi');

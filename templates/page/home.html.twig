@@ -3,65 +3,74 @@
 {% block title %}{{ 'home.title'|trans }}{% endblock %}
 
 {% block shepherd %}
-    <li class="nav-item border-end px-1">
-        <a class="nav-link" id="shepherdTrigger" data-page="{{ app.request.attributes.get('_route') }}" href="javascript:void(0);"><i class="fa-regular fa-circle-question"></i></a>
-    </li>
+    <a class="nav-link px-0 pb-0" id="shepherdTrigger" data-page="{{ app.request.attributes.get('_route') }}" href="javascript:void(0);"><i class="fa-regular fa-circle-question"></i></a>
 {% endblock %}
 
 {% block body %}
-    <div class="p-3 mb-4 bg-white rounded-3 border">
-        <div class="container-fluid py-3">
-            <h1 class="fw-bold">{{ 'home.introduction.title'|trans }}</h1>
-            <p>{{ 'home.introduction.content'|trans|raw }}</p>
-            <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3" id="addAssociation">
-                <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
-            </a>
+    <div class="d-flex flex-sm-column flex-md-row mb-3 mb-md-5">
+        <div class="me-md-3 mb-sm-3 mb-md-0">
+            <div class="p-4 pt-5 bg-white rounded-3 border h-100">
+                <div class="container-fluid h-100">
+                    <div class="d-flex flex-column justify-content-between h-100">
+                        <div>
+                            <h1 class="fw-bold fs-4 mb-4">{{ 'home.introduction.title'|trans }}</h1>
+                            <p>{{ 'home.introduction.content'|trans|raw }}</p>
+                        </div>
+                        <div>
+                            <a href="{{ path('association_pre_new') }}" class="btn btn-primary rounded-pill fw-semibold mb-3" id="addAssociation">
+                                <i class="fa-solid fa-circle-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div id="agendaContainer">
-        <div class="d-flex justify-content-between mb-4 flex-column-sm">
-            <h2>
-                {{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}
-            </h2>
-
-            {% include 'event/_selector.html.twig' %}
-        </div>
-
-        <div class="mb-5" id="">
-            {% if events is not empty %}
-                {% include 'event/_mosaic.html.twig' with {events: events} %}
-                {% include 'event/_list.html.twig' with {events: events} %}
-                {% include 'event/_calendar.html.twig' with {events: events} %}
-            {% else %}
-                <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
-            {% endif %}
+        <div class="col-sm-12 col-md-6">
+            <div id="agendaContainer" class="p-4 pt-5 bg-white rounded-3 border h-100">
+                <div class="d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <h2 class="fw-bold fs-4 mb-4">{{ 'home.agenda_days'|trans({'%days%': agendaNbDays}) }}</h2>
+                        {% if events is not empty %}
+                            {% include 'event/_mosaic.html.twig' with {events: events} %}
+                        {% else %}
+                            <div class="alert alert-info">{{ 'home.events.none'|trans({'%days%': agendaNbDays}) }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-outline-primary rounded-pill mb-3">
+                            <i class="fa-solid fa-calendar-days pe-1"></i>&nbsp;{{ 'home.events.see_all'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="listAssociations">
-        <div class="d-flex justify-content-between flex-column-sm">
+        <div class="d-flex justify-content-between flex-column-sm mb-4">
             <h2>{{ 'home.associations.title'|trans }}</h2>
 
-            <form method="GET" action="{{ path('search') }}" id="searchBar">
-                <div class="input-group">
-                    <div class="dropdown input-group-text p-0">
-                        <button class="btn btn-default dropdown-toggle rounded-end-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-default="Catégorie">
+            <form method="GET" action="{{ path('search') }}" id="searchBar" class="d-flex flex-sm-column flex-md-row">
+                <div class="dropdown me-sm-0 me-md-3 mb-sm-3 mb-md-0">
+                    <button class="btn btn-outline-secondary bg-white rounded-pill text-muted dropdown-toggle px-3 py-2 border-secondary caret-custom text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'home.associations.list.filter.category'|trans }}
+                    </button>
+
+                    <ul class="dropdown-menu p-0">
+                        <li class="px-2 py-1 hoverable category-filter-list" data-category="all">
                             {{ 'home.associations.list.filter.category'|trans }}
-                        </button>
-                        <ul class="dropdown-menu p-0">
-                            <li class="px-2 py-1 hoverable category-filter-list" role="button" data-category="all">
-                                {{ 'home.associations.list.filter.category'|trans }}
+                        </li>
+                        {% for category in categories %}
+                            <li class="px-2 py-1 hoverable category-filter-list" data-category="{{ category.value }}">
+                                <i class="{{ category.icon }} text-{{ category.badge }}"></i>&nbsp;{{ ('association.category.' ~ category.value)|trans }}
                             </li>
-                            {% for category in categories %}
-                                <li class="px-2 py-1 hoverable category-filter-list" role="button" data-category="{{ category.value }}">
-                                    <i class="{{ category.icon }} text-{{ category.badge }}"></i>&nbsp;{{ ('association.category.' ~ category.value)|trans }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <input class="form-control" type="search" placeholder="{{ 'home.associations.list.filter.text.placeholder'|trans }}" aria-label="{{ 'home.associations.list.filter.text.title'|trans }}" name="search" autocomplete="off">
-                    <button class="input-group-text btn btn-outline-success" type="submit"><i class="fa fa-search"></i></button>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="input-group rounded-pill">
+                    <input class="form-control rounded-pill border-secondary px-3 py-1 mb-1" type="search" placeholder="{{ 'home.associations.list.filter.text.placeholder'|trans }}" aria-label="{{ 'home.associations.list.filter.text.title'|trans }}" name="search" autocomplete="off">
+                    <button class="input-group-text btn btn-outline-default border-start-0 text-muted position-absolute" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </form>
         </div>
@@ -70,8 +79,10 @@
             {% include 'association/_list.html.twig' with {'associations': associations} %}
         </div>
 
-        <a href="{{ path('association_pre_new') }}" class="btn btn-success text-white mb-3">
-            <i class="fa fa-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
-        </a>
+        <div class="text-center w-100">
+            <a href="{{ path('association_pre_new') }}" class="btn btn-primary rounded-pill fw-semibold mb-3">
+                <i class="fa-solid fa-circle-plus"></i>&nbsp;{{ 'home.associations.add.title'|trans }}
+            </a>
+        </div>
     </div>
 {% endblock %}

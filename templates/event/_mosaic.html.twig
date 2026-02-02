@@ -1,63 +1,55 @@
 <div class="embla" data-events="mosaic">
+    <div class="embla__controls d-none d-md-block">
+        <div class="embla__buttons">
+            <button class="embla__button embla__button--prev text-muted" type="button">
+                <svg class="embla__button__svg" viewBox="0 0 14 20">
+                    <path d="M0.46875 9.60156L7.96875 2.10156C8.47656 1.63281 9.25781 1.63281 9.76562 2.10156C10.2344 2.60938 10.2344 3.39062 9.76562 3.89844L3.125 10.5L9.76562 17.1016C10.2344 17.6094 10.2344 18.3906 9.76562 18.8984C9.25781 19.3672 8.47656 19.3672 7.96875 18.8984L0.46875 11.3984C0 10.8906 0 10.1094 0.46875 9.60156Z" fill="currentColor"></path>
+                </svg>
+            </button>
+
+            <button class="embla__button embla__button--next text-muted" type="button">
+                <svg class="embla__button__svg" viewBox="0 0 13 20">
+                    <path d="M12.1484 9.60156C12.6562 10.1094 12.6562 10.8906 12.1484 11.3984L4.64844 18.8984C4.17969 19.3672 3.35938 19.3672 2.89062 18.8984C2.38281 18.3906 2.38281 17.6094 2.89062 17.1016L9.49219 10.5L2.89062 3.89844C2.38281 3.39062 2.38281 2.60938 2.89062 2.10156C3.35938 1.63281 4.17969 1.63281 4.64844 2.10156L12.1484 9.60156Z" fill="currentColor"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <div class="embla__viewport">
         <div class="embla__container">
             {% for event in events %}
                 <div class="embla__slide">
-                    <div class="card h-100">
+                    <div class="card h-100 border-0">
                         <div class="card-body row">
-                            <div class="col-sm-12 col-md-8 d-flex flex-column justify-content-lg-between">
-                                <h5>
-                                    <a href="{{ path('event_show', {slug: event.slug}) }}">{{ event.title }}</a>
-                                    <br>
-                                    <small>
-                                        {{ format_date(event.startAt) }}{% if event.location|default %} - {{ event.location }}{% endif %}
-                                    </small>
+                            <div class="d-sm-none d-md-block col-md-4 px-0">
+                                <img src="{{ asset('/uploads/' ~ (event.posterFilename|default(event.association.logoFilename))) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
+                            </div>
+
+                            <div class="col-sm-12 col-md-8 d-flex flex-column ps-4">
+                                <h5 class="text-primary fw-bold mb-3">
+                                    <a href="{{ path('event_show', {slug: event.slug}) }}" class="text-decoration-none">{{ event.title }}</a>
                                 </h5>
+                                <small class="mb-2 fst-italic">
+                                    <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                                </small>
+                                {% if event.location|default %}
+                                    <small class="mb-2 fst-italic">
+                                        <i class="fa-solid fa-location-dot text-primary pe-1"></i>&nbsp;{{ event.location }}
+                                    </small>
+                                {% endif %}
                                 {% if event.shortDescription|default %}
-                                    <div class="mb-1 h-100">
+                                    <div class="mt-2">
                                         <p>{{ event.shortDescription|striptags|raw }}</p>
                                     </div>
                                 {% endif %}
                                 <small>
-                                    Par <a href="{{ path('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a>
+                                    Par <a href="{{ path('association_show', {slug: event.association.slug}) }}" class="text-primary">{{ event.association.name }}</a>
                                 </small>
-                            </div>
-
-                            <div class="d-sm-none d-md-block col-md-4 m-auto">
-                                <img src="{{ asset('/uploads/' ~ (event.posterFilename|default(event.association.logoFilename))) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
-
-                                {% if is_granted('edit_event', event) %}
-                                    <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-primary position-absolute" title="{{ 'association.show.actions.edit'|trans }}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
-        </div>
-    </div>
-
-    <div class="embla__controls">
-        <div class="embla__buttons">
-            <button class="embla__button embla__button--prev" type="button">
-                <svg class="embla__button__svg" viewBox="0 0 532 532">
-                    <path
-                        fill="currentColor"
-                        d="M355.66 11.354c13.793-13.805 36.208-13.805 50.001 0 13.785 13.804 13.785 36.238 0 50.034L201.22 266l204.442 204.61c13.785 13.805 13.785 36.239 0 50.044-13.793 13.796-36.208 13.796-50.002 0a5994246.277 5994246.277 0 0 0-229.332-229.454 35.065 35.065 0 0 1-10.326-25.126c0-9.2 3.393-18.26 10.326-25.2C172.192 194.973 332.731 34.31 355.66 11.354Z"
-                    ></path>
-                </svg>
-            </button>
-
-            <button class="embla__button embla__button--next" type="button">
-                <svg class="embla__button__svg" viewBox="0 0 532 532">
-                    <path
-                        fill="currentColor"
-                        d="M176.34 520.646c-13.793 13.805-36.208 13.805-50.001 0-13.785-13.804-13.785-36.238 0-50.034L330.78 266 126.34 61.391c-13.785-13.805-13.785-36.239 0-50.044 13.793-13.796 36.208-13.796 50.002 0 22.928 22.947 206.395 206.507 229.332 229.454a35.065 35.065 0 0 1 10.326 25.126c0 9.2-3.393 18.26-10.326 25.2-45.865 45.901-206.404 206.564-229.332 229.52Z"
-                    ></path>
-                </svg>
-            </button>
         </div>
     </div>
 </div>

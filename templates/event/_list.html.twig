@@ -12,7 +12,7 @@
 
                     {% if is_granted('edit_event', event) %}
                         <p class="mb-0">
-                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-primary" title="{{ 'association.show.actions.edit'|trans }}">
+                            <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-sm btn-primary rounded-pill fw-semibold" title="{{ 'association.show.actions.edit'|trans }}">
                                 <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
                             </a>
                         </p>

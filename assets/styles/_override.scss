@@ -1,0 +1,32 @@
+body {
+    --bs-body-color: #27185D;
+    --bs-secondary-color: #A7A5CB;
+    --bs-body-font-family: 'Poppins', sans-serif;
+    --bs-link-hover-color-rgb: --bs-body-color;
+    --bs-link-color-rgb: --bs-body-color;
+}
+
+.btn-primary {
+    --bs-btn-bg: #6E00FF !important;
+    --bs-btn-hover-bg: #27185D !important;
+}
+
+.btn-info:hover {
+    background-color: $info !important;
+    opacity: .9 !important;
+}
+
+.background-default {
+    background-color: $default !important;
+}
+
+.navbar {
+    --bs-navbar-brand-color: #380069;
+}
+
+.d-inline-block.d-sm-none {
+    display: inline-block !important;
+    @media (max-width: 768px) {
+        display: none !important;
+    }
+}

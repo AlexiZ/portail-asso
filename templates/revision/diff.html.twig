@@ -6,7 +6,7 @@
 
         <div>
             {% if is_granted('edit', revision.association) %}
-                <a class="btn btn-primary" href="{{ path('association_rollback', {'slug': association.slug, 'revisionId': revision.id}) }}">
+                <a class="btn btn-primary rounded-pill fw-semibold" href="{{ path('association_rollback', {'slug': association.slug, 'revisionId': revision.id}) }}">
                     {{ 'revision.modal.actions.apply'|trans }}
                 </a>
             {% endif %}
