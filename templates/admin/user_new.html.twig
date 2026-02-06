@@ -3,7 +3,11 @@
 {% block title %}Ajouter un utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Ajouter un utilisateur</h1>
+    <div class="card border-secondary-subtle rounded-3">
+        <div class="card-body px-4 pt-5 pb-3">
+            <h1 class="fs-4 fw-semibold mb-3">Ajouter un utilisateur</h1>
 
-    {% include 'user/form.html.twig' %}
+            {% include 'user/form.html.twig' %}
+        </div>
+    </div>
 {% endblock %}

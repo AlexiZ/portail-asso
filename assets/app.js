@@ -8,6 +8,9 @@ import Routing from 'fos-router';
 import { RRule } from 'rrule';
 import { rruleFrFr } from "./plugins/rruleFrFr";
 import { rruleBr } from "./plugins/rruleBr";
+import flatpickr from "flatpickr";
+import { French } from "flatpickr/dist/l10n/fr";
+import { Breton } from "./plugins/flatpickr/br";
 
 import routes from '../public/js/fos_js_routes.json';
 Routing.setRoutingData(routes);
@@ -846,6 +849,80 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Erreur dans l’appel Ajax : ', error);
             });
+        });
+    }
+
+    const calendarFilter = document.querySelector('.flatpickr');
+    if (calendarFilter) {
+        const events = document.querySelectorAll('.event-item');
+        let enabledDates = [];
+        events.forEach(event => {
+            enabledDates.push(new Date(event.dataset.from));
+        });
+        const filterEvents = (dateFrom, dateTo) => {
+            if (dateTo) {
+                dateTo.setHours(23, 59, 59, 999);
+            }
+            if (events) {
+                events.forEach(event => {
+                    const eventDate = new Date(event.dataset.from);
+                    if (dateFrom && dateTo) {
+                        event.classList.toggle('d-none', eventDate < dateFrom || eventDate > dateTo);
+                    } else if (dateFrom) {
+                        event.classList.toggle('d-none', eventDate < dateFrom);
+                    } else if (dateTo) {
+                        event.classList.toggle('d-none', eventDate > dateTo);
+                    } else {
+                        event.classList.remove('d-none');
+                    }
+                })
+            }
+        };
+        const activeDays = instance => {
+            const days = instance.days;
+            days.childNodes.forEach(day => {
+                const dayKey = d => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+                if (enabledDates.some(d => dayKey(d) === dayKey(day.dateObj))) {
+                    day.classList.add('active');
+                }
+            });
+        };
+        flatpickr(calendarFilter, {
+            locale: calendarFilter.dataset.locale,
+            mode: 'range',
+            dateFormat: "D j F",
+            wrap: true,
+            onOpen: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+            },
+            onMonthChange: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+
+                const reset = calendarFilter.querySelector('[data-clear]');
+                const input = calendarFilter.querySelector('[data-input]');
+                if (0 === selectedDates.length) {
+                    reset.classList.add('d-none');
+                    input.innerText = calendarFilter.dataset.default;
+                    filterEvents();
+
+                    return;
+                }
+
+                let prefix = calendarFilter.dataset.single;
+                const dateFrom = selectedDates[0];
+                const dateTo = selectedDates[1];
+                if (selectedDates.length > 1 && dateFrom.getTime() !== dateTo.getTime()) {
+                    prefix = calendarFilter.dataset.multiple;
+                }
+                input.innerText = prefix + ' ' + dateStr;
+                reset.classList.remove('d-none');
+
+                filterEvents(dateFrom, dateTo || null);
+            },
         });
     }
 });

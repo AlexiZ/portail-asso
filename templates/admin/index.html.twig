@@ -3,13 +3,9 @@
 {% block title %}Administration{% endblock %}
 
 {% block body %}
-    <h1>Administration</h1>
-
-    <div class="card">
-        <div class="card-header">
-            <h3>Liste des utilisateurs</h3>
-        </div>
-        <div class="card-body">
+    <div class="card border-secondary-subtle rounded-3">
+        <div class="card-body px-4 pt-5 pb-3">
+            <h1 class="fs-4 fw-semibold mb-3">Liste des utilisateurs</h1>
 
             <table class="table table-bordered table-hover">
                 <thead>
@@ -25,25 +21,25 @@
                         <tr>
                             <td>{{ user.id }}</td>
                             <td>{{ user.firstname|default() }} {{ user.lastname|default() }} &#60;{{ user.email }}&#62;</td>
-                            <td>{{ user.roles|default|join(', ') }}</td>
+                            <td>{{ ('user.role.' ~ user.highestRole|lower)|trans }}</td>
                             <td>
-                                <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-sm btn-primary rounded-pill fw-semibold" title="Modifier">
+                                <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-sm btn-primary rounded-circle fw-semibold" title="Modifier">
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a href="{{ path('admin_user_delete', { id: user.id }) }}" onclick="return confirm('Êtes-vous sûr ? Cette action est irréversible.');" class="btn btn-sm btn-outline-primary rounded-pill" title="Supprimer">
+                                <a href="{{ path('admin_user_delete', { id: user.id }) }}" onclick="return confirm('Êtes-vous sûr ? Cette action est irréversible.');" class="btn btn-sm btn-outline-primary rounded-circle" title="Supprimer">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <a href="{{ path('admin_toggle_role', { id: user.id }) }}" class="btn btn-sm btn-outline-primary rounded-pill" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
+                                <a href="{{ path('admin_toggle_role', { id: user.id }) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
                                     {% if 'ROLE_MODERATOR' in user.roles %}
                                         <i class="fa fa-user-xmark"></i>
                                     {% else %}
                                         <i class="fa fa-user-shield"></i>
                                     {% endif %}
                                 </a>
-                                <a href="{{ path('homepage', { '_switch_user': user.email }) }}" class="btn btn-sm btn-info text-white" title="Se connecter en tant que">
+                                <a href="{{ path('homepage', { '_switch_user': user.email }) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="Se connecter en tant que">
                                     <i class="fa fa-address-card"></i>
                                 </a>
-                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#managePagesModal{{ user.id }}" title="Voir les pages association">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#managePagesModal{{ user.id }}" title="Voir les pages association">
                                     <i class="fa fa-file-lines"></i>
                                 </a>
                                 <div class="modal fade" id="managePagesModal{{ user.id }}" tabindex="-1" aria-labelledby="managePagesModalLabel{{ user.id }}" aria-hidden="true">

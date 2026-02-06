@@ -3,19 +3,10 @@
 {% block title %}{{ 'event.add.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'event.add.title'|trans }}</h1>
-
     {{ form_start(form) }}
-        {% include 'event/_form.html.twig' %}
-
-        <div class="mt-3 d-flex justify-content-between">
-            <a href="{{ path('association_show', { slug: event.association.slug }) }}" class="btn btn-outline-primary rounded-pill mt-3">
-                <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.edit.cancel'|trans }}
-            </a>
-
-            <button type="submit" class="btn btn-success text-white mt-3">
-                <i class="fa fa-save"></i>&nbsp;{{ 'event.add.form.submit'|trans }}
-            </button>
-        </div>
+        {% include 'event/_form.html.twig' with {
+            'title': 'event.add.title'|trans,
+            'event': event
+        } %}
     {{ form_end(form) }}
 {% endblock %}

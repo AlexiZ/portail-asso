@@ -12,7 +12,7 @@
 
 {% block form_help %}
     {% if help is not empty %}
-        <div id="{{ id }}_help" class="text-muted fst-italic">
+        <div id="{{ id }}_help" class="fst-italic">
             {{ help|trans(help_translation_parameters, translation_domain)|raw }}
         </div>
     {% endif %}

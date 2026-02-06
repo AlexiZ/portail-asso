@@ -237,6 +237,12 @@ reset_password:
 
 event:
     date: Le {date} à {start}
+    list:
+        title: Prochains événements
+        filter: Filtrer par dates
+        prefix:
+            single: Le
+            multiple: Du
     show:
         back: Retour à la page de {association}
         actions:
@@ -249,7 +255,7 @@ event:
     add:
         title: Créer un nouvel événement
         form:
-            submit: Créer l'événement
+            submit: Publier l'événement
             confirm: Événement ajouté avec succès.
             back: Annuler et revenir sur la page de l'association
     edit:
@@ -265,13 +271,13 @@ event:
         confirm: L'événement a bien été supprimé.
     form:
         title: Titre
-        short_description: Description courte
+        short_description: Description courte de l'événement
         poster: Affiche de l'événement
-        long_description: Description longue
+        long_description: Description longue de l'événement
         start_at: Date et heure de début
         is_public:
             label: Est-ce un événement public ?
-            help: Un événement public apparaîtra sur la page d'accueil de ce Portail.
+            help: Un événement public apparaîtra sur la page d'accueil de ce portail.
         location: Lieu
         recurrence:
             open_modale: Répéter l'événement

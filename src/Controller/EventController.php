@@ -36,7 +36,8 @@ class EventController extends AbstractController
             ->setParameter('now', new \DateTime())
             ->orderBy('e.startAt', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         return $this->render('event/list.html.twig', [
             'events' => $events,

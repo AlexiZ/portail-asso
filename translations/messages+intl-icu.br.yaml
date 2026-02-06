@@ -229,6 +229,12 @@ reset_password:
 
 event:
     date: D'an {date} da {start}
+    list:
+        title: Darvoudoù da zont
+        filter: Silañ dre deiziad
+        prefix:
+            single: ""
+            multiple: Eus ar
     show:
         back: Distreiñ d'ar bajenn {association}
         actions:
