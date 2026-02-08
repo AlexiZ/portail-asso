@@ -52,13 +52,13 @@
                         {% endif %}
 
                         <div class="py-3 d-flex justify-content-between">
+                            <button class="btn btn-primary rounded-pill fw-semibold" type="submit">
+                                <i class="fa fa-user-plus"></i>&nbsp;{{ 'register.form.submit'|trans }}
+                            </button>
+
                             <a class="btn btn-outline-primary rounded-pill" href="{{ path('app_login') }}">
                                 {{ 'register.login'|trans }}
                             </a>
-
-                            <button class="btn btn-primary rounded-pill" type="submit">
-                                <i class="fa fa-user-plus"></i>&nbsp;{{ 'register.form.submit'|trans }}
-                            </button>
                         </div>
                     {{ form_end(registrationForm) }}
                 </div>
