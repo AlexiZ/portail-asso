@@ -242,12 +242,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const ownerModals = document.querySelectorAll('.owner-modal');
     if (ownerModals) {
+        const validateEmail = email => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
         ownerModals.forEach(ownerModal => {
             const formSearchMember = ownerModal.querySelector('form[data-search]');
             const searchInput = formSearchMember.querySelector('.search-member');
             const hiddenInput = formSearchMember.querySelector('input[name="user"]');
             const resultsDiv = ownerModal.querySelector('#resultsMember');
             const searchUrl = formSearchMember.getAttribute('data-search');
+            const inviteUrl = formSearchMember.getAttribute('data-invite');
             let timeout = null;
 
             searchInput.addEventListener('input', () => {
@@ -269,6 +277,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (!Array.isArray(users) || users.length === 0) {
                             resultsDiv.innerHTML = '<p>Aucun utilisateur trouvé.</p>';
+                            if (validateEmail(query) && inviteUrl) {
+                                resultsDiv.innerHTML += '<p><a href="'+`${inviteUrl}?q=${encodeURIComponent(query)}`+'">Cliquez ici pour inviter ' + query + ' à rejoindre le portail.</a></p>';
+                            }
 
                             return;
                         }

@@ -58,6 +58,7 @@ home:
         list:
             filter:
                 category: Filtrer par catégorie
+                all_categories: Toutes les catégories
                 text:
                     title: Rechercher
                     placeholder: Rechercher une association
@@ -384,11 +385,16 @@ chairman:
             submit: Enregistrer le changement
         set_owner:
             link: Changer la présidence
-            title: Modifier l'utilisateur président de l'association
+            title: Modifier la présidence de l'association
             search: Rechercher et sélectionner l'utilisateur
             placeholder: Nom, prénom ou email
             cancel: Ne rien faire
             submit: Enregistrer le changement
+        invite_user:
+            link: Inviter un utilisateur
+            title: Inviter un utilisateur
+            invite: Rechercher et inviter l'utilisateur
+            placeholder: Nom, prénom ou email
         none: Vous n'avez aucune association à gérer.
     memberships:
         owner: Présidence
@@ -437,3 +443,8 @@ email:
         content: >
             Votre demande d'adhésion à l'association {association} a été approuvée.<br>
             Vous pouvez maintenant vous connecter sur le portail et consulter la <a href="{url}">page de l'association</a>.
+    invite_new:
+        subject: Rejoignez l'association {association} sur le portail des associations de Plabennec !
+        content: >
+            Vous été invité à rejoindre l'association {association} sur le portail des associations de Plabennec.<br>
+            Créez votre compte sur le portail en cliquant directement sur <a href="{url}">ce lien</a>.

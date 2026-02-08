@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Association;
 use App\Entity\User;
+use App\Factory\MembershipFactory;
 use App\Form\ForgotPasswordFormType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordFormType;
@@ -41,12 +43,25 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $em,
+        MembershipFactory $membershipFactory,
+    ): Response {
+        $association = null;
+        $email = null;
+        if ($token = $request->get('token')) {
+            list($associationId, $email) = explode('|', base64_decode($token));
+            $association = $em->getRepository(Association::class)->findOneById($associationId);
+        }
 
+        $user = new User();
+        if ($email) {
+            $user->setEmail($email);
+        }
+        $form = $this->createForm(RegistrationFormType::class, $user, ['association' => $association]);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
                 $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
@@ -55,6 +70,10 @@ class SecurityController extends AbstractController
 
             $em->persist($user);
             $em->flush();
+
+            if ($form->has('association')) {
+                $membershipFactory->create($user, $form->get('association')->getData(), true);
+            }
 
             $this->addFlash('success', 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.');
 

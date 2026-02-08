@@ -1,0 +1,11 @@
+<p>
+    {{ 'email.welcome'|trans({'%username%': ''}) }},
+</p>
+<br>
+<p>
+    {{ 'email.invite_new.content'|trans({'%association%': association, '%url%': absolute_url(path('app_register', {'token': token}))})|raw }}
+</p>
+<br>
+<p>
+    {{ 'email.goodbye'|trans|raw }}
+</p>

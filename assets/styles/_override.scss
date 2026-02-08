@@ -20,6 +20,16 @@ body {
     background-color: $default !important;
 }
 
+.btn-outline-primary.rounded-circle {
+    background-color: $default !important;
+    border: none !important;
+
+    &:hover {
+        background-color: $primary !important;
+        color: white !important;
+    }
+}
+
 .navbar {
     --bs-navbar-brand-color: #380069;
 }

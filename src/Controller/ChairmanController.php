@@ -107,6 +107,45 @@ class ChairmanController extends AbstractController
         return new JsonResponse($data);
     }
 
+    #[Route('/{association}/invite', name: 'chairman_invite_user')]
+    public function inviteUser(
+        Request $request,
+        #[MapEntity(mapping: ['association' => 'slug'])]
+        Association $association,
+        UserRepository $userRepository,
+    ): Response {
+        $user = null;
+        $query = trim((string) $request->query->get('q', ''));
+        if ($query) {
+            // No User matching email, send invite
+            $user = $userRepository->findOneBy(['email' => $query]);
+            if (!$user instanceof User) {
+                $this->membershipFactory->invite($query, $association);
+
+                $this->addFlash('success', sprintf('Une invitation a été envoyée à l\'adresse %s', $query));
+
+                return $this->redirectToRoute('chairman_index');
+            }
+        }
+
+        if ($userId = $request->request->has('user')) {
+            $user = $userRepository->findOneById($userId);
+        }
+
+        if (!$user instanceof User) {
+            $this->addFlash('danger', 'Une erreur s\'est produite');
+
+            return $this->redirectToRoute('chairman_index');
+        }
+
+        // User found, add approved membership
+        $membership = $this->membershipFactory->create($user, $association, true);
+
+        $this->addFlash('success', sprintf('L\'utilisateur %s est désormais membre de votre association', $membership->getUser()->getUsername()));
+
+        return $this->redirectToRoute('chairman_index');
+    }
+
     #[Route('/{association}/accepter/{user}', name: 'chairman_accept_member')]
     #[IsGranted('manage', 'association')]
     public function addMember(

@@ -65,6 +65,17 @@ class Mailer
         ]);
     }
 
+    public function inviteUser(array $parameters): void
+    {
+        $this->send($parameters['to'], [
+            'SUBJECT' => $this->translator->trans('email.invite_new.subject', ['association' => $parameters['association']->getName()]),
+            'BODY' => $this->twig->render('emails/membership/invite.html.twig', [
+                'association' => $parameters['association']->getName(),
+                'token' => base64_encode($parameters['association']->getId().'|'.implode(',', $parameters['to'])),
+            ]),
+        ]);
+    }
+
     private function send(array $to, array $parameters): void
     {
         $toEmail = [];
