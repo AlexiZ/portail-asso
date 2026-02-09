@@ -3,97 +3,129 @@
 {% block title %}{{ 'chairman.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'chairman.title'|trans }}</h1>
+    <div class="card border-secondary-subtle rounded-3 mb-4">
+        <div class="card-body px-4 pt-5 pb-3">
+            <h1 class="fs-4 fw-semibold mb-3">{{ 'chairman.title'|trans }}</h1>
 
-    {{ 'chairman.intro'|trans|raw }}
+            {{ 'chairman.intro'|trans|raw }}
+        </div>
+    </div>
 
     {% if associations|default is not empty %}
         <div class="row">
             {% for association in associations %}
                 <div class="col-sm-12 col-md-{{ associations|length > 1 ? '6' : '12' }} mb-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <h2 class="fs-4">{{ association.name }}</h2>
-                            <div>
-                                <a href="javascript:void(0);" class="btn btn-link px-1" title="{{ 'chairman.association.set_anonymous_edition.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setAnonymousEditionModal{{ association.id }}">
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                                <div class="modal fade" id="setAnonymousEditionModal{{ association.id }}" tabindex="-1" aria-labelledby="setAnonymousEditionModalLabel{{ association.id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="setAnonymousEditionModalLabel{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.title'|trans }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{{ path('chairman_anonymous_edition', {'association': association.slug}) }}" method="POST">
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="anonymousPageEdition{{ association.id }}" name="anonymousPageEdition" {% if association.isEditablePageAnonymously %}checked="checked"{% endif %}>
-                                                        <label class="form-check-label" for="anonymousPageEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_page_label'|trans|raw }}</label>
-                                                    </div>
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="anonymousEventsEdition{{ association.id }}" name="anonymousEventsEdition" {% if association.isEditableEventsAnonymously %}checked="checked"{% endif %}>
-                                                        <label class="form-check-label" for="anonymousEventsEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_events_label'|trans|raw }}</label>
-                                                    </div>
-                                                    <div class="mt-4 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">{{ 'chairman.association.set_anonymous_edition.cancel'|trans }}</button>
-                                                        <button type="submit" class="btn btn-primary">{{ 'chairman.association.set_anonymous_edition.submit'|trans }}</button>
-                                                    </div>
-                                                </form>
+                    <div class="card border-secondary-subtle rounded-3">
+                        <div class="card-body px-4 pt-5 pb-3">
+                            <div class="d-flex justify-content-between">
+                                <h2 class="fs-4 fw-semibold mb-3">{{ association.name }}</h2>
+
+                                <div style="min-width:115px;">
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary rounded-circle me-1" title="{{ 'chairman.association.set_anonymous_edition.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setAnonymousEditionModal{{ association.id }}">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                    <div class="modal fade" id="setAnonymousEditionModal{{ association.id }}" tabindex="-1" aria-labelledby="setAnonymousEditionModalLabel{{ association.id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="setAnonymousEditionModalLabel{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.title'|trans }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ path('chairman_anonymous_edition', {'association': association.slug}) }}" method="POST">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="anonymousPageEdition{{ association.id }}" name="anonymousPageEdition" {% if association.isEditablePageAnonymously %}checked="checked"{% endif %}>
+                                                            <label class="form-check-label" for="anonymousPageEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_page_label'|trans|raw }}</label>
+                                                        </div>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="anonymousEventsEdition{{ association.id }}" name="anonymousEventsEdition" {% if association.isEditableEventsAnonymously %}checked="checked"{% endif %}>
+                                                            <label class="form-check-label" for="anonymousEventsEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_events_label'|trans|raw }}</label>
+                                                        </div>
+                                                        <div class="mt-4 d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-outline-primary rounded-pill mx-2" data-bs-dismiss="modal">{{ 'chairman.association.set_anonymous_edition.cancel'|trans }}</button>
+                                                            <button type="submit" class="btn btn-primary rounded-pill fw-semibold">{{ 'chairman.association.set_anonymous_edition.submit'|trans }}</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <a href="javascript:void(0);" class="btn btn-link px-1" title="{{ 'chairman.association.set_owner.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setOwnerModal{{ association.id }}">
-                                    <i class="fa fa-crown"></i>
-                                </a>
-                                <div class="modal fade owner-modal" id="setOwnerModal{{ association.id }}" tabindex="-1" aria-labelledby="setOwnerModalLabel{{ association.id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="setOwnerModalLabel{{ association.id }}">{{ 'chairman.association.set_owner.title'|trans }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{{ path('chairman_set_owner', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" method="POST">
-                                                    <label for="searchMember{{ association.id }}">{{ 'chairman.association.set_owner.search'|trans }}</label>
-                                                    <input type="text" id="searchMember{{ association.id }}" class="form-control search-member" placeholder="{{ 'chairman.association.set_owner.placeholder'|trans }}" autocomplete="off">
-                                                    <input type="hidden" name="user">
-                                                </form>
-                                                <div id="resultsMember"></div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'chairman.association.set_owner.cancel'|trans }}</button>
-                                                <button type="button" class="btn btn-primary">{{ 'chairman.association.set_owner.submit'|trans }}</button>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary rounded-circle me-1" title="{{ 'chairman.association.set_owner.link'|trans }}" data-bs-toggle="modal" data-bs-target="#setOwnerModal{{ association.id }}">
+                                        <i class="fa fa-crown"></i>
+                                    </a>
+                                    <div class="modal fade owner-modal" id="setOwnerModal{{ association.id }}" tabindex="-1" aria-labelledby="setOwnerModalLabel{{ association.id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="setOwnerModalLabel{{ association.id }}">{{ 'chairman.association.set_owner.title'|trans }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ path('chairman_set_owner', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" method="POST">
+                                                        <label class="mb-2" for="searchMember{{ association.id }}">{{ 'chairman.association.set_owner.search'|trans }}</label>
+                                                        <input type="text" id="searchMember{{ association.id }}" class="form-control rounded-pill mb-2 search-member" placeholder="{{ 'chairman.association.set_owner.placeholder'|trans }}" autocomplete="off">
+                                                        <input type="hidden" name="user">
+                                                    </form>
+                                                    <div id="resultsMember"></div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal">{{ 'chairman.association.set_owner.cancel'|trans }}</button>
+                                                    <button type="button" class="btn btn-primary rounded-pill fw-semibold">{{ 'chairman.association.set_owner.submit'|trans }}</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <a href="{{ path('association_show', {'slug': association.slug}) }}" class="btn btn-link px-0" target="_blank" title="{{ 'chairman.association.link'|trans }}">
-                                    <i class="fa fa-external-link"></i>
-                                </a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary rounded-circle me-1" title="{{ 'chairman.association.invite_user.link'|trans }}" data-bs-toggle="modal" data-bs-target="#inviteUserModal{{ association.id }}">
+                                        <i class="fa-solid fa-user-plus"></i>
+                                    </a>
+                                    <div class="modal fade owner-modal" id="inviteUserModal{{ association.id }}" tabindex="-1" aria-labelledby="inviteUserModalLabel{{ association.id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="inviteUserModalLabel{{ association.id }}">
+                                                        {{ 'chairman.association.invite_user.title'|trans }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ path('chairman_invite_user', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" data-invite="{{ path('chairman_invite_user', {'association': association.slug}) }}" method="POST">
+                                                        <label class="mb-2" for="inviteMember{{ association.id }}">{{ 'chairman.association.invite_user.invite'|trans }}</label>
+                                                        <input type="text" id="inviteMember{{ association.id }}" class="form-control rounded-pill mb-2 search-member" placeholder="{{ 'chairman.association.invite_user.placeholder'|trans }}" autocomplete="off">
+                                                        <input type="hidden" name="user">
+                                                    </form>
+                                                    <div id="resultsMember"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="{{ path('association_show', {'slug': association.slug}) }}" class="btn btn-sm btn-primary rounded-circle" target="_blank" title="{{ 'chairman.association.link'|trans }}">
+                                        <i class="fa fa-external-link"></i>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="card-body">
                             {% if association.membershipsByStatus('accepted')|length > 0 %}
                                 <fieldset>
-                                    <legend class="fs-5">{{ 'chairman.memberships.accepted.title'|trans }}</legend>
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>{{ 'chairman.memberships.accepted.username'|trans }}</th>
-                                                <th>{{ 'chairman.memberships.accepted.actions'|trans }}</th>
-                                            </tr>
-                                        </thead>
+                                    <legend class="fs-6 fw-semibold">{{ 'chairman.memberships.accepted.title'|trans }}</legend>
+                                    <table class="table table-borderless table-hover">
                                         <tbody>
                                             {% for membership in association.membershipsByStatus('accepted') %}
-                                                <tr>
-                                                    <td>{% if association.owner == membership.user %}<i class="fa fa-crown text-yellow" title="{{ 'chairman.memberships.owner'|trans }}"></i>&nbsp;{% endif %}{{ membership.user.username }}</td>
-                                                    <td>
-                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-danger text-white" title="{{ 'chairman.memberships.accepted.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                <tr class="border-top border-bottom">
+                                                    <td class="py-3 px-2 text-center" style="width:16px;">
+                                                        {% if association.owner == membership.user %}
+                                                            <i class="fa fa-crown text-primary" title="{{ 'chairman.memberships.owner'|trans }}"></i>
+                                                        {% else %}
+                                                            <i class="fa-regular fa-user text-primary"></i>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="py-3">
+                                                        {{ membership.user.username }}
+                                                    </td>
+                                                    <td class="text-end py-3">
+                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.accepted.refuse'|trans }}"><i class="fa fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -104,66 +136,76 @@
                                 <p><em>{{ 'chairman.memberships.accepted.none'|trans }}</em></p>
                             {% endif %}
 
-                            <details {% if association.membershipsByStatus('pending')|length > 0 %}open{% endif %}>
-                                <summary>{{ 'chairman.memberships.pending.title'|trans}} ({{ association.membershipsByStatus('pending')|length }})</summary>
+                            <div class="accordion" id="accordionPending{{ association.id }}">
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed fs-6 fw-semibold bg-white shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePending{{ association.id }}" aria-expanded="true" aria-controls="collapsePending{{ association.id }}">
+                                            {{ 'chairman.memberships.pending.title'|trans}} ({{ association.membershipsByStatus('pending')|length }})
+                                        </button>
+                                    </h2>
+                                    <div id="collapsePending{{ association.id }}" class="accordion-collapse collapse {% if association.membershipsByStatus('pending')|length > 0 %}show{% endif %} px-0" data-bs-parent="#accordionPending{{ association.id }}">
+                                        <div class="accordion-body p-0">
+                                            {% if association.membershipsByStatus('pending')|length > 0 %}
+                                                <table class="table table-borderless table-hover">
+                                                    <tbody>
+                                                        {% for membership in association.membershipsByStatus('pending') %}
+                                                            <tr class="border-top border-bottom">
+                                                                <td class="py-3">{{ membership.user.username }}</td>
+                                                                <td class="text-end py-3">
+                                                                    <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
+                                                                    <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                <p><em>{{ 'chairman.memberships.pending.none'|trans }}</em></p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                {% if association.membershipsByStatus('pending')|length > 0 %}
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>{{ 'chairman.memberships.pending.username'|trans }}</th>
-                                                <th>{{ 'chairman.memberships.pending.actions'|trans }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for membership in association.membershipsByStatus('pending') %}
-                                                <tr>
-                                                    <td>{{ membership.user.username }}</td>
-                                                    <td>
-                                                        <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-success text-white" title="{{ 'chairman.memberships.pending.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
-                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-danger text-white" title="{{ 'chairman.memberships.pending.refuse'|trans }}"><i class="fa fa-trash"></i></a>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% else %}
-                                    <p><em>{{ 'chairman.memberships.pending.none'|trans }}</em></p>
-                                {% endif %}
-                            </details>
-
-                            <details>
-                                <summary>{{ 'chairman.memberships.refused.title'|trans }} ({{ association.membershipsByStatus('refused')|length }})</summary>
-
-                                {% if association.membershipsByStatus('refused')|length > 0 %}
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>{{ 'chairman.memberships.refused.username'|trans}}</th>
-                                                <th>{{ 'chairman.memberships.refused.actions'|trans}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for membership in association.membershipsByStatus('refused') %}
-                                                <tr>
-                                                    <td>{{ membership.user.username }}</td>
-                                                    <td>
-                                                        <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-success text-white" title="{{ 'chairman.memberships.refused.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% else %}
-                                    <p><em>{{ 'chairman.memberships.refused.none'|trans }}</em></p>
-                                {% endif %}
-                            </details>
+                            <div class="accordion" id="accordionRefused{{ association.id }}">
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed fs-6 fw-semibold bg-white shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRefused{{ association.id }}" aria-expanded="true" aria-controls="collapseRefused{{ association.id }}">
+                                            {{ 'chairman.memberships.refused.title'|trans }} ({{ association.membershipsByStatus('refused')|length }})
+                                        </button>
+                                    </h2>
+                                    <div id="collapseRefused{{ association.id }}" class="accordion-collapse collapse {% if association.membershipsByStatus('pending')|length > 0 %}show{% endif %} px-0" data-bs-parent="#accordionRefused{{ association.id }}">
+                                        <div class="accordion-body p-0">
+                                            {% if association.membershipsByStatus('refused')|length > 0 %}
+                                                <table class="table table-borderless table-hover">
+                                                    <tbody>
+                                                        {% for membership in association.membershipsByStatus('refused') %}
+                                                            <tr class="border-top border-bottom">
+                                                                <td class="py-3">{{ membership.user.username }}</td>
+                                                                <td class="text-end py-3">
+                                                                    <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.refused.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                <p><em>{{ 'chairman.memberships.refused.none'|trans }}</em></p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="alert alert-info">{{ 'chairman.association.none'|trans }}</div>
+        <div class="card border-secondary-subtle rounded-3">
+            <div class="card-body px-4 pt-5 pb-3">
+                <div class="alert alert-info">{{ 'chairman.association.none'|trans }}</div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

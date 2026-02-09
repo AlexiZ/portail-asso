@@ -12,30 +12,39 @@
 
     <div class="masonry">
         {% for letter in grouped|keys|sort %}
-            <div class="col">
-                <h4 class="mt-3">{{ letter }}</h4>
-                <div class="list-group mb-3">
-                    {% for assoc in grouped[letter]|sort((a, b) => a.name <=> b.name) %}
-                        <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action {% if assoc.wip %}wip{% endif%} d-flex justify-content-between" data-categories="{{ assoc.categories|json_encode }}">
-                            <div>
-                                {% if assoc.wip %}
-                                    <span title="{{ 'association.wip'|trans }}">
-                                        {% include 'common/construction-cone.svg.twig' %}
+            <div class="col mb-4">
+                <div class="letter bg-white border border-bottom-0 rounded-3 rounded-bottom-0 text-center">
+                    <h4 class="mt-2 fs-5 fw-semibold">{{ letter }}</h4>
+                </div>
+                <div class="by-letter list-group bg-white p-3 border rounded-3">
+                    <div class="rounded-0">
+                        {% for assoc in grouped[letter]|sort((a, b) => a.name <=> b.name) %}
+                            <a href="{{ path('association_show', {slug: assoc.slug}) }}" class="list-group-item list-group-item-action border-0 {% if loop.index != loop.last %}border-bottom{% endif%} px-2 {% if assoc.wip %}wip{% else %}text-black{% endif %} d-flex justify-content-between" data-categories="{{ assoc.categories|json_encode }}">
+                                <div>
+                                    {% if assoc.wip %}
+                                        <span title="{{ 'association.wip'|trans }}">
+                                            {% include 'common/construction-cone.svg.twig' %}
+                                        </span>
+                                    {% endif %}
+                                    <span>
+                                        {{ assoc.name|mark(searchTerm|default) }}{% if app.user|default and app.user.isSubscribedTo(assoc) %}&nbsp;<i class="fa fa-star text-warning" title="{{ 'association.subscription.info'|trans }}"></i>{% endif %}
                                     </span>
-                                {% endif %}
+                                    {% if assoc.wip %}
+                                        <em class="wip-text">
+                                            &nbsp;-&nbsp;En construction
+                                        </em>
+                                    {% endif %}
+                                </div>
                                 <span>
-                                    {{ assoc.name|mark(searchTerm|default) }}{% if app.user|default and app.user.isSubscribedTo(assoc) %}&nbsp;<i class="fa fa-star text-warning" title="{{ 'association.subscription.info'|trans }}"></i>{% endif %}
+                                    {% if assoc.categories|default %}
+                                        {% for category in assoc.categories %}
+                                            <i class="{{ category.icon }} {% if assoc.wip %}text-muted{% else %}text-{{ category.badge }}{% endif %}" title="{{ ('association.category.' ~ category.value)|trans }}"></i>&nbsp;
+                                        {% endfor %}
+                                    {% endif %}
                                 </span>
-                            </div>
-                            <span>
-                                {% if assoc.categories|default %}
-                                    {% for category in assoc.categories %}
-                                        <i class="{{ category.icon }} text-{{ category.badge }}" title="{{ ('association.category.' ~ category.value)|trans }}"></i>&nbsp;
-                                    {% endfor %}
-                                {% endif %}
-                            </span>
-                        </a>
-                    {% endfor %}
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         {% endfor %}

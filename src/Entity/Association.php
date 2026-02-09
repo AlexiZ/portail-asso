@@ -109,6 +109,11 @@ class Association
         $this->contacts = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
     public function serialize(): array
     {
         return [

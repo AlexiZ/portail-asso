@@ -1,0 +1,25 @@
+<div class="d-sm-none d-md-block col-md-4 px-0">
+    <img src="{{ asset('/uploads/' ~ (event.posterFilename|default(event.association.logoFilename))) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
+</div>
+
+<div class="col-sm-12 col-md-8 d-flex flex-column ps-4">
+    <h5 class="text-primary fw-bold mb-3">
+        <a href="{{ path('event_show', {slug: event.slug}) }}" class="text-decoration-none">{{ event.title }}</a>
+    </h5>
+    <small class="mb-2 fst-italic">
+        <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+    </small>
+    {% if event.location|default %}
+        <small class="mb-2 fst-italic">
+            <i class="fa-solid fa-location-dot text-primary pe-1"></i>&nbsp;{{ event.location }}
+        </small>
+    {% endif %}
+    {% if event.shortDescription|default %}
+        <div class="mt-2">
+            <p>{{ event.shortDescription|striptags|raw }}</p>
+        </div>
+    {% endif %}
+    <small>
+        Par <a href="{{ path('association_show', {slug: event.association.slug}) }}" class="text-primary">{{ event.association.name }}</a>
+    </small>
+</div>

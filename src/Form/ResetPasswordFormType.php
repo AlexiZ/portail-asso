@@ -17,12 +17,20 @@ class ResetPasswordFormType extends AbstractType
         $builder
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Nouveau mot de passe'],
-                'second_options' => ['label' => 'Confirmer le mot de passe'],
+                'first_options' => [
+                    'attr' => [
+                        'placeholder' => 'Nouveau mot de passe',
+                    ],
+                ],
+                'second_options' => [
+                    'attr' => [
+                        'placeholder' => 'Confirmer le mot de passe',
+                    ],
+                ],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Veuillez entrer un mot de passe.']),
+                    new NotBlank(message: 'Veuillez entrer un mot de passe.'),
                     /*new Length([
                         'min' => 6,
                         'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',

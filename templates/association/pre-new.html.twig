@@ -3,27 +3,34 @@
 {% block title %}{{ 'association.add.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'association.add.title'|trans }}</h1>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 offset-md-3">
+            <div class="card mt-5 border-secondary-subtle rounded-3">
+                <div class="car-body px-4 pt-5 pb-3">
+                    <h1 class="fs-4 fw-semibold mb-4">{{ 'association.add.title'|trans }}</h1>
 
-    {{ form_start(form) }}
-        {% include 'association/form.html.twig' with {formAssociation: form} %}
-    {{ form_end(form) }}
+                    {{ form_start(form) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control rounded-pill mb-3', 'autocomplete': 'off', 'placeholder': 'association.form.name'|trans}}) }}
+                    {{ form_end(form) }}
 
-    <div id="results" class="d-none">
-        <h2>S'agit-il de l'une de ces associations ?</h2>
+                    <div id="results" class="d-none mb-3">
+                        <div id="message">
+                            <h2 class="fs-5 fw-semibold">{{ 'association.add.choose_one'|trans }}</h2>
+                            <p class="mb-3 fst-italic"><small>{{ 'association.add.choose_one_message'|trans }}</small></p>
+                        </div>
 
-        <div id="content">
+                        <div id="content" data-none="{{ 'association.add.no_results'|trans }}"></div>
 
+                        <a href="javascript:void(0);" onclick="window.location.href='{{ path('association_new') }}'+this.dataset.name" class="btn btn-primary rounded-pill fw-semibold mt-3" id="confirm" data-name="">
+                            <i class="fa fa-arrow-right"></i>&nbsp;{{ 'association.pre_new.confirm'|trans }}
+                        </a>
+                    </div>
+
+                    <a href="{{ path('homepage') }}" class="btn btn-outline-primary rounded-pill">
+                        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.add.cancel'|trans }}
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <a href="javascript:void(0);" onclick="window.location.href='{{ path('association_new') }}'+this.dataset.name" class="btn btn-primary mt-3" id="confirm" data-name="">
-            <i class="fa fa-save"></i>&nbsp;{{ 'association.pre_new.confirm'|trans }}
-        </a>
     </div>
-
-    <hr>
-
-    <a href="{{ path('homepage') }}" class="btn btn-secondary">
-        <i class="fa fa-arrow-left"></i>&nbsp;{{ 'association.add.cancel'|trans }}
-    </a>
 {% endblock %}

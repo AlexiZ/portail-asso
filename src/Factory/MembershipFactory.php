@@ -16,9 +16,19 @@ readonly class MembershipFactory
     ) {
     }
 
-    public function create(User $user, Association $association): void
+    public function invite(string $email, Association $association): void
     {
-        $membership = new Membership();
+        $parameters = [
+            'to' => [$email],
+            'association' => $association,
+        ];
+
+        $this->mailer->inviteUser($parameters);
+    }
+
+    public function create(User $user, Association $association, bool $forced = false): Membership
+    {
+        $membership = new Membership($forced);
         $membership->setUser($user);
         $membership->setAssociation($association);
 
@@ -43,7 +53,11 @@ readonly class MembershipFactory
             }
         }
 
-        $this->mailer->requestMembership($parameters);
+        if (!$forced) {
+            $this->mailer->requestMembership($parameters);
+        }
+
+        return $membership;
     }
 
     public function accept(Membership $membership): void

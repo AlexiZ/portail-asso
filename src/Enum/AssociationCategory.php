@@ -11,6 +11,7 @@ enum AssociationCategory: string implements TranslatableInterface
     case ArtsCulture = 'arts-culture';
     case CraftsCooking = 'crafts-cooking';
     case WellBeing = 'well-being';
+    case Other = 'other';
     case EcologyEnvironment = 'ecology-environment';
     case Education = 'education';
     case Leisure = 'leisure';
@@ -35,6 +36,7 @@ enum AssociationCategory: string implements TranslatableInterface
             self::Leisure => $translator->trans('association.category.leisure', locale: $locale),
             self::Music => $translator->trans('association.category.music', locale: $locale),
             self::Heritage => $translator->trans('association.category.heritage', locale: $locale),
+            self::Other => $translator->trans('association.category.other', locale: $locale),
             self::ProfessionalStudentNetwork => $translator->trans('association.category.professional-student-network', locale: $locale),
             self::Health => $translator->trans('association.category.health', locale: $locale),
             self::ScienceTechnology => $translator->trans('association.category.science-technology', locale: $locale),
@@ -47,11 +49,22 @@ enum AssociationCategory: string implements TranslatableInterface
     public function badge(): string
     {
         return match ($this) {
-            self::Animals, self::EcologyEnvironment, self::Health => 'primary',
-            self::ArtsCulture, self::WellBeing, self::Heritage, self::SolidaritySocialAction => 'danger',
-            self::Education, self::Spirituality, self::CraftsCooking => 'info',
-            self::ScienceTechnology, self::ProfessionalStudentNetwork => 'success',
-            self::Leisure, self::Music, self::Sport => 'warning',
+            self::Animals => 'animals',
+            self::ArtsCulture => 'art',
+            self::CraftsCooking => 'crafts',
+            self::WellBeing => 'wellbeing',
+            self::EcologyEnvironment => 'environment',
+            self::Education => 'education',
+            self::Leisure => 'leisure',
+            self::Music => 'music',
+            self::Heritage => 'heritage',
+            self::Other => 'other',
+            self::ProfessionalStudentNetwork => 'pro',
+            self::Health => 'health',
+            self::ScienceTechnology => 'science',
+            self::SolidaritySocialAction => 'solidarity',
+            self::Spirituality => 'spirituality',
+            self::Sport => 'sport',
         };
     }
 
@@ -61,16 +74,17 @@ enum AssociationCategory: string implements TranslatableInterface
             self::Animals => 'fa fa-paw',
             self::ArtsCulture => 'fa fa-palette',
             self::CraftsCooking => 'fa fa-hands',
-            self::WellBeing => 'fa fa-shield-heart',
+            self::WellBeing => 'fa fa-spa',
             self::EcologyEnvironment => 'fa fa-seedling',
-            self::Education => 'fa fa-graduation-cap',
-            self::Leisure => 'fa fa-compass-drafting',
+            self::Education => 'fa fa-user-graduate',
+            self::Leisure => 'fa fa-puzzle-piece',
             self::Music => 'fa fa-music',
             self::Heritage => 'fa fa-chess-rook',
+            self::Other => 'fa fa-clover',
             self::ProfessionalStudentNetwork => 'fa fa-briefcase',
-            self::Health => 'fa fa-user-nurse',
+            self::Health => 'fa fa-hand-holding-medical',
             self::ScienceTechnology => 'fa fa-gears',
-            self::SolidaritySocialAction => 'fa fa-hand-holding-medical',
+            self::SolidaritySocialAction => 'fa fa-hand-holding-hand',
             self::Spirituality => 'fa fa-dove',
             self::Sport => 'fa fa-volleyball',
         };

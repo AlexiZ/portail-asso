@@ -9,37 +9,33 @@
         </div>
     {% endif %}
 
-    <div class="text-center mb-3">
-        {% if app.user|default and not app.user.membership(association) %}
-            <a class="my-1 btn btn-info text-white" href="{{ path('user_ask_membership', { association: association.slug }) }}">
-                <i class="fa fa-id-card"></i>&nbsp;{{ 'association.show.actions.become_member.title'|trans }}
-            </a>
-        {% endif %}
+    <div class="text-end mb-3">
         {% if is_granted('edit', association) %}
-            <a href="{{ path('association_edit', { slug: association.slug }) }}" class="my-1 btn btn-primary">
-                <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.edit'|trans }}
+            <a href="{{ path('association_edit', { slug: association.slug }) }}" class="my-1 me-2 btn btn-primary rounded-pill fw-semibold">
+                <i class="fa fa-pen"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.edit'|trans }}</span>
             </a>
         {% endif %}
         {% if is_granted('delete', association) %}
-            <a href="{{ path('association_delete', { slug: association.slug }) }}" class="confirm-action my-1 btn btn-danger text-white" title="{{ 'association.show.actions.delete.title'|trans }}" data-confirm="{{ 'association.show.actions.delete.confirm'|trans({'element': association.name}) }}">
-                <i class="fa fa-trash"></i>&nbsp;{{ 'association.show.actions.delete.title'|trans }}
+            <a href="{{ path('association_delete', { slug: association.slug }) }}" class="confirm-action my-1 me-2 btn btn-outline-primary rounded-pill" title="{{ 'association.show.actions.delete.title'|trans }}" data-confirm="{{ 'association.show.actions.delete.confirm'|trans({'element': association.name}) }}">
+                <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.delete.title'|trans }}</span>
             </a>
         {% endif %}
         {% if app.user|default %}
             {% if app.user.isSubscribedTo(association) %}
-                <button type="button" class="my-1 btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#unsubscriptionModal">
-                    <i class="fa fa-bell-slash"></i>&nbsp;{{ 'association.show.actions.unsubscribe.title'|trans }}
+                <button type="button" class="my-1 me-2 btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#unsubscriptionModal">
+                    <i class="fa fa-bell-slash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.unsubscribe.title'|trans }}</span>
                 </button>
             {% else %}
-                <button type="button" class="my-1 btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
-                    <i class="fa fa-bell"></i>&nbsp;{{ 'association.show.actions.subscribe.title'|trans }}
+                <button type="button" class="my-1 me-2 btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
+                    <i class="fa fa-bell"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.subscribe.title'|trans }}</span>
                 </button>
             {% endif %}
         {% endif %}
-    </div>
-
-    <div class="mb-3">
-        <h1>{{ association.name }}</h1>
+        {% if app.user|default and not app.user.membership(association) %}
+            <a class="my-1 btn btn-outline-primary rounded-pill" href="{{ path('user_ask_membership', { association: association.slug }) }}">
+                <i class="fa fa-id-card"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.become_member.title'|trans }}</span>
+            </a>
+        {% endif %}
     </div>
 
     {% if app.user|default and app.user.isSubscribedTo(association) %}
@@ -54,7 +50,7 @@
                         <p>{{ 'association.show.actions.unsubscribe.modal.body'|trans({'%association%': association.name}) }}</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
+                        <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
                         <a class="btn btn-info text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
                             {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
                         </a>
@@ -75,7 +71,7 @@
                         <p><small>{{ 'user_subscriptions.intro'|trans|raw }}</small></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
+                        <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
                         <a class="btn btn-warning text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
                             {{ 'association.show.actions.subscribe.modal.actions.confirm'|trans }}
                         </a>
@@ -85,39 +81,39 @@
         </div>
     {% endif %}
 
-    <div class="mb-3">
-        {% for category in association.categories %}
-            <span class="badge bg-{{ category.badge }}">{{ ('association.category.' ~ category.value)|trans }}</span>
-        {% endfor %}
-    </div>
-
-    <div class="row row-cols-1 row-cols-lg-2 g-2 g-lg-3">
+    <div class="row row-cols-1 row-cols-lg-2 g-2 g-lg-3 my-4">
         <div class="col-xs-12 col-md-6">
-            <div class="card">
+            <div class="card border-secondary-subtle">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3 text-center mb-3">
-                            {% if association.logoFilename|default %}
-                                <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail">
-                            {% endif %}
-                        </div>
+                        {% if association.logoFilename|default %}
+                            <div class="col-md-3 text-center mb-3">
+                                <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail border-0 p-3">
+                            </div>
+                        {% endif %}
 
-                        <div class="col-md-{% if association.logoFilename|default %}9{% else%}12{% endif%} row d-flex">
-                            <div class="col-12">
-                                <h2>Nous contacter</h2>
+                        <div class="col-sm-12 col-md-{% if association.logoFilename|default %}9{% else%}12{% endif%} row d-flex pt-3">
+                            <div>
+                                <h1 class="fs-3 fw-semibold">{{ association.name }}</h1>
+
+                                {% for category in association.categories %}
+                                    <span class="badge bg-{{ category.badge }} mb-1">{{ ('association.category.' ~ category.value)|trans }}</span><br>
+                                {% endfor %}
+
+                                <h2 class="fs-5 fw-semibold mt-3">Nous contacter</h2>
 
                                 {% if association.hasAnyContactDetail|default %}
                                     <ul class="list-unstyled">
                                         {% if association.contacts.count > 0 %}
                                             {% for contact in association.contacts %}
-                                                <li>{{ contact.name }}{% if contact.function|default%} - {{ contact.function }}{% endif %}</li>
+                                                <li><i class="fa fa-user text-primary"></i>&nbsp;{{ contact.name }}{% if contact.function|default%} - {{ contact.function }}{% endif %}</li>
                                             {% endfor %}
                                         {% endif %}
                                         {% if association.contactAddress|default %}
-                                            <li>{{ association.contactAddress }}</li>
+                                            <li><i class="fa fa-house text-primary"></i>&nbsp;{{ association.contactAddress }}</li>
                                         {% endif %}
                                         {% if association.contactEmail|default %}
-                                            <li>{{ association.contactEmail }}</li>
+                                            <li><i class="fa fa-envelope text-primary"></i>&nbsp;{{ association.contactEmail }}</li>
                                         {% endif %}
                                         {% if association.contactPhone|default %}
                                             <li>{{ association.contactPhone }}</li>
@@ -128,39 +124,39 @@
                                 {% endif %}
                             </div>
 
-                            <div class="col-12">
-                                <h2>Nos réseaux</h2>
+                            <div>
+                                <h2 class="fs-5 fw-semibold mt-3">Nos réseaux</h2>
 
                                 {% if association.hasAnyNetwork|default %}
                                     <ul class="list-unstyled">
                                         {% if association.networkWebsite|default %}
                                             {% set web = web_link(association.networkWebsite) %}
-                                            <li>
+                                            <li class="py-1">
                                                 <a href="{{ web.href }}" class="text-decoration-none" target="_blank">
-                                                    <i class="fa fa-globe fs-5"></i>&nbsp;{{ web.label }}
+                                                    <i class="fa fa-globe fs-5 text-primary"></i>&nbsp;{{ web.label }}
                                                 </a>
                                             </li>
                                         {% endif %}
                                         {% if association.networkFacebook|default %}
                                             {% set fb = facebook_link(association.networkFacebook) %}
-                                            <li>
-                                                <a href="{{ fb.href }}" class="text-decoration-none" target="_blank">
-                                                    <i class="fa-brands fa-facebook fs-5"></i>&nbsp;{{ fb.label }}
+                                            <li class="py-1">
+                                                <a href="{{ fb.href }}" class="text-decoration-none" target="_blank" title="{{ fb.label }}">
+                                                    <i class="fa-brands fa-facebook fs-5 text-primary"></i>&nbsp;Facebook
                                                 </a>
                                             </li>
                                         {% endif %}
                                         {% if association.networkInstagram|default %}
                                             {% set ig = instagram_link(association.networkInstagram) %}
-                                            <li>
-                                                <a href="{{ ig.href }}" class="text-decoration-none" target="_blank">
-                                                    <i class="fa-brands fa-instagram fs-5"></i>&nbsp;{{ ig.label }}
+                                            <li class="py-1">
+                                                <a href="{{ ig.href }}" class="text-decoration-none" target="_blank" title="{{ ig.label }}">
+                                                    <i class="fa-brands fa-instagram fs-5 text-primary"></i>&nbsp;Instagram
                                                 </a>
                                             </li>
                                         {% endif %}
                                         {% if association.networkOther|default %}
-                                            <li>
+                                            <li class="py-1">
                                                 <a href="{{ association.networkOther }}" class="text-decoration-none" target="_blank">
-                                                    {{ association.networkOther }}
+                                                    <i class="fa-solid fa-link fs-5 text-primary"></i>&nbsp;{{ association.networkOther }}
                                                 </a>
                                             </li>
                                         {% endif %}
@@ -176,15 +172,15 @@
         </div>
 
         <div class="col-xs-12 col-md-6">
-            <div class="card">
-                <div class="card-body {% if association.futureEvents|default|length > 3 %}scroll-wrapper{% endif%} p-0">
+            <div class="card border-secondary-subtle">
+                <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <h2 class="h4">
+                        <h2 class="fs-3 fw-semibold">
                             {{ 'association.show.events.future.title'|trans }}
                         </h2>
 
                         {% if is_granted('new_event', association) %}
-                            <a href="{{ path('event_new', { slug: association.slug }) }}" class="btn btn-link text-decoration-none text-end">
+                            <a href="{{ path('event_new', { slug: association.slug }) }}" class="btn btn-outline-primary rounded-pill text-decoration-none text-end">
                                 <i class="fa fa-calendar-plus"></i>&nbsp;{{ 'association.show.actions.event.new'|trans }}
                             </a>
                         {% endif %}
@@ -195,45 +191,29 @@
                             {% for event in association.futureEvents %}
                                 <li class="list-group-item d-flex justify-content-between {% if loop.last %}rounded-top-0 rounded-1{% else %}rounded-0{% endif %}">
                                     <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
-                                        <strong>{{ event.title }}</strong><br>
-                                        <small class="fst-italic">
-                                            {{ format_date(event.startAt) }}{% if event.isPublic %} - {{ 'event.show.is_public'|trans }}{% endif %}{% if event.location|default %} - {{ event.location }}{% endif %}
+                                        <strong class="text-primary fw-semibold">{{ event.title }}</strong><br>
+                                        <small class="mb-2 fst-italic">
+                                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
                                         </small>
-                                        <p class="mb-0">{{ event.shortDescription|raw }}</p>
+                                        {% if event.location|default %}
+                                            <br>
+                                            <small class="mb-2 fst-italic">
+                                                <i class="fa-solid fa-location-dot text-primary pe-1"></i>&nbsp;{{ event.location }}
+                                            </small>
+                                        {% endif %}
+                                        {% if event.isPublic|default %}
+                                            <br>
+                                            <small class="mb-2 fst-italic">
+                                                <i class="fa-solid fa-users text-primary pe-1"></i>&nbsp;Événement public
+                                            </small>
+                                        {% endif %}
+                                        <p class="mt-1 mb-0">{{ event.shortDescription|raw }}</p>
                                     </a>
 
-                                    <div class="dropdown dropstart">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            {% if is_granted('edit_event', event) %}
-                                                <li>
-                                                    <a href="{{ path('event_edit', {id: event.id}) }}" class="btn btn-link text-primary text-decoration-none text-start">
-                                                        <i class="fa fa-edit"></i>&nbsp;{{ 'association.show.actions.event.edit'|trans }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% if is_granted('edit_event', event) %}
-                                                <li>
-                                                    <a href="{{ path('event_duplicate', {id: event.id}) }}" class="btn btn-link text-secondary text-decoration-none text-start">
-                                                        <i class="fa fa-clone"></i>&nbsp;{{ 'association.show.actions.event.duplicate'|trans }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% if is_granted('delete_event', event) %}
-                                                <li>
-                                                    <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-link text-danger text-decoration-none text-start" onclick="return confirm('{{ 'association.show.actions.event.delete.confirm'|trans({'element': event.title}) }}')">
-                                                        <i class="fa fa-trash"></i>&nbsp;{{ 'association.show.actions.event.delete.title'|trans }}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            <li>
-                                                <a href="{{ path('event_show', {slug: event.slug}) }}" class="btn btn-link text-info text-decoration-none text-start">
-                                                    <i class="fa fa-eye"></i>&nbsp;{{ 'association.show.actions.event.show'|trans }}
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="text-end my-auto">
+                                        <a href="{{ path('event_show', {slug: event.slug}) }}" class="btn btn-outline-primary rounded-circle text-decoration-none text-start" title="{{ 'association.show.actions.event.show'|trans }}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
                                     </div>
                                 </li>
                             {% endfor %}
@@ -247,7 +227,7 @@
     </div>
 
     {% if association.content|default %}
-        <div class="card mt-4">
+        <div class="card my-4 border-secondary-subtle px-3 py-4">
             <div class="card-body">
                 {{ association.content|raw }}
             </div>
@@ -255,38 +235,50 @@
     {% endif %}
 
     {% if association.pastEvents|default|length > 0 %}
-        <details class="mt-2">
-            <summary>{{ 'association.show.events.past.title'|trans }} ({{ association.pastEvents|length }})</summary>
-            <ul class="list-group mt-2">
-                {% for event in association.pastEvents %}
-                    <li class="list-group-item background-default d-flex justify-content-between">
-                        <div>
-                            <strong>{{ event.title }}</strong><br>
-                            <small>
-                                {{ format_date(event.startAt) }}
-                            </small>
-                            <p class="mb-0">{{ event.shortDescription|raw }}</p>
+        <div class="card my-4 border-secondary-subtle p-3">
+            <div class="accordion" id="accordionEvents">
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-6 fw-semibold bg-white shadow-none px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEvents" aria-expanded="true" aria-controls="collapseEvents">
+                            {{ 'association.show.events.past.title'|trans }} ({{ association.pastEvents|length }})
+                        </button>
+                    </h2>
+                    <div id="collapseEvents" class="accordion-collapse collapse px-3" data-bs-parent="#accordionEvents">
+                        <div class="accordion-body p-0">
+                            <ul class="list-group mt-2">
+                                {% for event in association.pastEvents %}
+                                    <li class="list-group-item d-flex justify-content-between border-0 border-bottom px-0 py-3">
+                                        <div>
+                                            <p class="fw-semibold text-primary my-0">{{ event.title }}</p>
+                                            <small class="mb-2 fst-italic">
+                                                <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                                            </small>
+                                            {% if event.location|default %}
+                                                <br>
+                                                <small class="mb-2 fst-italic">
+                                                    <i class="fa-solid fa-location-dot text-primary pe-1"></i>&nbsp;{{ event.location }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="my-auto">
+                                            <a href="{{ path('event_show', {slug: event.slug}) }}" class="btn btn-outline-primary rounded-circle text-decoration-none text-start" title="{{ 'association.show.actions.event.show'|trans }}">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <div>
-                            {% if is_granted('edit_event', event) %}
-                                <a href="{{ path('event_duplicate', {id: event.id}) }}" class="btn btn-secondary" title="{{ 'association.show.actions.duplicate'|trans }}">
-                                    <i class="fa fa-clone"></i>
-                                </a>
-                            {% endif %}
-                            <a href="{{ path('event_show', {slug: event.slug}) }}" class="btn btn-info text-white" title="{{ 'association.show.actions.show'|trans }}">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     <hr>
 
-    <div class="d-flex flex-column align-items-center ">
-        <p class="mt-3 mb-1 text-center fst-italic">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="mt-3 mb-1 fst-italic">
             {{ 'association.show.creation'|trans({
                 createdAt: format_date(association.createdAt)|lower,
                 updatedAt: format_date(association.updatedAt)|lower,
@@ -295,7 +287,7 @@
 
         {% if association.revisions|default|length > 0 %}
             <div class="dropup m-0 p-0">
-                <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownRevisions" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-link dropdown-toggle text-black hover-text-primary p-0" type="button" id="dropdownRevisions" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ 'revision.title'|trans }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownRevisions">

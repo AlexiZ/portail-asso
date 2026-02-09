@@ -1,0 +1,53 @@
+$warning: #F39200FF;
+$success: #2BB989;
+$danger: #EA5188FF;
+$info: #69a3cc;
+$primary: #6E00FF;
+$default: #F0F2F9;
+$secondary: #A7A5CB;
+
+$animals: #8A4E6A;
+$art: #017284;
+$crafts: #FF7D83;
+$wellbeing: #E9006D;
+$environment: #00852C;
+$education: #FFBD00;
+$leisure: #7F52A3;
+$music: #F96700;
+$heritage: #AF331B;
+$other: #C59602;
+$pro: #1615A1;
+$health: #2BBFC9;
+$science: #3C70AC;
+$solidarity: #EA5189;
+$spirituality: #ADDDF1;
+$sport: #FD4F44;
+
+$colors: (
+    animals: $animals,
+    art: $art,
+    crafts: $crafts,
+    wellbeing: $wellbeing,
+    environment: $environment,
+    education: $education,
+    leisure: $leisure,
+    music: $music,
+    heritage: $heritage,
+    other: $other,
+    pro: $pro,
+    health: $health,
+    science: $science,
+    solidarity: $solidarity,
+    spirituality: $spirituality,
+    sport: $sport
+);
+
+@each $name, $color in $colors {
+    .text-#{$name} {
+        color: $color;
+    }
+
+    .bg-#{$name} {
+        background-color: $color;
+    }
+}

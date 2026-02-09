@@ -34,9 +34,9 @@ class Membership
         self::STATUS_REFUSED => 'membership.status.refused',
     ];
 
-    public function __construct()
+    public function __construct(bool $forced = false)
     {
-        $this->status = self::STATUS_PENDING;
+        $this->status = $forced ? self::STATUS_ACCEPTED : self::STATUS_PENDING;
         $this->createdAt = new \DateTimeImmutable();
     }
 

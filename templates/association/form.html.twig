@@ -1,84 +1,81 @@
-<div>
-    {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+<div class="card border-secondary-subtle px-3 py-4 rounded-3 mb-4">
+    <div class="card-body">
+        {% if title|default %}
+            <div class="row mb-2">
+                <h1 class="fs-4 fw-semibold">{{ title }}</h1>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                {{ form_row(formAssociation.name, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3', 'autocomplete': 'off'}}) }}
+
+                {% if formAssociation.logo is defined %}
+                    {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill'}}) }}
+                {% endif %}
+            </div>
+
+            {% if formAssociation.categories is defined %}
+                <div class="col-md-6 col-sm-12">
+                    {{ form_row(formAssociation.categories, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-select rounded-pill mb-3 js-tomselect'}}) }}
+
+                    {% if association.logoFilename|default %}
+                        <div class="w-100 my-auto">
+                            <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail border-0">
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
-{% if formAssociation.categories is defined %}
-    <div>
-        {{ form_row(formAssociation.categories, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-select js-tomselect'}}) }}
-    </div>
-{% endif %}
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        {% if formAssociation.contacts is defined %}
+            <div class="card border-secondary-subtle px-3 py-4 rounded-3 mb-4">
+                <div class="card-body">
+                    <h2 class="fs-5 fw-semibold">{{ 'association.form.contact.title'|trans }}</h2>
+                    <h3 class="fs-6 fst-italic mb-3"><small>({{ 'association.form.optional'|trans }})</small></h3>
+                    {% form_theme formAssociation.contacts 'association/contact_fields.html.twig' %}
+                    <div id="contacts-collection" data-prototype="{{ form_widget(formAssociation.contacts.vars.prototype)|e('html_attr') }}">
+                        {{ form_row(formAssociation.contacts) }}
+                    </div>
 
-{% if formAssociation.logo is defined %}
-    <div>
-        {% if association.logoFilename|default %}
-            <div class="row">
-                <div class="col-md-8">
-                    {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="col-md-4 d-flex align-items-end p-3">
-                    <img src="/uploads/{{ association.logoFilename }}" alt="{{ association.name }}" class="img-fluid img-thumbnail">
+                    <button type="button" class="btn btn-link text-primary ps-0 text-decoration-none" id="add-contact">
+                        <i class="fa-solid fa-circle-plus"></i>&nbsp;{{ 'association.form.contact.add'|trans }}
+                    </button>
+                    {{ form_row(formAssociation.contactAddress, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3'}}) }}
+                    {{ form_row(formAssociation.contactEmail, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3'}}) }}
+                    {{ form_row(formAssociation.contactPhone, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill'}}) }}
                 </div>
             </div>
-        {% else %}
-            {{ form_row(formAssociation.logo, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
         {% endif %}
     </div>
-    <hr class="my-5">
-{% endif %}
 
-{% if formAssociation.contacts is defined %}
-    <div>
-        {% form_theme formAssociation.contacts 'association/contact_fields.html.twig' %}
-        <fieldset class="row">
-            <legend>{{ 'association.form.contact.title'|trans }} <small><em>({{ 'association.form.optional'|trans }}</em></small>)</legend>
-            <div class="col-md-12">
-                <div id="contacts-collection" data-prototype="{{ form_widget(formAssociation.contacts.vars.prototype)|e('html_attr') }}">
-                    {{ form_row(formAssociation.contacts) }}
+    <div class="col-md-6 col-sm-12">
+        {% if formAssociation.networkWebsite is defined %}
+            <div class="card border-secondary-subtle px-3 py-4 rounded-3 mb-4">
+                <div class="card-body">
+                    <h2 class="fs-5 fw-semibold">{{ 'association.form.network.title'|trans }}</h2>
+                    <h3 class="fs-6 fst-italic mb-3"><small>({{ 'association.form.optional'|trans }})</small></h3>
+
+                    {{ form_row(formAssociation.networkWebsite, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3'}}) }}
+                    {{ form_row(formAssociation.networkFacebook, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3'}}) }}
+                    {{ form_row(formAssociation.networkInstagram, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill mb-3'}}) }}
+                    {{ form_row(formAssociation.networkOther, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill'}}) }}
                 </div>
-
-                <button type="button" class="btn btn-link text-primary ps-0" id="add-contact">Ajouter un contact</button>
             </div>
-            <div class="col-md-12">
-                {{ form_row(formAssociation.contactAddress, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactEmail, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.contactPhone, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-        </fieldset>
+        {% endif %}
     </div>
-    <hr class="my-5">
-{% endif %}
-
-{% if formAssociation.networkWebsite is defined %}
-    <div>
-        <fieldset class="row">
-            <legend>{{ 'association.form.network.title'|trans }} <small><em>({{ 'association.form.optional'|trans }}</em></small>)</legend>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkWebsite, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkFacebook, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkInstagram, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(formAssociation.networkOther, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control'}}) }}
-            </div>
-        </fieldset>
-    </div>
-    <hr class="my-5">
-{% endif %}
+</div>
 
 {% if formAssociation.content is defined %}
-    <div>
-        <fieldset>
-            <legend>{{ 'association.form.content'|trans }}</legend>
-            <p>{{ 'association.form.content_help'|trans }}</p>
+    <div class="card border-secondary-subtle px-3 py-4 rounded-3">
+        <div class="card-body">
+            <h2 class="fs-5 fw-semibold mb-3">{{ 'association.form.content'|trans }}</h2>
+            <p class="fs-6"><small>{{ 'association.form.content_help'|trans }}</small></p>
             {{ form_row(formAssociation.content, {'attr': {'class': 'form-control wysiwyg page-template'}}) }}
-        </fieldset>
+        </div>
     </div>
 {% endif %}

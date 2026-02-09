@@ -3,36 +3,40 @@
 {% block title %}Modération{% endblock %}
 
 {% block body %}
-    <h1>Modération des contributions</h1>
+    <div class="card border-secondary-subtle rounded-3">
+        <div class="card-body px-4 pt-5 pb-3">
+            <h1 class="fs-4 fw-semibold mb-3">Modération des contributions</h1>
 
-    {% if revisions|default is not empty %}
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Association</th>
-                    <th>Créateur</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for revision in revisions %}
+            {% if revisions|default is not empty %}
+                <table class="table table-bordered table-hover">
+                    <thead>
                     <tr>
-                        <td>{{ revision.association.name }}</td>
-                        <td>{{ revision.createdBy|default('Anonyme') }}</td>
-                        <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
-                        <td>
-                            <a class="btn btn-sm btn-success text-white revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}">
-                                Voir les changements
-                            </a>
-                        </td>
+                        <th>Association</th>
+                        <th>Créateur</th>
+                        <th>Date</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    {% for revision in revisions %}
+                        <tr>
+                            <td>{{ revision.association.name }}</td>
+                            <td>{{ revision.createdBy|default('Anonyme') }}</td>
+                            <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary rounded-pill revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}" title="Voir les changements">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
-        {% include 'association/_revisions-preview.html.twig' with {'association': revisions[0].association} %}
-    {% else %}
-        <div class="alert alert-info">Aucune contribution en attente.</div>
-    {% endif %}
+                {% include 'association/_revisions-preview.html.twig' with {'association': revisions[0].association} %}
+            {% else %}
+                <div class="alert alert-info">Aucune contribution en attente.</div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

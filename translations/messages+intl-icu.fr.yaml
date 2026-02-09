@@ -1,5 +1,8 @@
 wiki_plab:
-    long: Portail des associations de Plabennec
+    long: Portail des associations Plabennecoises
+    parts:
+        1: Portail des associations
+        2: Plabennecoises
     short: Portail
 
 day:
@@ -12,7 +15,7 @@ day:
     sunday: dimanche
 
 nav:
-    login: Connexion
+    login: Se connecter
     register: Inscription
     user:
         account: Mon Compte
@@ -32,11 +35,11 @@ home:
         title: Bienvenue sur le Portail des associations Plabennecoises !
         content: >
             Ce site, proposé et animé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, fonctionne comme un <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : chacun peut le lire et y contribuer, dans le respect de notre charte d'édition.
-            <br>
+            <br><br>
             Son objectif est de constituer une base de données vivante et utile pour toutes celles et ceux qui souhaitent agir et participer à la transformation de leur ville.
             <br>
-            Cette page a pour vocation de rendre plus accessible la richesse de la vie associative et citoyenne locale, et d’offrir un outil concret pour s’y engager.
-            <br>
+            Cette page a pour vocation de <strong>rendre plus accessible la richesse de la vie associative et citoyenne locale</strong>, et d’offrir un outil concret pour s’y engager.
+            <br><br>
             Votre association n’apparaît pas encore dans la liste ? Ajoutez-la facilement en cliquant sur le bouton ci-dessous.
     agenda_days: Agenda des {days} prochains jours
     events:
@@ -49,25 +52,27 @@ home:
             upcoming:
                 title: "{events} événements dans les jours à venir."
                 help: (cliquez sur un jour en surbrillance pour en lister les événements)
+        see_all: Voir tous les événements
     associations:
-        title: Associations
+        title: Les Associations
         list:
             filter:
-                category: Toutes les catégories
+                category: Filtrer par catégorie
+                all_categories: Toutes les catégories
                 text:
                     title: Rechercher
-                    placeholder: Rechercher une association...
+                    placeholder: Rechercher une association
             none: Aucune association enregistrée pour le moment.
         add:
             title: Ajouter une association
 
 charter:
     content: >
-        Plabennec en Transition propose à chaque association (culturelle, sportive, caritative, sociale, de bien-être, …), chaque groupe d’activité ou d’initiative citoyenne d’alimenter sa propre présentation sur le wiki.
+        <a href="https://www.plabennecentransition.fr">Plabennec en Transition</a> propose à chaque association (culturelle, sportive, caritative, sociale, de bien-être, …), chaque groupe d’activité ou d’initiative citoyenne d’alimenter sa propre présentation sur ce portail.
         <br>
         Sur cette base collaborative, toutes les contributions partageront l’objectif d’offrir aux abonnés une communication claire, sincère et conforme aux exigences de la vie en société.
         <br>
-        Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et des valeurs de Plabennec en Transition soient préservés sur le wiki.
+        Plabennec en transition se réserve le droit de modifier les contenus hébergés pour que la diversité d'opinion, le respect des autres et les valeurs de Plabennec en Transition soient préservés sur cet outil.
     title: Charte d'édition
 
 association:
@@ -81,6 +86,7 @@ association:
         leisure: Loisirs
         music: Musique
         heritage: Patrimoine
+        other: Divers
         professional-student-network : Réseaux pros & étudiants
         health: Santé
         science-technology: Sciences & Technologie
@@ -90,10 +96,11 @@ association:
     wip: Cette page est en cours de construction
     form:
         name: Nom de l’association
-        categories: Catégories
+        categories: Catégorie(s) de l'association
         logo: Logo de l'association
         contact:
             title: Comment peut-on joindre l'association ?
+            add: Ajouter une personne à contacter
             address: Adresse de l'association
             email: Email de contact
             phone: Téléphone
@@ -113,8 +120,11 @@ association:
         confirm: Je veux créer une nouvelle page association
     add:
         title: Créer une page association
+        choose_one: S'agit-il de l'une de ces associations ?
+        choose_one_message: Auquel cas, la page a déjà été créée. Vous pouvez cliquer dessus pour la visualiser ou la modifier.
+        no_results: Aucune association ne porte ce nom. Vous pouvez donc créer une nouvelle page pour cette association en cliquant sur le bouton ci-dessous.
         save: Enregistrer cette page association
-        cancel: Annuler et revenir à l'accueil
+        cancel: Annuler et revenir en arrière
         confirm: Nouvelle association créée avec succès.
     edit:
         title: Modifier la page de {association}
@@ -181,12 +191,12 @@ association:
 
 contact:
     form:
-        name: Nom de la personne
-        function: Fonction de cette personne
+        name: Nom de la personne à contacter
+        function: Fonction de la personne à contacter
         remove: Supprimer cette personne
 
 revision:
-    title: versions antérieures
+    title: Versions antérieures
     created_at: Créée le {createdAt}
     created_at_by: Créée le {createdAt} par {createdBy}
     modal:
@@ -228,15 +238,25 @@ reset_password:
 
 event:
     date: Le {date} à {start}
+    list:
+        title: Prochains événements
+        filter: Filtrer par dates
+        prefix:
+            single: Le
+            multiple: Du
     show:
         back: Retour à la page de {association}
         actions:
-            edit: Modifier
+            edit: Modifier l'événement
+            duplicate: Dupliquer l'événement
+            delete:
+                title: Supprimer l'événement
+                confirm: Êtes-vous certain de vouloir supprimer définitivement cet événément ? Cette action est irréversible.
         is_public: événement public
     add:
         title: Créer un nouvel événement
         form:
-            submit: Créer l'événement
+            submit: Publier l'événement
             confirm: Événement ajouté avec succès.
             back: Annuler et revenir sur la page de l'association
     edit:
@@ -252,13 +272,13 @@ event:
         confirm: L'événement a bien été supprimé.
     form:
         title: Titre
-        short_description: Description courte
+        short_description: Description courte de l'événement
         poster: Affiche de l'événement
-        long_description: Description longue
+        long_description: Description longue de l'événement
         start_at: Date et heure de début
         is_public:
             label: Est-ce un événement public ?
-            help: Un événement public apparaîtra sur la page d'accueil de ce Portail.
+            help: Un événement public apparaîtra sur la page d'accueil de ce portail.
         location: Lieu
         recurrence:
             open_modale: Répéter l'événement
@@ -298,7 +318,7 @@ user:
         role_user: Pas de rôle spécial
 
 user_account:
-    title: Mon Compte
+    title: Mon compte
     content:
         email: Mon email
         identifier: Mon identifiant
@@ -365,11 +385,16 @@ chairman:
             submit: Enregistrer le changement
         set_owner:
             link: Changer la présidence
-            title: Modifier l'utilisateur président de l'association
+            title: Modifier la présidence de l'association
             search: Rechercher et sélectionner l'utilisateur
             placeholder: Nom, prénom ou email
             cancel: Ne rien faire
             submit: Enregistrer le changement
+        invite_user:
+            link: Inviter un utilisateur
+            title: Inviter un utilisateur
+            invite: Rechercher et inviter l'utilisateur
+            placeholder: Nom, prénom ou email
         none: Vous n'avez aucune association à gérer.
     memberships:
         owner: Présidence
@@ -418,3 +443,8 @@ email:
         content: >
             Votre demande d'adhésion à l'association {association} a été approuvée.<br>
             Vous pouvez maintenant vous connecter sur le portail et consulter la <a href="{url}">page de l'association</a>.
+    invite_new:
+        subject: Rejoignez l'association {association} sur le portail des associations de Plabennec !
+        content: >
+            Vous été invité à rejoindre l'association {association} sur le portail des associations de Plabennec.<br>
+            Créez votre compte sur le portail en cliquant directement sur <a href="{url}">ce lien</a>.

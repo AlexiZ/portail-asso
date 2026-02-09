@@ -8,6 +8,9 @@ import Routing from 'fos-router';
 import { RRule } from 'rrule';
 import { rruleFrFr } from "./plugins/rruleFrFr";
 import { rruleBr } from "./plugins/rruleBr";
+import flatpickr from "flatpickr";
+import { French } from "flatpickr/dist/l10n/fr";
+import { Breton } from "./plugins/flatpickr/br";
 
 import routes from '../public/js/fos_js_routes.json';
 Routing.setRoutingData(routes);
@@ -150,14 +153,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(data => {
                         const query = associationAutocompleteField.value.trim();
                         const resultsDivContent = resultsDiv.querySelector('#content');
+                        const resultsDivMessage = resultsDiv.querySelector('#message');
 
                         resultsDivContent.innerHTML = '';
                         resultsDiv.classList.remove('d-none');
+                        resultsDivMessage.classList.remove('d-none');
 
                         if (data.length === 0) {
                             const p = document.createElement('p');
-                            p.innerHTML = '<em>Aucune page association ne porte ce nom.</em>';
+                            p.innerHTML = resultsDivContent.dataset.none;
                             resultsDivContent.appendChild(p);
+                            resultsDivMessage.classList.add('d-none');
 
                             return;
                         }
@@ -167,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         data.forEach(association => {
                             const a = document.createElement('a');
-                            a.classList.add('list-group-item', 'list-group-item-action');
+                            a.classList.add('list-group-item', 'list-group-item-action', 'border-0', 'border-bottom', 'text-black');
                             a.href = Routing.generate('association_show', {'slug': association.slug});
 
                             const regex = new RegExp(`(${query})`, 'gi');
@@ -236,12 +242,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const ownerModals = document.querySelectorAll('.owner-modal');
     if (ownerModals) {
+        const validateEmail = email => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
         ownerModals.forEach(ownerModal => {
             const formSearchMember = ownerModal.querySelector('form[data-search]');
             const searchInput = formSearchMember.querySelector('.search-member');
             const hiddenInput = formSearchMember.querySelector('input[name="user"]');
             const resultsDiv = ownerModal.querySelector('#resultsMember');
             const searchUrl = formSearchMember.getAttribute('data-search');
+            const inviteUrl = formSearchMember.getAttribute('data-invite');
             let timeout = null;
 
             searchInput.addEventListener('input', () => {
@@ -263,6 +277,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (!Array.isArray(users) || users.length === 0) {
                             resultsDiv.innerHTML = '<p>Aucun utilisateur trouvé.</p>';
+                            if (validateEmail(query) && inviteUrl) {
+                                resultsDiv.innerHTML += '<p><a href="'+`${inviteUrl}?q=${encodeURIComponent(query)}`+'">Cliquez ici pour inviter ' + query + ' à rejoindre le portail.</a></p>';
+                            }
 
                             return;
                         }
@@ -843,6 +860,80 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Erreur dans l’appel Ajax : ', error);
             });
+        });
+    }
+
+    const calendarFilter = document.querySelector('.flatpickr');
+    if (calendarFilter) {
+        const events = document.querySelectorAll('.event-item');
+        let enabledDates = [];
+        events.forEach(event => {
+            enabledDates.push(new Date(event.dataset.from));
+        });
+        const filterEvents = (dateFrom, dateTo) => {
+            if (dateTo) {
+                dateTo.setHours(23, 59, 59, 999);
+            }
+            if (events) {
+                events.forEach(event => {
+                    const eventDate = new Date(event.dataset.from);
+                    if (dateFrom && dateTo) {
+                        event.classList.toggle('d-none', eventDate < dateFrom || eventDate > dateTo);
+                    } else if (dateFrom) {
+                        event.classList.toggle('d-none', eventDate < dateFrom);
+                    } else if (dateTo) {
+                        event.classList.toggle('d-none', eventDate > dateTo);
+                    } else {
+                        event.classList.remove('d-none');
+                    }
+                })
+            }
+        };
+        const activeDays = instance => {
+            const days = instance.days;
+            days.childNodes.forEach(day => {
+                const dayKey = d => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+                if (enabledDates.some(d => dayKey(d) === dayKey(day.dateObj))) {
+                    day.classList.add('active');
+                }
+            });
+        };
+        flatpickr(calendarFilter, {
+            locale: calendarFilter.dataset.locale,
+            mode: 'range',
+            dateFormat: "D j F",
+            wrap: true,
+            onOpen: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+            },
+            onMonthChange: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                activeDays(instance);
+
+                const reset = calendarFilter.querySelector('[data-clear]');
+                const input = calendarFilter.querySelector('[data-input]');
+                if (0 === selectedDates.length) {
+                    reset.classList.add('d-none');
+                    input.innerText = calendarFilter.dataset.default;
+                    filterEvents();
+
+                    return;
+                }
+
+                let prefix = calendarFilter.dataset.single;
+                const dateFrom = selectedDates[0];
+                const dateTo = selectedDates[1];
+                if (selectedDates.length > 1 && dateFrom.getTime() !== dateTo.getTime()) {
+                    prefix = calendarFilter.dataset.multiple;
+                }
+                input.innerText = prefix + ' ' + dateStr;
+                reset.classList.remove('d-none');
+
+                filterEvents(dateFrom, dateTo || null);
+            },
         });
     }
 });

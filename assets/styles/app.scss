@@ -1,21 +1,10 @@
 @import "bootstrap/scss/functions";
 @import 'shepherd.js/dist/css/shepherd.css';
 
-$warning: #F39200FF;
-$success: #2BB989;
-$danger: #EA5188FF;
-$info: #A169CCFF;
-$primary: #077C5DFF;
-$default: #EAEAEA;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
-.btn-info:hover {
-    background-color: $info !important;
-    opacity: .9 !important;
-}
-
-.background-default {
-    background-color: $default !important;
-}
+@import "_variables.scss";
+@import "_override.scss";
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/maps";
@@ -25,8 +14,10 @@ $default: #EAEAEA;
 
 @import "tom-select/dist/scss/tom-select.bootstrap5";
 
+@import "flatpickr/dist/flatpickr.min.css";
+
 body {
-    background-color: #fbfaf9;
+    background-color: $default;
 }
 
 @media (min-width: 768px) {
@@ -35,23 +26,78 @@ body {
     }
 }
 
-.navbar-nav > li.nav-item:hover {
-    background-color: var(--bs-border-color);
+.navbar-nav > li.nav-item {
+    .nav-link {
+        border-bottom: 1px solid $white;
+    }
+    &:hover .nav-link {
+        color: $primary;
+        border-bottom: 1px solid $primary;
+    }
 }
 
-#btn-back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: none;
+@media (max-width: 768px) {
+    .flex-sm-column {
+        flex-direction: column !important;
+    }
+    .mb-sm-3 {
+        margin-bottom: 1rem !important;
+    }
+}
+
+#listAssociations {
+    form {
+        button[type="submit"] {
+            top: 5px;
+            right: 5px;
+            z-index: 5;
+        }
+
+        button[type="button"] {
+            width: 290px;
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+
+            &.caret-custom {
+                &::after {
+                    display: none;
+                }
+                &::before {
+                    content: "";
+                    width: 1rem;
+                    height: 1rem;
+                    margin-left: .5rem;
+                    margin-top: .3rem;
+                    background: no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='9' viewBox='0 0 15 9' fill='none'%3E%3Cpath d='M6.375 7.8125L0.375 1.8125C0 1.40625 0 0.78125 0.375 0.375C0.78125 0 1.40625 0 1.8125 0.375L7.09375 5.6875L12.375 0.375C12.7812 0 13.4062 0 13.8125 0.375C14.1875 0.78125 14.1875 1.40625 13.8125 1.8125L7.8125 7.8125C7.40625 8.1875 6.78125 8.1875 6.375 7.8125Z' fill='%23A7A5CB'/%3E%3C/svg%3E");
+                    display: inline-block;
+                    float: right;
+                }
+            }
+
+            svg {
+                margin-left: 20px;
+            }
+        }
+
+        input[name="search"] {
+            width: 290px;
+            @media (max-width: 768px) {
+                height: 42px;
+            }
+        }
+    }
 }
 
 .masonry {
-    column-count: 2;   /* ou 3 selon largeur */
-    column-gap: 1rem;
+    column-count: 2;
+    column-gap: 2rem;
+    @media (max-width: 768px) {
+        column-count: 1;
+    }
 
     .col {
-        display: inline-block; /* pour que les blocs s’empilent correctement */
+        display: inline-block;
         width: 100%;
 
         .wip {
@@ -59,15 +105,57 @@ body {
 
             svg {
                 width: 20px;
+
+                path {
+                    fill: $secondary;
+                }
             }
+            &:hover {
+                svg path {
+                    fill: #F29200;
+                }
+            }
+
+            .wip-text {
+                color: $default;
+                font-size: 12px;
+            }
+            &:hover {
+                .wip-text {
+                    color: $black;
+                }
+            }
+        }
+
+        div.letter {
+            width: 50px;
+            margin-bottom: -9px;
+            z-index: 5;
+            position: relative;
+        }
+        div.by-letter {
+            border-top-left-radius: 0 !important;
         }
     }
 }
 
-@media (max-width: 768px) {
-    .masonry {
-        column-count: 1;
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    &:hover {
+        background-color: $primary;
     }
+}
+
+.hover-text-primary:hover {
+    color: $primary !important;
+    text-decoration: underline !important;
+}
+
+.hover-bg-primary:hover {
+    background-color: $primary !important;
 }
 
 #searchDropdown::after {
@@ -288,7 +376,7 @@ body {
     }
 
     .list-future-events {
-        max-height: 300px;
+        max-height: 350px;
         min-height: 200px;
         overflow: auto;
 
@@ -300,8 +388,8 @@ body {
 
 [data-route="association_edit"] {
     .img-thumbnail {
-        max-width: 200px;
-        max-height: 200px;
+        max-width: 400px;
+        max-height: 100px;
     }
     .remove-contact {
         position: absolute;
@@ -309,6 +397,13 @@ body {
         width: auto;
         top: 50%;
         cursor: pointer;
+    }
+    .ts-wrapper.multi.has-items .ts-control {
+        padding-left: calc(1.3rem - 5px);
+
+        .item {
+            margin: 0;
+        }
     }
 }
 
@@ -323,7 +418,7 @@ body {
     margin: auto;
     --slide-height: 19rem;
     --slide-spacing: 1rem;
-    --slide-size: 50%;
+    --slide-size: 100%;
     @media (max-width: 768px) {
         --slide-size: 100%;
     }
@@ -345,6 +440,12 @@ body {
                 padding-bottom: 1px;
             }
         }
+    }
+    .embla__controls {
+        position: absolute;
+        right: 30px;
+        top: -135px;
+        z-index: 1;
     }
     .embla__button {
         -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
@@ -434,5 +535,46 @@ body {
         --bs-text-opacity: 1;
         color: var(--bs-secondary-color);
         cursor: not-allowed;
+    }
+    table {
+        th, td {
+            padding: 15px;
+        }
+    }
+}
+
+[data-route="event_list"] {
+    .switch-view {
+        font-size: 1.5rem;
+        color: $secondary;
+        cursor: pointer;
+
+        &.active, &:hover {
+            color: $primary;
+        }
+    }
+    .flatpickr {
+        button.with-calendar:after {
+            font-family: "Font Awesome 6 Free";
+            content: "\f073";
+            margin-left: 5px;
+        }
+    }
+    .flatpickr-day.active:not(.selected) {
+        background-color: rgba($primary, .2) !important;
+        color: $primary;
+        font-weight: bold;
+        &:hover {
+            background-color: $primary !important;
+            color: $white;
+            border: none;
+        }
+    }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+        background: $primary !important;
+        border-color: $primary !important;
+    }
+    .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+        box-shadow: -10px 0 0 $primary !important;
     }
 }

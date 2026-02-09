@@ -17,24 +17,30 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ 'wiki_plab.long'|trans }}" height="50" class="d-inline-block align-text-top">
-                    <span class="ps-3 pt-3 align-middle d-none d-md-inline-block">{{ 'wiki_plab.long'|trans }}</span>
+                    <span class="ps-3 pt-3 align-middle d-none d-md-inline-block">
+                        <span class="fw-bold text-uppercase">{{ 'wiki_plab.parts.1'|trans }}</span>
+                        <br>
+                        {{ 'wiki_plab.parts.2'|trans }}
+                    </span>
                     <span class="ps-3 pt-3 align-middle d-sm-inline-block d-md-none">{{ 'wiki_plab.short'|trans }}</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMenu" aria-controls="navbarTogglerMenu" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarTogglerMenu">
+                <div class="collapse navbar-collapse text-muted fw-bold" id="navbarTogglerMenu">
                     <ul class="navbar-nav ms-auto">
-                        {% block shepherd %}{% endblock %}
+                        <li class="nav-item px-3">
+                            {% block shepherd %}{% endblock %}
+                        </li>
 
-                        <li class="nav-item border-end px-1">
-                            <a class="nav-link" href="{{ path('publishing_charter') }}">{{ 'charter.title'|trans }}</a>
+                        <li class="nav-item px-3">
+                            <a class="nav-link px-0 pb-0" href="{{ path('publishing_charter') }}"><i class="fa-regular fa-clipboard pe-1"></i>&nbsp;{{ 'charter.title'|trans }}</a>
                         </li>
 
                         {% if app.user %}
-                            <li class="nav-item shepherd-user-login dropdown border-end px-1">
-                                <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ app.user.email }}">
+                            <li class="nav-item shepherd-user-login dropdown px-3">
+                                <a class="nav-link dropdown-toggle px-0 pb-0" href="javascript:void(0);" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ app.user.email }}">
                                     {{ app.user.username }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
@@ -85,16 +91,13 @@
                                 </ul>
                             </li>
                         {% else %}
-                            <li class="nav-item shepherd-user-login border-end px-1">
-                                <a class="nav-link" href="{{ path('app_login') }}">{{ 'nav.login'|trans }}</a>
-                            </li>
-                            <li class="nav-item shepherd-user-register border-end px-1">
-                                <a class="nav-link" href="{{ path('app_register') }}">{{ 'nav.register'|trans }}</a>
+                            <li class="nav-item shepherd-user-login px-3">
+                                <a class="nav-link px-0 pb-0" href="{{ path('app_login') }}"><i class="fa-regular fa-user pe-1"></i>&nbsp;{{ 'nav.login'|trans }}</a>
                             </li>
                         {% endif %}
 
-                        <li class="nav-item dropdown px-1">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item dropdown px-3">
+                            <a class="nav-link dropdown-toggle px-0 pb-0" href="javascript:void(0);" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ app.request.locale|upper }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
@@ -197,8 +200,8 @@
             </script>
         {% endblock %}
 
-        <button type="button" class="btn btn-success btn-floating btn-lg text-white" id="btn-back-to-top">
-            <i class="fas fa-arrow-up"></i>
+        <button type="button" class="btn btn-secondary btn-floating text-white rounded-circle" id="btn-back-to-top">
+            <i class="fas fa-chevron-up"></i>
         </button>
     </body>
 </html>
