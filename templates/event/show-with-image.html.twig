@@ -1,8 +1,12 @@
-<div class="d-sm-none d-md-block col-md-4 px-0">
-    <img src="{{ asset('/uploads/' ~ (event.posterFilename|default(event.association.logoFilename))) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
-</div>
+{% set poster = event.posterFilename|default(event.association.logoFilename) %}
 
-<div class="col-sm-12 col-md-8 d-flex flex-column ps-4">
+{% if poster|default %}
+    <div class="d-sm-none d-md-block col-sm-12 col-md-4 px-0">
+        <img src="{{ asset('/uploads/' ~ poster) }}" alt="{{ event.title }}" style="max-width:100%;max-height:100%;" class="img-fluid">
+    </div>
+{% endif %}
+
+<div class="col-sm-12 col-md-{% if poster|default %}8{% else%}12{% endif%} d-flex flex-column ps-4">
     <h5 class="text-primary fw-bold mb-3">
         <a href="{{ path('event_show', {slug: event.slug}) }}" class="text-decoration-none">{{ event.title }}</a>
     </h5>
