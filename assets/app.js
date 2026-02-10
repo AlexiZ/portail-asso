@@ -364,15 +364,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     text: 'Démarrer la visite <i class="fa fa-arrow-right"></i>',
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                 },
             ],
             cancelIcon: {
                 enabled: true,
             },
             id: 'step-intro',
-            title: 'Visite guidée',
-            text: 'Découvrez les principales fonctionnalités de ce portail pas-à-pas grâce à cette visite guidée.<br><br><small><em>Vous pouvez utiliser les flèches ← → de votre clavier pour naviguer et la touche "Echap" pour sortir de la visite.</em></small>',
+            title: 'Bienvenue sur le Portail',
+            text: 'Découvrez les principales fonctionnalités de cet outil grâce à cette visite guidée.<br><br><small><em>Vous pouvez utiliser les flèches ← → de votre clavier pour naviguer et la touche "Echap" pour sortir de la visite.</em></small>',
         });
         // Connexion / Inscription
         tourHomepage.addStep({
@@ -383,12 +383,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Introduction',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -410,12 +410,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -426,31 +426,6 @@ document.addEventListener('DOMContentLoaded', function () {
             title: 'Événements des 30 prochains jours',
             text: 'Les événements des 30 prochains jours ont été créés par les associations et sont visibles ici dans l\'ordre chronologique.',
         });
-        // Sélecteur du mode agenda
-        tourHomepage.addStep({
-            attachTo: {
-                element: '#eventsViewSelector',
-                on: 'left',
-            },
-            buttons: [
-                {
-                    action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
-                    text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
-                },
-                {
-                    action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
-                    text: 'Suite <i class="fa fa-arrow-right"></i>',
-                },
-            ],
-            cancelIcon: {
-                enabled: true,
-            },
-            id: 'step-agenda-selecteur',
-            title: 'Sélecteur de vue pour l\'agenda',
-            text: 'Choisissez parmi les vues "mosaïque", "liste" ou "calendrier" pour votre confort. Ce choix sera conservé pour vos prochaines visites.',
-        });
         // Liste des associations
         tourHomepage.addStep({
             attachTo: {
@@ -460,12 +435,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -486,12 +461,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -511,12 +486,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -530,18 +505,18 @@ document.addEventListener('DOMContentLoaded', function () {
         // Rechercher
         tourHomepage.addStep({
             attachTo: {
-                element: '#searchDropdown',
+                element: '#searchBar',
                 on: 'left',
             },
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -551,7 +526,7 @@ document.addEventListener('DOMContentLoaded', function () {
             canClickTarget: false,
             id: 'step-search-asso',
             title: 'Chercher une association',
-            text: 'Pour retrouver rapidement une association, utilisez la recherche par mots-clés.',
+            text: 'Pour retrouver rapidement une association, vous pouvez filtrer la liste par catégorie ou directement renseigner tout ou partie du nom de l\'association recherchée.',
         });
         // Ajouter une association
         tourHomepage.addStep({
@@ -562,12 +537,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.next,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Suite et fin <i class="fa fa-arrow-right"></i>',
                 },
             ],
@@ -583,12 +558,12 @@ document.addEventListener('DOMContentLoaded', function () {
             buttons: [
                 {
                     action: tourHomepage.back,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-outline-primary rounded-pill',
                     text: '<i class="fa fa-arrow-left"></i> Revenir en arrière',
                 },
                 {
                     action: tourHomepage.complete,
-                    classes: 'btn btn-info text-white',
+                    classes: 'btn btn-primary rounded-pill fw-semibold',
                     text: 'Terminer <i class="fa fa-check"></i>',
                 },
             ],

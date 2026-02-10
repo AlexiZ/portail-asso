@@ -502,11 +502,19 @@ body {
 
     .shepherd-content {
         .shepherd-header {
-            background: var(--bs-info-bg-subtle);
+            background: $default;
 
             .shepherd-title {
                 font-size: 1.75rem !important;
             }
+        }
+        .shepherd-button:not(:disabled):hover {
+            color: var(--bs-btn-hover-color);
+            background-color: var(--bs-btn-hover-bg);
+            border-color: var(--bs-btn-hover-border-color);
+        }
+        .shepherd-text, .shepherd-footer {
+            padding: 1.1rem !important;
         }
     }
 }
