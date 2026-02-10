@@ -435,7 +435,7 @@ class Association
 
     public function getFutureEvents(): Collection
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTime();
         $results = new ArrayCollection();
 
         foreach ($this->events as $event) {
@@ -444,7 +444,7 @@ class Association
             if ($event->getRecurrenceRule()) {
                 $rule = new RRule($event->getRecurrenceRule());
 
-                foreach ($rule->getOccurrencesAfter($now) as $date) {
+                foreach ($rule->getOccurrencesAfter($now, false, 10) as $date) {
                     $dateWithTime = (clone $date)->setTime(
                         (int) $startAt->format('H'),
                         (int) $startAt->format('i'),
