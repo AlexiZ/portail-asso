@@ -55,6 +55,7 @@ readonly class EventFactory
         $duped->setCreatedBy($this->tokenStorage->getToken()->getUser());
         $duped->setTitle($event->getTitle());
         $duped->setSlug($event->getSlug());
+        $duped->setLocation($event->getLocation());
         $duped->setShortDescription($event->getShortDescription());
         $duped->setPosterFilename($event->getPosterFilename());
         $duped->setLongDescription($event->getLongDescription());
