@@ -3,11 +3,11 @@
 {% block title %}{{ 'home.title'|trans }}{% endblock %}
 
 {% block shepherd %}
-    <a class="nav-link px-0 pb-0" id="shepherdTrigger" data-page="{{ app.request.attributes.get('_route') }}" href="javascript:void(0);"><i class="fa-regular fa-circle-question"></i></a>
+    <a class="nav-link px-0 pb-0 help-button" id="shepherdTrigger" data-page="{{ app.request.attributes.get('_route') }}" href="javascript:void(0);"><i class="fa-regular fa-circle-question"></i></a>
 {% endblock %}
 
 {% block body %}
-    <div class="d-flex flex-sm-column flex-md-row mb-3 mb-md-5">
+    <div class="d-flex flex-sm-column flex-md-row mb-3 mb-md-4">
         <div class="me-md-3 mb-sm-3 mb-md-0">
             <div class="p-4 pt-5 bg-white rounded-3 border h-100">
                 <div class="container-fluid h-100">

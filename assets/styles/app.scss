@@ -32,7 +32,6 @@ body {
     }
     &:hover .nav-link {
         color: $primary;
-        border-bottom: 1px solid $primary;
     }
 }
 
@@ -584,5 +583,51 @@ body {
     }
     .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
         box-shadow: -10px 0 0 $primary !important;
+    }
+}
+
+/* Bouton contenant l’icône */
+.help-button {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    width: 16px;
+    height: 16px;
+}
+
+/* Animation "ping" radar */
+.help-button::before,
+.help-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba($primary, 0.4); /* même teinte que le bouton */
+    transform: scale(1);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.help-button::before {
+    animation: radar-ping 2s infinite;
+}
+
+.help-button::after {
+    animation: radar-ping 2s infinite;
+    animation-delay: 1s;
+}
+
+@keyframes radar-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    70% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
     }
 }
