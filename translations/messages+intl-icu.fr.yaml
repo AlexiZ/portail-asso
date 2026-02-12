@@ -34,13 +34,11 @@ home:
     introduction:
         title: Bienvenue sur le Portail des associations Plabennecoises !
         content: >
-            Ce site, proposé et animé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, fonctionne comme un <a href="https://fr.wikipedia.org/wiki/Wiki">wiki</a> : chacun peut le lire et y contribuer, dans le respect de notre charte d'édition.
+            Ce site, proposé par l’association <a href="https://plabennecentransition.fr/">Plabennec en Transition</a>, permet à chaque acteur de la vie associative plabennecoise de consulter et de contribuer aux contenus, dans le respect de notre charte d’édition.
             <br><br>
-            Son objectif est de constituer une base de données vivante et utile pour toutes celles et ceux qui souhaitent agir et participer à la transformation de leur ville.
-            <br>
-            Cette page a pour vocation de <strong>rendre plus accessible la richesse de la vie associative et citoyenne locale</strong>, et d’offrir un outil concret pour s’y engager.
+            Ce site vise à créer une base de données vivante et utile pour toutes celles et ceux qui souhaitent contribuer à la transformation de leur ville. Il rend accessible la richesse de la vie associative et citoyenne locale et propose un outil concret pour s’y engager.
             <br><br>
-            Votre association n’apparaît pas encore dans la liste ? Ajoutez-la facilement en cliquant sur le bouton ci-dessous.
+            Votre association n’y figure pas encore ? Ajoutez-la facilement en cliquant ci-dessous.
     agenda_days: Agenda des {days} prochains jours
     events:
         none: Aucun événement prévu dans les {days} prochains jours.
@@ -264,7 +262,7 @@ event:
         form:
             book_room:
                 title: N'oubliez pas de réserver la salle
-                content: La mairie met gratuitement à disposition des associations des salles, réservables jusqu’à deux semaines avant la date prévue de l’événement.
+                content: La ville de Plabennec met gratuitement à disposition des associations des salles, réservables jusqu’à deux semaines avant la date prévue de l’événement.
             submit: Mettre à jour
             confirm: Événement mis à jour avec succès.
             back: Annuler et revenir sur la page de l'événement

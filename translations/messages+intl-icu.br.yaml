@@ -1,5 +1,8 @@
 wiki_plab:
-    long: Porched ar c'hevredigezhioù
+    long: Porched Kevredigezhioù Plabenneg
+    parts:
+        1: Porched ar c'hevredigezhioù
+        2: Plabenneg
     short: Porched
 
 day:

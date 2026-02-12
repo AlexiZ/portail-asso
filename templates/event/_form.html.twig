@@ -128,11 +128,12 @@
 </div>
 
 {% if settings.get('roomReservationPlatform') %}
-    <div class="alert alert-info rounded-3" role="alert">
-        <h4 class="alert-heading fs-5">💡 {{ 'event.edit.form.book_room.title'|trans }}</h4>
+    <div class="alert alert-primary border-0 rounded-3 p-4" role="alert">
+        <h4 class="alert-heading fs-5 py-2">
+            <i class="fa-regular fa-lightbulb"></i>&nbsp;&nbsp;{{ 'event.edit.form.book_room.title'|trans }}
+        </h4>
         <p>{{ 'event.edit.form.book_room.content'|trans }}</p>
-        <hr>
-        <i class="fa-solid fa-arrow-right"></i>&nbsp;<a class="alert-link" target="_blank" href="{{ settings.get('roomReservationPlatform') }}">{{ settings.get('roomReservationPlatform') }}</a>
+        <i class="fa-solid fa-arrow-right text-primary"></i>&nbsp;<a class="alert-link text-primary" target="_blank" href="{{ settings.get('roomReservationPlatform') }}">{{ settings.get('roomReservationPlatform') }}</a>
     </div>
 {% endif %}
 
