@@ -70,7 +70,7 @@ task('upload_composer', function () {
 
 task('deploy:vendors', function () {
     // Installer les dépendances dans release_path
-    run('cd {{release_path}} && {{bin/composer}} install --no-interaction --prefer-dist --optimize-autoloader --verbose');
+    run('cd {{release_path}} && {{bin/composer}} install --no-interaction --prefer-dist --optimize-autoloader --no-scripts --verbose');
 });
 
 task('deploy:assets', function () {
