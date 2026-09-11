@@ -24,7 +24,7 @@ REDIS         = redis-cli
 GIT           = git
 NPM           = npm
 NPX           = npx
-DEP			  = vendor/bin/dep
+DEP			  = docker compose exec -u $(shell id -u):$(shell id -g) php vendor/bin/dep
 
 # Alias
 SYMFONY       = $(EXEC_PHP) bin/console
@@ -34,9 +34,6 @@ PHPUNIT       = ./vendor/bin/phpunit
 PHPSTAN       = ./vendor/bin/phpstan
 PHP_CS_FIXER  = PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer
 PHPMETRICS    = ./vendor/bin/phpmetrics
-
-# Executables: local only
-SYMFONY_BIN   = symfony
 
 # Executables: prod only
 CERTBOT       = certbot
@@ -79,18 +76,15 @@ assets: purge ## Install the assets with symlinks in the public folder
 purge: ## Purge cache and logs
 	@rm -rf var/cache/* var/logs/*
 
-## —— Symfony binary 💻 ————————————————————————————————————————————————————————
-cert-install: ## Install the local HTTPS certificates
-	@$(SYMFONY_BIN) server:ca:install
+## —— Docker 🐳 ————————————————————————————————————————————————————————————————
+docker-up: ## Build and start the app (PHP, MySQL, Mailpit) in Docker, no Symfony binary needed
+	@docker compose up --build -d
 
-serve: ## Serve the application with HTTPS support (add "--no-tls" to disable https)
-	@$(SYMFONY_BIN) serve --daemon --port=$(HTTP_PORT)
-
-unserve: ## Stop the webserver
-	@$(SYMFONY_BIN) server:stop
+docker-down: ## Stop the Docker stack
+	@docker compose down
 
 ## —— Project 🐝 ———————————————————————————————————————————————————————————————
-start: load-fixtures serve ## Start docker, load fixtures, populate the Elasticsearch index and start the webserver
+start: docker-up load-fixtures ## Build/start the Docker stack and load fixtures
 
 cc-redis: ## Flush all Redis cache
 	@$(REDIS) -p 6389 flushall

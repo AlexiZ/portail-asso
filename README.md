@@ -35,29 +35,41 @@ Les contributions sont les bienvenues. Pour contribuer :
 
 ## Installation (développement local)
 
+Seul **Docker** (avec le plugin Compose) est nécessaire : ni PHP, ni Composer, ni Node, ni le binaire Symfony ne sont requis sur la machine hôte, tout tourne dans les conteneurs (PHP/FrankenPHP, MariaDB, Mailpit).
+
 1. Cloner le dépôt :
 ```bash
 git clone git@github.com:AlexiZ/portail-asso.git
 cd portail-asso
 ```
 
-2. Installer les dépendances :
+2. Construire les images et démarrer la stack :
 ```bash
-composer install
-npm install
-npm run build
+make docker-up
+# équivalent à : docker compose up --build -d
 ```
 
-3. Configurer l’environnement :
-
-Copier .env.dev en .env.local et ajuster les variables de configuration (base de données, SMTP, etc.).
-
-4. Lancer le serveur local :
+3. Sourcer `.spells` pour obtenir des alias `php`, `composer` et `sf` qui exécutent ces binaires dans le conteneur :
 ```bash
-symfony server:start
+source .spells
 ```
 
-Le portail sera accessible sur http://localhost:8000.
+4. Créer le schéma de base de données (premier démarrage uniquement) :
+```bash
+sf doctrine:database:create --if-not-exists
+sf doctrine:schema:create
+```
+
+Le portail est accessible sur http://localhost:8000 (redirigé automatiquement) ou directement sur https://localhost:8443 — le certificat est auto-signé (CA interne de Caddy), le navigateur affichera un avertissement à accepter la première fois.
+
+`.spells` permet ensuite d'utiliser `composer`, `php` et `sf` normalement, ex : `composer require foo/bar`, `sf cache:clear`.
+
+Pour arrêter la stack :
+```bash
+make docker-down
+```
+
+Note : l'envoi d'e-mails passe par l'API Brevo (`BREVO_API_KEY`), pas par SMTP — le conteneur Mailpit tourne mais ne capture rien tant que ce code n'est pas branché dessus.
 
 ## License
 

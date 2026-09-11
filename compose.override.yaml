@@ -1,9 +1,30 @@
 
 services:
+  php:
+    build:
+      target: frankenphp_dev
+    volumes:
+      - ./:/app
+      - /app/var/
+      - /app/vendor/
+      - /app/node_modules/
+      - ${SSH_AUTH_SOCK:-/dev/null}:/ssh-agent # forwarded so vendor/bin/dep (make database/deploy) can reach the remote host
+      - ${HOME}/.ssh:/tmp/.ssh:ro # dep execs as the host uid, not root - /root isn't traversable for it, so this must live somewhere else. Read from here in DEPLOY_KNOWN_HOSTS/DEPLOY_IDENTITY_FILE - see deploy_secrets.php
+    environment:
+      APP_ENV: dev
+      APP_SECRET: 9c7ec1f30abe6fe0c122336cf7cbcf44 # matches .env.dev's committed dev secret
+      SSH_AUTH_SOCK: /ssh-agent
+    ports:
+      - target: 80
+        published: ${HTTP_PORT:-8000}
+      - target: 443
+        published: ${HTTPS_PORT:-8443}
+
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
-      - "5432"
+      - target: 3306
+        published: ${DATABASE_PORT:-3306}
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mailer ###
@@ -11,7 +32,7 @@ services:
     image: axllent/mailpit
     ports:
       - "1025"
-      - "8025"
+      - "8025:8025"
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
