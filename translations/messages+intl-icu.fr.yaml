@@ -235,7 +235,7 @@ reset_password:
     submit: Réinitialiser le mot de passe
 
 event:
-    date: Le {date} à {start}
+    date: "{date} à {start}"
     list:
         title: Prochains événements
         filter: Filtrer par dates

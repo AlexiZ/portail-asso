@@ -246,7 +246,7 @@
                     <div id="collapseEvents" class="accordion-collapse collapse px-3" data-bs-parent="#accordionEvents">
                         <div class="accordion-body p-0">
                             <ul class="list-group mt-2">
-                                {% for event in association.pastEvents %}
+                                {% for event in association.pastEvents|reverse %}
                                     <li class="list-group-item d-flex justify-content-between border-0 border-bottom px-0 py-3">
                                         <div>
                                             <p class="fw-semibold text-primary my-0">{{ event.title }}</p>

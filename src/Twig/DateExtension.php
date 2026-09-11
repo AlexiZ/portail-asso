@@ -30,6 +30,7 @@ class DateExtension extends AbstractExtension
             \IntlDateFormatter::LONG,
             \IntlDateFormatter::NONE
         );
+        $formatterDay->setPattern('EEEE d MMMM yyyy');
 
         // "19:19"
         $formatterTime = new \IntlDateFormatter(
@@ -39,7 +40,7 @@ class DateExtension extends AbstractExtension
         );
 
         return $this->translator->trans('event.date', [
-            '%date%' => $formatterDay->format($start),
+            '%date%' => ucfirst($formatterDay->format($start)),
             '%start%' => $formatterTime->format($start),
         ]);
     }
