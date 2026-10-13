@@ -5,7 +5,7 @@
 {% block body %}
     <div class="p-4 pt-5 mb-4 bg-white rounded-3 border">
         <div class="container-fluid">
-            <h1 class="fs-4 fw-semibold mb-3">{{ 'search.title'|trans({'%searchTerm%': searchTerm})|raw }}</h1>
+            <h1 class="fs-4 fw-semibold mb-3">{{ 'search.title'|trans({'%searchTerm%': searchTerm|e})|raw }}</h1>
 
             {% include 'association/_list.html.twig' with {'associations': associations, customEmptyMessage: 'search.empty_results'|trans} %}
         </div>

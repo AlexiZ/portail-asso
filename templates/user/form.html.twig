@@ -13,6 +13,16 @@
         </div>
     </div>
 
+    {% if form.currentPassword is defined %}
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="mb-3">
+                    {{ form_row(form.currentPassword, {'label_attr': {'class': 'my-2'}, 'attr': {'class': 'form-control rounded-pill'}}) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="mb-3">

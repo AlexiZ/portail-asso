@@ -16,9 +16,12 @@
                 </a>
             {% endif %}
             {% if is_granted('delete_event', event) %}
-                <a href="{{ path('event_delete', {id: event.id}) }}" class="btn btn-outline-primary rounded-pill" onclick="return confirm('{{ 'event.show.actions.delete.confirm'|trans({'element': event.title}) }}')">
-                    <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'event.show.actions.delete.title'|trans }}</span>
-                </a>
+                <form action="{{ path('event_delete', {id: event.id}) }}" method="post" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('event_delete') }}">
+                    <button type="submit" class="confirm-action btn btn-outline-primary rounded-pill" data-confirm="{{ 'event.show.actions.delete.confirm'|trans({'element': event.title}) }}">
+                        <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'event.show.actions.delete.title'|trans }}</span>
+                    </button>
+                </form>
             {% endif %}
         </div>
     </div>
@@ -60,7 +63,7 @@
                     </p>
 
                     <div class="mt-4">
-                        {{ event.longDescription|raw }}
+                        {{ event.longDescription|sanitize_html('app.rich_text') }}
                     </div>
 
                     <p class="m-0 mt-4">

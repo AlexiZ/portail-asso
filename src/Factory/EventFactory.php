@@ -42,7 +42,7 @@ readonly class EventFactory
                 $posterFile->move($this->uploadsDirectory, $newFilename);
                 $event->setPosterFilename($newFilename);
             } catch (FileException) {
-                $form->get('logo')->addError(new FormError($this->translator->trans('event.form.error.poster')));
+                $form->get('poster')->addError(new FormError($this->translator->trans('event.form.error.poster')));
             }
         }
     }

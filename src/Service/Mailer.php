@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Association;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,6 +16,7 @@ class Mailer
         private readonly TranslatorInterface $translator,
         private readonly Environment $twig,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly UriSigner $uriSigner,
         private readonly HttpClientInterface $client,
         private readonly string $brevoApiKey,
         private readonly string $mailerDevRecipient,
@@ -71,7 +73,9 @@ class Mailer
             'SUBJECT' => $this->translator->trans('email.invite_new.subject', ['association' => $parameters['association']->getName()]),
             'BODY' => $this->twig->render('emails/membership/invite.html.twig', [
                 'association' => $parameters['association']->getName(),
-                'token' => base64_encode($parameters['association']->getId().'|'.implode(',', $parameters['to'])),
+                'url' => $this->uriSigner->sign($this->urlGenerator->generate('app_register', [
+                    'token' => base64_encode($parameters['association']->getId().'|'.implode(',', $parameters['to'])),
+                ], UrlGeneratorInterface::ABSOLUTE_URL), new \DateInterval('P7D')),
             ]),
         ]);
     }

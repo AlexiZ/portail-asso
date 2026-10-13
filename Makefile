@@ -137,6 +137,14 @@ web-disable: ## Add maintenance page to close website
 web-enable: ## Remove maintenance page to re-open website
 	@ssh $(REMOTE_USER)@$(REMOTE_SERVER) "rm $(REMOTE_DIRECTORY)/$(MAINTENANCE_PAGE_NAME)"
 
+ADMINER_VERSION = 5.3.0
+adminer: ## Temporarily drop Adminer on REMOTE, removed when you press Enter
+	@f=adminer-$$(od -An -N8 -tx1 /dev/urandom | tr -d ' \n').php; \
+	trap '$(DEP) run "rm -f {{current_path}}/public/'$$f'" $(REMOTE)' EXIT; \
+	trap 'exit 1' INT TERM; \
+	$(DEP) run "wget -qO {{current_path}}/public/$$f https://github.com/vrana/adminer/releases/download/v$(ADMINER_VERSION)/adminer-$(ADMINER_VERSION)-en.php" $(REMOTE) && \
+	printf 'Adminer installed at https://<host>/%s . Press enter when done.\n' "$$f" && read _
+
 deploy: ## Full no-downtime deployment with deployphp/deployer
 	@test -z "`git status --porcelain`"                 # Prevent deploy if there are modified or added files
 	@test -z "`git diff --stat --cached origin/main`"   # Prevent deploy if there is something to push on master

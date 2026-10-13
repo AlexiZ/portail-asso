@@ -108,6 +108,10 @@ class AssociationVoter extends Voter
             return false;
         }
 
+        if ($user === $association->getOwner()) {
+            return true;
+        }
+
         $users = [];
         foreach ($association->getMemberships() as $member) {
             if (Membership::STATUS_ACCEPTED === $member->getStatus()) {

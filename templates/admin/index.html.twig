@@ -26,16 +26,22 @@
                                 <a href="{{ path('admin_user_edit', { id: user.id }) }}" class="btn btn-sm btn-primary rounded-circle fw-semibold" title="Modifier">
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a href="{{ path('admin_user_delete', { id: user.id }) }}" onclick="return confirm('Êtes-vous sûr ? Cette action est irréversible.');" class="btn btn-sm btn-outline-primary rounded-circle" title="Supprimer">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                                <a href="{{ path('admin_toggle_role', { id: user.id }) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
+                                <form action="{{ path('admin_user_delete', { id: user.id }) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('admin_user_delete') }}">
+                                    <button type="submit" class="confirm-action btn btn-sm btn-outline-primary rounded-circle" data-confirm="Êtes-vous sûr ? Cette action est irréversible." title="Supprimer">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ path('admin_toggle_role', { id: user.id }) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('admin_toggle_role') }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle" title="{% if 'ROLE_MODERATOR' in user.roles %}Retirer modérateur{% else %}Attribuer modérateur{% endif %}">
                                     {% if 'ROLE_MODERATOR' in user.roles %}
                                         <i class="fa fa-user-xmark"></i>
                                     {% else %}
                                         <i class="fa fa-user-shield"></i>
                                     {% endif %}
-                                </a>
+                                    </button>
+                                </form>
                                 <a href="{{ path('homepage', { '_switch_user': user.email }) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="Se connecter en tant que">
                                     <i class="fa fa-address-card"></i>
                                 </a>

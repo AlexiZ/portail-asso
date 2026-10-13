@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -22,7 +22,6 @@ class EventController extends AbstractController
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly EntityManagerInterface $em,
-        private readonly AuthorizationCheckerInterface $authChecker,
         private readonly EventFactory $eventFactory,
     ) {
     }
@@ -61,10 +60,6 @@ class EventController extends AbstractController
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
     ): Response {
-        if (!$this->authChecker->isGranted('edit', $association)) {
-            throw $this->createAccessDeniedException();
-        }
-
         $event = new Event();
         $event->setAssociation($association);
         $event->setCreatedBy($this->getUser());
@@ -95,10 +90,6 @@ class EventController extends AbstractController
         Request $request,
         Event $event,
     ): Response {
-        if (!$this->authChecker->isGranted('edit', $event->getAssociation())) {
-            throw $this->createAccessDeniedException();
-        }
-
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -125,10 +116,6 @@ class EventController extends AbstractController
         Request $request,
         Event $event,
     ): Response {
-        if (!$this->authChecker->isGranted('edit', $event->getAssociation())) {
-            throw $this->createAccessDeniedException();
-        }
-
         $duped = $this->eventFactory->duplicate($event);
 
         $form = $this->createForm(EventType::class, $duped);
@@ -149,15 +136,12 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'event_delete')]
+    #[Route('/{id}/delete', name: 'event_delete', methods: ['POST'])]
+    #[IsCsrfTokenValid('event_delete')]
     #[IsGranted('delete_event', 'event')]
     public function delete(
         Event $event,
     ): Response {
-        if (!$this->authChecker->isGranted('delete', $event->getAssociation())) {
-            throw $this->createAccessDeniedException();
-        }
-
         $association = clone $event->getAssociation();
 
         $this->em->remove($event);

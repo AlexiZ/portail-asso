@@ -10,5 +10,9 @@
 
 	root * /app/public
 	encode zstd br gzip
+
+	# Never execute or render as a document anything uploaded by users
+	@uploadsBlocked path_regexp (?i)^/uploads/.*\.(php\d?|phtml|phar|html?|svgz?|xml|js)$
+	respond @uploadsBlocked 403
 	php_server
 }

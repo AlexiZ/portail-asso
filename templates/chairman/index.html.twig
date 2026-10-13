@@ -33,6 +33,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form action="{{ path('chairman_anonymous_edition', {'association': association.slug}) }}" method="POST">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('chairman_anonymous_edition') }}">
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" type="checkbox" id="anonymousPageEdition{{ association.id }}" name="anonymousPageEdition" {% if association.isEditablePageAnonymously %}checked="checked"{% endif %}>
                                                             <label class="form-check-label" for="anonymousPageEdition{{ association.id }}">{{ 'chairman.association.set_anonymous_edition.update_page_label'|trans|raw }}</label>
@@ -63,6 +64,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form action="{{ path('chairman_set_owner', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" method="POST">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('chairman_set_owner') }}">
                                                         <label class="mb-2" for="searchMember{{ association.id }}">{{ 'chairman.association.set_owner.search'|trans }}</label>
                                                         <input type="text" id="searchMember{{ association.id }}" class="form-control rounded-pill mb-2 search-member" placeholder="{{ 'chairman.association.set_owner.placeholder'|trans }}" autocomplete="off">
                                                         <input type="hidden" name="user">
@@ -91,9 +93,11 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form action="{{ path('chairman_invite_user', {'association': association.slug}) }}" data-search="{{ path('chairman_list_users') }}" data-invite="{{ path('chairman_invite_user', {'association': association.slug}) }}" method="POST">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('chairman_invite_user') }}">
                                                         <label class="mb-2" for="inviteMember{{ association.id }}">{{ 'chairman.association.invite_user.invite'|trans }}</label>
                                                         <input type="text" id="inviteMember{{ association.id }}" class="form-control rounded-pill mb-2 search-member" placeholder="{{ 'chairman.association.invite_user.placeholder'|trans }}" autocomplete="off">
                                                         <input type="hidden" name="user">
+                                                        <input type="hidden" name="q">
                                                     </form>
                                                     <div id="resultsMember"></div>
                                                 </div>
@@ -125,7 +129,7 @@
                                                         {{ membership.user.username }}
                                                     </td>
                                                     <td class="text-end py-3">
-                                                        <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.accepted.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                        <form action="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('chairman_refuse_member') }}"><button type="submit" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.accepted.refuse'|trans }}"><i class="fa fa-trash"></i></button></form>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -152,8 +156,8 @@
                                                             <tr class="border-top border-bottom">
                                                                 <td class="py-3">{{ membership.user.username }}</td>
                                                                 <td class="text-end py-3">
-                                                                    <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
-                                                                    <a href="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.refuse'|trans }}"><i class="fa fa-trash"></i></a>
+                                                                    <form action="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('chairman_accept_member') }}"><button type="submit" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.accept'|trans }}"><i class="fa fa-user-plus"></i></button></form>
+                                                                    <form action="{{ path('chairman_refuse_member', {'association': association.slug, 'user': membership.user.id}) }}" method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('chairman_refuse_member') }}"><button type="submit" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.pending.refuse'|trans }}"><i class="fa fa-trash"></i></button></form>
                                                                 </td>
                                                             </tr>
                                                         {% endfor %}
@@ -183,7 +187,7 @@
                                                             <tr class="border-top border-bottom">
                                                                 <td class="py-3">{{ membership.user.username }}</td>
                                                                 <td class="text-end py-3">
-                                                                    <a href="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.refused.accept'|trans }}"><i class="fa fa-user-plus"></i></a>
+                                                                    <form action="{{ path('chairman_accept_member', {'association': association.slug, 'user': membership.user.id}) }}" method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('chairman_accept_member') }}"><button type="submit" class="btn btn-sm btn-outline-primary rounded-circle" title="{{ 'chairman.memberships.refused.accept'|trans }}"><i class="fa fa-user-plus"></i></button></form>
                                                                 </td>
                                                             </tr>
                                                         {% endfor %}

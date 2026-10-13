@@ -23,6 +23,7 @@
                     <h2 class="fs-4 fw-semibold mb-3">{{ 'user_account.delete_account.title'|trans }}</h2>
                     <form class="my-4" method="post" onsubmit="return confirm('{{ 'user_account.delete_account.confirm'|trans }}');">
                         <input type="hidden" name="delete_account" value="1">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
                         <div class="mb-3">
                             <button class="btn btn-outline-primary rounded-pill">
                                 <i class="fa fa-triangle-exclamation"></i>&nbsp;{{ 'user_account.delete_account.submit'|trans }}

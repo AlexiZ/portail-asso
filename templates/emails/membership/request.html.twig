@@ -3,7 +3,7 @@
 </p>
 <br>
 <p>
-    {{ 'email.request_membership.content'|trans({'%association%': association, '%url%': absolute_url(path('chairman_index'))})|raw }}
+    {{ 'email.request_membership.content'|trans({'%association%': association|e, '%url%': absolute_url(path('chairman_index'))})|raw }}
 </p>
 <br>
 <p>

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -116,6 +117,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/{slug}/modifier', name: 'association_edit')]
+    #[IsGranted('edit', 'association')]
     public function edit(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
@@ -139,7 +141,8 @@ class AssociationController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/delete', name: 'association_delete', requirements: ['id' => '\d+'])]
+    #[Route('/{slug}/delete', name: 'association_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsCsrfTokenValid('association_delete')]
     #[IsGranted('delete', 'association')]
     public function delete(
         #[MapEntity(mapping: ['slug' => 'slug'])]
@@ -154,6 +157,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/{slug}/revision/{revisionId}/apercu', name: 'association_rollback_preview')]
+    #[IsGranted('edit', 'association')]
     public function rollbackPreview(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,
@@ -178,7 +182,8 @@ class AssociationController extends AbstractController
         ]));
     }
 
-    #[Route('/{slug}/revision/{revisionId}/confirmer', name: 'association_rollback')]
+    #[Route('/{slug}/revision/{revisionId}/confirmer', name: 'association_rollback', methods: ['POST'])]
+    #[IsCsrfTokenValid('association_rollback')]
     #[IsGranted('edit', 'association')]
     public function rollbackConfirm(
         Request $request,
@@ -205,7 +210,8 @@ class AssociationController extends AbstractController
         return $this->redirectToRoute('association_show', ['slug' => $association->getSlug()]);
     }
 
-    #[Route('/{slug}/suivre', name: 'association_subscribe')]
+    #[Route('/{slug}/suivre', name: 'association_subscribe', methods: ['POST'])]
+    #[IsCsrfTokenValid('association_subscribe')]
     public function subscribe(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Association $association,

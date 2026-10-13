@@ -16,9 +16,12 @@
             </a>
         {% endif %}
         {% if is_granted('delete', association) %}
-            <a href="{{ path('association_delete', { slug: association.slug }) }}" class="confirm-action my-1 me-2 btn btn-outline-primary rounded-pill" title="{{ 'association.show.actions.delete.title'|trans }}" data-confirm="{{ 'association.show.actions.delete.confirm'|trans({'element': association.name}) }}">
-                <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.delete.title'|trans }}</span>
-            </a>
+            <form action="{{ path('association_delete', { slug: association.slug }) }}" method="post" class="d-inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('association_delete') }}">
+                <button type="submit" class="confirm-action my-1 me-2 btn btn-outline-primary rounded-pill" title="{{ 'association.show.actions.delete.title'|trans }}" data-confirm="{{ 'association.show.actions.delete.confirm'|trans({'element': association.name}) }}">
+                    <i class="fa fa-trash"></i>&nbsp;<span class="d-inline-block d-sm-none">{{ 'association.show.actions.delete.title'|trans }}</span>
+                </button>
+            </form>
         {% endif %}
         {% if app.user|default %}
             {% if app.user.isSubscribedTo(association) %}
@@ -51,9 +54,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal">{{ 'association.show.actions.unsubscribe.modal.actions.cancel'|trans }}</button>
-                        <a class="btn btn-info text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
-                            {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
-                        </a>
+                        <form action="{{ path('association_subscribe', { slug: association.slug }) }}" method="post" class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('association_subscribe') }}">
+                            <button type="submit" class="btn btn-info text-white">
+                                {{ 'association.show.actions.unsubscribe.modal.actions.confirm'|trans }}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -72,9 +78,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal">{{ 'association.show.actions.subscribe.modal.actions.cancel'|trans }}</button>
-                        <a class="btn btn-warning text-white" href="{{ path('association_subscribe', { slug: association.slug }) }}">
-                            {{ 'association.show.actions.subscribe.modal.actions.confirm'|trans }}
-                        </a>
+                        <form action="{{ path('association_subscribe', { slug: association.slug }) }}" method="post" class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('association_subscribe') }}">
+                            <button type="submit" class="btn btn-warning text-white">
+                                {{ 'association.show.actions.subscribe.modal.actions.confirm'|trans }}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -207,7 +216,7 @@
                                                 <i class="fa-solid fa-users text-primary pe-1"></i>&nbsp;Événement public
                                             </small>
                                         {% endif %}
-                                        <p class="mt-1 mb-0">{{ event.shortDescription|raw }}</p>
+                                        <p class="mt-1 mb-0">{{ event.shortDescription|sanitize_html('app.rich_text') }}</p>
                                     </a>
 
                                     <div class="text-end my-auto">
@@ -229,7 +238,7 @@
     {% if association.content|default %}
         <div class="card my-4 border-secondary-subtle px-3 py-4">
             <div class="card-body">
-                {{ association.content|raw }}
+                {{ association.content|sanitize_html('app.rich_text') }}
             </div>
         </div>
     {% endif %}
@@ -285,7 +294,7 @@
             }) }}
         </p>
 
-        {% if association.revisions|default|length > 0 %}
+        {% if association.revisions|default|length > 0 and is_granted('edit', association) %}
             <div class="dropup m-0 p-0">
                 <button class="btn btn-link dropdown-toggle text-black hover-text-primary p-0" type="button" id="dropdownRevisions" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ 'revision.title'|trans }}
@@ -294,7 +303,7 @@
                     {% for revision in association.revisions|reverse|slice(0, 5) %}
                         <li>
                             <a class="dropdown-item revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: association.slug, revisionId: revision.id}) }}">
-                                {% if revision.createdBy|default %}
+                                {% if revision.createdBy|default and is_granted('ROLE_MODERATOR') %}
                                     {{ 'revision.created_at_by'|trans({
                                         'createdAt': revision.createdAt|date('Y-m-d \\à H:i:s'),
                                         'createdBy': revision.createdBy

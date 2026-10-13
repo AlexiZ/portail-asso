@@ -1,14 +1,17 @@
 <div class="container">
     <div class="d-flex justify-content-between">
         <h5 class="mb-4">
-            {{ 'revision.modal.content.title'|trans({'createdAt': format_date(revision.createdAt)|lower, 'createdBy': revision.createdBy}) }}
+            {{ 'revision.modal.content.title'|trans({'createdAt': format_date(revision.createdAt)|lower, 'createdBy': is_granted('ROLE_MODERATOR') ? revision.createdBy : '-'}) }}
         </h5>
 
         <div>
             {% if is_granted('edit', revision.association) %}
-                <a class="btn btn-primary rounded-pill fw-semibold" href="{{ path('association_rollback', {'slug': association.slug, 'revisionId': revision.id}) }}">
+                <form action="{{ path('association_rollback', {'slug': association.slug, 'revisionId': revision.id}) }}" method="post" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('association_rollback') }}">
+                    <button type="submit" class="btn btn-primary rounded-pill fw-semibold">
                     {{ 'revision.modal.actions.apply'|trans }}
-                </a>
+                    </button>
+                </form>
             {% endif %}
         </div>
     </div>
@@ -44,19 +47,19 @@
                             <td><span class="fw-bold">{{ ('association.form.'~field|u.snake|replace({'_': '.'}))|trans }}</span></td>
                             <td>
                                 <span class="text-danger text-decoration-line-through">
-                                    {{ beforeValue|raw }}
+                                    {{ (beforeValue ?? '')|sanitize_html('app.rich_text') }}
                                 </span>
                             </td>
                             <td>
                                 <span class="text-success fw-bold">
-                                    {{ afterValue|raw }}
+                                    {{ (afterValue ?? '')|sanitize_html('app.rich_text') }}
                                 </span>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
                             <td>{{ ('association.form.'~field|u.snake|replace({'_': '.'}))|trans }}</td>
-                            <td colspan="2" class="text-center">{{ beforeValue|raw }}</td>
+                            <td colspan="2" class="text-center">{{ (beforeValue ?? '')|sanitize_html('app.rich_text') }}</td>
                         </tr>
                     {% endif %}
                 {% endif %}

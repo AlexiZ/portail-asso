@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 class EventType extends AbstractType
 {
@@ -33,6 +34,9 @@ class EventType extends AbstractType
                 'label' => 'event.form.poster',
                 'mapped' => false,
                 'required' => false,
+                'constraints' => [
+                    new Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif']),
+                ],
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'event.form.long_description',

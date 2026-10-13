@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class RegistrationFormType extends AbstractType
 {
@@ -39,6 +40,9 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
+                'constraints' => [
+                    new Length(min: 6, max: 4096, minMessage: 'user_account.edit.form.constraint.password_min_length'),
+                ],
                 'first_options' => [
                     'attr' => [
                         'placeholder' => 'register.form.password',
@@ -57,6 +61,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'class' => Association::class,
                 'data' => $options['association'],
+                'disabled' => true,
             ]);
         }
     }

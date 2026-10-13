@@ -22,6 +22,8 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+            login_throttling:
+                max_attempts: 5
             logout:
                 path: app_logout
                 invalidate_session: true
@@ -38,8 +40,9 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/moderation, roles: ROLE_MODERATOR }
+        - { path: ^/(fr|br)/admin, roles: ROLE_ADMIN }
+        - { path: ^/(fr|br)/moderation, roles: ROLE_MODERATOR }
+        - { path: ^/(fr|br)/(mes-associations|mon-compte), roles: ROLE_USER }
 
     role_hierarchy:
         ROLE_MODERATOR: [ ROLE_USER ]

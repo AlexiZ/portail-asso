@@ -34,7 +34,7 @@
                     {% for revision in association.revisions|reverse|slice(0, 5) %}
                         <li>
                             <a class="dropdown-item revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: association.slug, revisionId: revision.id}) }}">
-                                {% if revision.createdBy|default %}
+                                {% if revision.createdBy|default and is_granted('ROLE_MODERATOR') %}
                                     {{ 'revision.created_at_by'|trans({
                                         'createdAt': revision.createdAt|date('Y-m-d \\à H:i:s'),
                                         'createdBy': revision.createdBy

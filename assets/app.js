@@ -278,7 +278,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (!Array.isArray(users) || users.length === 0) {
                             resultsDiv.innerHTML = '<p>Aucun utilisateur trouvé.</p>';
                             if (validateEmail(query) && inviteUrl) {
-                                resultsDiv.innerHTML += '<p><a href="'+`${inviteUrl}?q=${encodeURIComponent(query)}`+'">Cliquez ici pour inviter ' + query + ' à rejoindre le portail.</a></p>';
+                                const inviteButton = document.createElement('button');
+                                inviteButton.type = 'button';
+                                inviteButton.className = 'btn btn-link p-0';
+                                inviteButton.textContent = `Cliquez ici pour inviter ${query} à rejoindre le portail.`;
+                                inviteButton.addEventListener('click', () => {
+                                    formSearchMember.querySelector('input[name="q"]').value = query;
+                                    formSearchMember.submit();
+                                });
+                                resultsDiv.appendChild(inviteButton);
                             }
 
                             return;

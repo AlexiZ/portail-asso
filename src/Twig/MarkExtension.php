@@ -16,11 +16,12 @@ class MarkExtension extends AbstractExtension
 
     public function mark(string $text, ?string $query): string
     {
+        $text = htmlspecialchars($text, ENT_QUOTES);
         if (!$query) {
             return $text;
         }
 
-        $pattern = '/'.preg_quote($query, '/').'/i';
+        $pattern = '/'.preg_quote(htmlspecialchars($query, ENT_QUOTES), '/').'/i';
 
         return preg_replace($pattern, '<mark>$0</mark>', $text);
     }

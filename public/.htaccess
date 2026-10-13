@@ -117,6 +117,9 @@ Options +FollowSymlinks
     RewriteCond %{HTTP:Authorization} .+
     RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
 
+    # Never execute or render as a document anything uploaded by users
+    RewriteRule ^uploads/.*\.(php\d?|phtml|phar|html?|svgz?|xml|js)$ - [F,NC,L]
+
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
     # Rewrite all other queries to the front controller.

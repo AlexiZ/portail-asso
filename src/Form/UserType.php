@@ -44,12 +44,21 @@ class UserType extends AbstractType
                 'mapped' => false,
             ])
         ;
+
+        if ($options['current_password']) {
+            $builder->add('currentPassword', PasswordType::class, [
+                'label' => 'user_account.edit.form.current_password',
+                'required' => false,
+                'mapped' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'current_password' => false,
         ]);
     }
 }

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -47,7 +48,8 @@ class ChairmanController extends AbstractController
         ]);
     }
 
-    #[Route('/{association}/owner', name: 'chairman_set_owner')]
+    #[Route('/{association}/owner', name: 'chairman_set_owner', methods: ['POST'])]
+    #[IsCsrfTokenValid('chairman_set_owner')]
     #[IsGranted('manage', 'association')]
     public function setOwner(
         #[MapEntity(mapping: ['association' => 'slug'])]
@@ -73,7 +75,8 @@ class ChairmanController extends AbstractController
         return $this->redirectToRoute('chairman_index');
     }
 
-    #[Route('/{association}/anonymous_edition', name: 'chairman_anonymous_edition')]
+    #[Route('/{association}/anonymous_edition', name: 'chairman_anonymous_edition', methods: ['POST'])]
+    #[IsCsrfTokenValid('chairman_anonymous_edition')]
     #[IsGranted('manage', 'association')]
     public function setAnonymousEdition(
         #[MapEntity(mapping: ['association' => 'slug'])]
@@ -107,7 +110,9 @@ class ChairmanController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/{association}/invite', name: 'chairman_invite_user')]
+    #[Route('/{association}/invite', name: 'chairman_invite_user', methods: ['POST'])]
+    #[IsCsrfTokenValid('chairman_invite_user')]
+    #[IsGranted('manage', 'association')]
     public function inviteUser(
         Request $request,
         #[MapEntity(mapping: ['association' => 'slug'])]
@@ -115,7 +120,7 @@ class ChairmanController extends AbstractController
         UserRepository $userRepository,
     ): Response {
         $user = null;
-        $query = trim((string) $request->query->get('q', ''));
+        $query = trim((string) $request->request->get('q', ''));
         if ($query) {
             // No User matching email, send invite
             $user = $userRepository->findOneBy(['email' => $query]);
@@ -128,7 +133,7 @@ class ChairmanController extends AbstractController
             }
         }
 
-        if ($userId = $request->request->has('user')) {
+        if ($userId = $request->request->get('user')) {
             $user = $userRepository->findOneById($userId);
         }
 
@@ -146,7 +151,8 @@ class ChairmanController extends AbstractController
         return $this->redirectToRoute('chairman_index');
     }
 
-    #[Route('/{association}/accepter/{user}', name: 'chairman_accept_member')]
+    #[Route('/{association}/accepter/{user}', name: 'chairman_accept_member', methods: ['POST'])]
+    #[IsCsrfTokenValid('chairman_accept_member')]
     #[IsGranted('manage', 'association')]
     public function addMember(
         #[MapEntity(mapping: ['association' => 'slug'])]
@@ -171,7 +177,8 @@ class ChairmanController extends AbstractController
         return $this->redirectToRoute('chairman_index');
     }
 
-    #[Route('/{association}/refuser/{user}', name: 'chairman_refuse_member')]
+    #[Route('/{association}/refuser/{user}', name: 'chairman_refuse_member', methods: ['POST'])]
+    #[IsCsrfTokenValid('chairman_refuse_member')]
     #[IsGranted('manage', 'association')]
     public function removeMember(
         #[MapEntity(mapping: ['association' => 'slug'])]

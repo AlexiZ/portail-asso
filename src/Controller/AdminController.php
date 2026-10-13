@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
@@ -38,7 +39,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/toggle-role', name: 'admin_toggle_role')]
+    #[Route('/user/{id}/toggle-role', name: 'admin_toggle_role', methods: ['POST'])]
+    #[IsCsrfTokenValid('admin_toggle_role')]
     public function toggleRole(User $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -121,7 +123,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/delete', name: 'admin_user_delete')]
+    #[Route('/user/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
+    #[IsCsrfTokenValid('admin_user_delete')]
     public function delete(
         #[MapEntity(mapping: ['id' => 'id'])]
         User $user,

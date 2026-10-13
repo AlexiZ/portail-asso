@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 
 #[Route('/moderation')]
 class ModeratorController extends AbstractController
@@ -23,7 +24,8 @@ class ModeratorController extends AbstractController
         ]);
     }
 
-    #[Route('/revision/{id}/approve', name: 'moderator_approve_revision')]
+    #[Route('/revision/{id}/approve', name: 'moderator_approve_revision', methods: ['POST'])]
+    #[IsCsrfTokenValid('moderator_approve_revision')]
     public function approve($id, AssociationRevisionRepository $revRepo, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MODERATOR');

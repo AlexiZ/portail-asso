@@ -10,6 +10,7 @@ use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,11 +39,19 @@ class UserController extends AbstractController
         }
 
         // Formulaire changement de mot de passe et prénom/nom
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['current_password' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('plainPassword')->getData();
+            if ($plainPassword && !$passwordHasher->isPasswordValid($user, (string) $form->get('currentPassword')->getData())) {
+                $form->get('currentPassword')->addError(new FormError($this->translator->trans('user_account.edit.form.error.current_password')));
+
+                return $this->render('user/index.html.twig', [
+                    'user' => $user,
+                    'form' => $form->createView(),
+                ]);
+            }
             if ($plainPassword) {
                 $user->setPassword(
                     $passwordHasher->hashPassword($user, $plainPassword)
@@ -56,7 +65,7 @@ class UserController extends AbstractController
         }
 
         // Suppression du compte
-        if ($request->isMethod('POST') && $request->request->get('delete_account')) {
+        if ($request->isMethod('POST') && $request->request->get('delete_account') && $this->isCsrfTokenValid('delete_account', $request->request->getString('_token'))) {
             $this->entityManager->remove($user);
             $this->entityManager->flush();
             $this->container->get('security.token_storage')->setToken();

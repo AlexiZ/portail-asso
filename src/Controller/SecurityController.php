@@ -14,7 +14,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -48,10 +51,11 @@ class SecurityController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $em,
         MembershipFactory $membershipFactory,
+        UriSigner $uriSigner,
     ): Response {
         $association = null;
         $email = null;
-        if ($token = $request->get('token')) {
+        if (($token = $request->query->get('token')) && $uriSigner->checkRequest($request)) {
             list($associationId, $email) = explode('|', base64_decode($token));
             $association = $em->getRepository(Association::class)->findOneById($associationId);
         }
@@ -86,12 +90,16 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/forgot-password', name: 'app_forgot_password')]
-    public function forgotPassword(Request $request, UserRepository $userRepository, Mailer $mailer, EntityManagerInterface $em): Response
+    public function forgotPassword(Request $request, UserRepository $userRepository, Mailer $mailer, EntityManagerInterface $em, RateLimiterFactoryInterface $forgotPasswordLimiter): Response
     {
         $form = $this->createForm(ForgotPasswordFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$forgotPasswordLimiter->create($request->getClientIp())->consume()->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
+
             $email = $form->get('email')->getData();
             $user = $userRepository->findOneBy(['email' => $email]);
 

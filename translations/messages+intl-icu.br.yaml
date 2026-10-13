@@ -318,10 +318,12 @@ user_account:
         form:
             firstname: Anv-bihan
             lastname: Anv
+            current_password: Ger-tremen a-vremañ (ret evit e cheñch)
             plain_password: Ger-tremen nevez
             confirm_password: Kadarnaat ar ger-tremen
             error:
                 password_mismatch: Ne glot ket ar gerioù-tremen.
+                current_password: Fall eo ar ger-tremen a-vremañ.
             constraint:
                 password_min_length: Ret eo d'ar ger-tremen kaout 6 arouezenn d'an nebeutañ.
             success: Enrollet eo bet an titouroù gant berzh.
