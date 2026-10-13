@@ -21,4 +21,8 @@ function sf() {
     docker_compose_exec php bin/console "$@"
 }
 
-echo php composer sf
+function npm() {
+    docker_compose_exec php npm "$@"
+}
+
+echo php composer sf npm
