@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %} | {{ 'wiki_plab.long'|trans }}</title>
+        <link rel="alternate" type="application/rss+xml" title="Associations" href="{{ url('feed_associations') }}">
+        <link rel="alternate" type="application/rss+xml" title="Événements" href="{{ url('feed_events') }}">
 
         {% block stylesheets %}
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -151,8 +153,11 @@
                 <a class="mx-2 text-body text-decoration-none" href="https://www.instagram.com/plabennecentransition/" role="button" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a class="ms-2 me-1 text-body text-decoration-none" href="https://github.com/AlexiZ/portail-asso" role="button" target="_blank">
+                <a class="mx-2 text-body text-decoration-none" href="https://github.com/AlexiZ/portail-asso" role="button" target="_blank">
                     <i class="fab fa-github"></i>
+                </a>
+                <a class="ms-2 me-1 text-body text-decoration-none" href="{{ path('feed_events') }}" role="button" target="_blank" title="Flux RSS des événements">
+                    <i class="fa-solid fa-rss"></i>
                 </a>
                 |
                 {{ obfuscated_link('contact@plabennecentransition.fr', 'mailto', 'Nous contacter', 'text-body') }}

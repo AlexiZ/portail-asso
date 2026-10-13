@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Association;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -70,5 +71,35 @@ class AssociationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @param string[] $categories AssociationCategory values
+     */
+    public function findForFeed(array $categories, string $sortField, string $sortDirection): array
+    {
+        $qb = $this->createQueryBuilder('a')->orderBy('a.'.$sortField, $sortDirection);
+
+        return self::andWhereAnyCategory($qb, 'a', $categories)->getQuery()->getResult();
+    }
+
+    /**
+     * Keeps associations having at least one of the categories (no-op when empty).
+     *
+     * @param string[] $categories AssociationCategory values
+     */
+    public static function andWhereAnyCategory(QueryBuilder $qb, string $alias, array $categories): QueryBuilder
+    {
+        if (!$categories) {
+            return $qb;
+        }
+
+        $or = $qb->expr()->orX();
+        foreach (array_values($categories) as $i => $category) {
+            $or->add(sprintf('%s.categories LIKE :feedCategory%d', $alias, $i));
+            $qb->setParameter('feedCategory'.$i, '%"'.$category.'"%');
+        }
+
+        return $qb->andWhere($or);
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>{{ 'wiki_plab.long'|trans }} - Événements</title>
+        <link>{{ url('event_list') }}</link>
+        <description>Les événements du {{ 'wiki_plab.long'|trans|lower }}</description>
+        <language>{{ app.request.locale }}</language>
+        <atom:link href="{{ app.request.uri }}" rel="self" type="application/rss+xml"/>
+{% for event in events %}
+        <item>
+            <title>{{ event.startAt|date('d/m/Y') }} - {{ event.title }}</title>
+            <link>{{ url('event_show', {slug: event.slug}) }}</link>
+            <guid isPermaLink="false">{{ event.slug }}@{{ event.startAt|date('c') }}</guid>
+            <description>{% apply escape %}<p>{{ event.startAt|date('d/m/Y H:i') }}{% if event.location %} - {{ event.location }}{% endif %} - {{ event.association.name }}</p>{{ event.shortDescription|raw }}{% endapply %}</description>
+            <pubDate>{{ event.createdAt|date('r') }}</pubDate>
+{{ include('feed/_enclosure.xml.twig', {filename: event.posterFilename}) }}
+        </item>
+{% endfor %}
+    </channel>
+</rss>

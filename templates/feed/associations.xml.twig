@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
+    <channel>
+        <title>{{ 'wiki_plab.long'|trans }} - Associations</title>
+        <link>{{ url('homepage') }}</link>
+        <description>Les associations du {{ 'wiki_plab.long'|trans|lower }}</description>
+        <language>{{ app.request.locale }}</language>
+        <atom:link href="{{ app.request.uri }}" rel="self" type="application/rss+xml"/>
+{% for association in associations %}
+        <item>
+            <title>{{ association.name }}</title>
+            <link>{{ url('association_show', {slug: association.slug}) }}</link>
+            <guid isPermaLink="false">{{ association.slug }}</guid>
+            <description>{{ association.content }}</description>
+{% if association.updatedAt %}
+            <pubDate>{{ association.updatedAt|date('r') }}</pubDate>
+            <dcterms:modified>{{ association.updatedAt|date('c') }}</dcterms:modified>
+{% endif %}
+{% if association.createdAt %}
+            <dcterms:created>{{ association.createdAt|date('c') }}</dcterms:created>
+{% endif %}
+{{ include('feed/_enclosure.xml.twig', {filename: association.logoFilename}) }}
+        </item>
+{% endfor %}
+    </channel>
+</rss>
