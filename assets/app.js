@@ -41,6 +41,18 @@ function rRuleToText(rrule, locale) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Liens générés par la fonction Twig obfuscated_link() : base64 de la valeur inversée
+    document.querySelectorAll('a[data-obfuscated]').forEach(link => {
+        const bytes = Uint8Array.from(atob(link.dataset.obfuscated), c => c.charCodeAt(0)).reverse();
+        const value = new TextDecoder().decode(bytes);
+        const scheme = link.dataset.scheme;
+
+        link.href = `${scheme}:${scheme === 'tel' ? value.replace(/[^\d+]/g, '') : value}`;
+        if (!('keepLabel' in link.dataset)) {
+            link.textContent = value;
+        }
+    });
+
     const backToTop = document.getElementById("btn-back-to-top");
     if (backToTop) {
         // When the user scrolls down 20px from the top of the document, show the button

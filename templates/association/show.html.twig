@@ -122,10 +122,10 @@
                                             <li><i class="fa fa-house text-primary"></i>&nbsp;{{ association.contactAddress }}</li>
                                         {% endif %}
                                         {% if association.contactEmail|default %}
-                                            <li><i class="fa fa-envelope text-primary"></i>&nbsp;{{ association.contactEmail }}</li>
+                                            <li><i class="fa fa-envelope text-primary"></i>&nbsp;{{ obfuscated_link(association.contactEmail) }}</li>
                                         {% endif %}
                                         {% if association.contactPhone|default %}
-                                            <li><i class="fa fa-phone text-primary"></i>&nbsp;{{ association.contactPhone }}</li>
+                                            <li><i class="fa fa-phone text-primary"></i>&nbsp;{{ obfuscated_link(association.contactPhone, 'tel') }}</li>
                                         {% endif %}
                                     </ul>
                                 {% else %}
