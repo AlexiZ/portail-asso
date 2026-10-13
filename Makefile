@@ -103,8 +103,10 @@ load-fixtures: ## Build the DB, control the schema validity, load fixtures and c
 init-snippet: ## Initialize a new snippet
 	@$(SYMFONY) $(PROJECT):init-snippet
 
-database: ## Pull REMOTE database to local instance
-	@$(DEP) db:pull $(REMOTE)
+database: ## Pull REMOTE database and medias to local instance
+	@$(DEP) download_database $(REMOTE)
+	@gunzip -c .dep/database.sql.gz | docker compose exec -T database sh -c 'mariadb -u"$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE"'
+	@$(DEP) download_medias $(REMOTE)
 
 medias:
 	@$(DEP) download_medias $(REMOTE)

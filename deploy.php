@@ -131,6 +131,32 @@ task('download_medias', function () {
     runLocally($cmd);
 });
 
+// Dumps the remote DB to .dep/database.sql.gz (bind-mounted, unlike var/) - imported by `make database`.
+// Plain SSH + mysqldump: the host's php.ini disables proc_open, so the remote dep of db:pull cannot run.
+task('download_database', function () {
+    $host = currentHost()->getHostname();
+    $user = currentHost()->getRemoteUser();
+    $port = getenv('DEPLOY_PORT');
+    $knownHosts = getenv('DEPLOY_KNOWN_HOSTS');
+
+    $sshOptions = [];
+    if ($port) {
+        $sshOptions[] = '-p '.escapeshellarg($port);
+    }
+    if ($knownHosts) {
+        $sshOptions[] = '-o UserKnownHostsFile='.escapeshellarg($knownHosts);
+    }
+    $sshArgs = implode(' ', $sshOptions);
+
+    // DATABASE_* vars are the ones EnvDriver reads (Dotenv::loadEnv: .env then .env.local overrides)
+    // pipefail: otherwise a mysqldump failure is hidden by gzip and an empty dump gets imported
+    $remote = 'set -o pipefail && cd '.get('current_path').' && eval "$(cat .env .env.local 2>/dev/null | grep ^DATABASE_)"'
+        .' && MYSQL_PWD="$DATABASE_PASSWORD" mysqldump --single-transaction --no-tablespaces'
+        .' -h "$DATABASE_HOST" -P "${DATABASE_PORT:-3306}" -u "$DATABASE_USER" "$DATABASE_NAME" | gzip';
+
+    runLocally("ssh $sshArgs {$user}@{$host} ".escapeshellarg($remote).' > .dep/database.sql.gz', ['timeout' => null]);
+});
+
 task('upload_medias', function () {
     $host = currentHost()->getHostname();
     $user = currentHost()->getRemoteUser();
@@ -167,4 +193,3 @@ task('deploy', [
 ]);
 
 after('deploy:failed', 'deploy:unlock');
-after('db:pull', 'download_medias');
