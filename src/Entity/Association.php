@@ -164,7 +164,7 @@ class Association
 
     public function isWip(): bool
     {
-        return $this->updatedBy = 'batch' && str_starts_with($this->updatedAt->format('Y-m-d H:i:s'), '2025-09-25 17:');
+        return 'batch' === $this->updatedBy && str_starts_with($this->updatedAt->format('Y-m-d H:i:s'), '2025-09-25 17:');
     }
 
     public function getId(): ?int
