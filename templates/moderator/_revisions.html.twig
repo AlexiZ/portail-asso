@@ -1,0 +1,51 @@
+{% if revisions|length > 0 %}
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Association</th>
+            <th>Créateur</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for revision in revisions %}
+            <tr>
+                <td>{{ revision.association.name }}</td>
+                <td>{{ revision.createdBy|default('Anonyme') }}</td>
+                <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary rounded-pill revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}" title="Voir les changements">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if pages > 1 %}
+        {% set params = app.request.query.all %}
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ page <= 1 ? 'disabled' }}">
+                    <a class="page-link" href="{{ path('moderator_index', params|merge({page: page - 1})) }}">&laquo;</a>
+                </li>
+                {% for p in 1..pages %}
+                    {% if p == 1 or p == pages or (p - page)|abs <= 2 %}
+                        <li class="page-item {{ p == page ? 'active' }}">
+                            <a class="page-link" href="{{ path('moderator_index', params|merge({page: p})) }}">{{ p }}</a>
+                        </li>
+                    {% elseif (p - page)|abs == 3 %}
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item {{ page >= pages ? 'disabled' }}">
+                    <a class="page-link" href="{{ path('moderator_index', params|merge({page: page + 1})) }}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info">Aucune contribution en attente.</div>
+{% endif %}

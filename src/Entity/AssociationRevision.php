@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\AssociationRevisionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AssociationRevisionRepository::class)]
 class AssociationRevision
 {
     #[ORM\Id]

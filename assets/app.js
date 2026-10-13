@@ -68,37 +68,109 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const revisionPreviews = document.querySelectorAll('.revision-preview');
-    if (revisionPreviews) {
-        revisionPreviews.forEach(revisionPreview => {
-            revisionPreview.addEventListener('click', () => {
-                const url = revisionPreview.dataset.href;
-                const modalElement = document.getElementById('revisionPreviewModal');
-                const modalBody = modalElement.querySelector('.modal-body');
+    // Delegated so rows loaded via Ajax (moderation pagination) work too
+    document.addEventListener('click', (event) => {
+        const revisionPreview = event.target.closest('.revision-preview');
+        if (!revisionPreview) return;
 
-                fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Erreur HTTP ${response.status}`);
-                        }
+        const url = revisionPreview.dataset.href;
+        const modalElement = document.getElementById('revisionPreviewModal');
+        const modalBody = modalElement.querySelector('.modal-body');
 
-                        return response.json();
-                    })
-                    .then(html => {
-                        modalBody.innerHTML = html;
+        fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
+                }
 
-                        const modal = new bootstrap.Modal(modalElement);
-                        modal.show();
-                    })
-                    .catch(error => {
-                        modalBody.innerHTML = `<div class="alert alert-danger">
-                            Impossible de charger la prévisualisation.<br>
-                            ${error.message}
-                        </div>`;
-                        const modal = new bootstrap.Modal(modalElement);
-                        modal.show();
-                    });
+                return response.json();
+            })
+            .then(html => {
+                modalBody.innerHTML = html;
+
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            })
+            .catch(error => {
+                modalBody.innerHTML = `<div class="alert alert-danger">
+                    Impossible de charger la prévisualisation.<br>
+                    ${error.message}
+                </div>`;
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
             });
+    });
+
+    const moderationFilters = document.getElementById('moderation-filters');
+    const moderationRevisions = document.getElementById('moderation-revisions');
+    if (moderationFilters && moderationRevisions) {
+        const loadRevisions = (url) => {
+            fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP ${response.status}`);
+                    }
+
+                    return response.text();
+                })
+                .then(html => {
+                    moderationRevisions.innerHTML = html;
+                    history.replaceState(null, '', url);
+                })
+                .catch(error => {
+                    moderationRevisions.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+                });
+        };
+        const filtersUrl = () => {
+            const params = new URLSearchParams(new FormData(moderationFilters));
+            [...params.keys()].filter(key => !params.get(key)).forEach(key => params.delete(key));
+
+            return `${moderationFilters.action}?${params}`;
+        };
+
+        let searchTimeout;
+        moderationFilters.addEventListener('submit', (event) => {
+            event.preventDefault();
+            loadRevisions(filtersUrl());
+        });
+        // Unnamed fields (flatpickr inputs) are ignored: the date range is applied through the hidden from/to fields
+        moderationFilters.addEventListener('change', (event) => {
+            if (event.target.name && event.target.name !== 'q') loadRevisions(filtersUrl());
+        });
+
+        // Single date or range: one day selected filters on that whole day
+        const fromInput = moderationFilters.elements.from;
+        const toInput = moderationFilters.elements.to;
+        const applyDates = (selectedDates, instance) => {
+            const [from = '', to = from] = selectedDates.map(date => instance.formatDate(date, 'Y-m-d'));
+            if (fromInput.value === from && toInput.value === to) return;
+            fromInput.value = from;
+            toInput.value = to;
+            loadRevisions(filtersUrl());
+        };
+        const datesPicker = flatpickr('#filter-dates', {
+            locale: document.getElementById('filter-dates').dataset.locale,
+            mode: 'range',
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'd/m/Y',
+            defaultDate: [fromInput.value, toInput.value].filter(Boolean),
+            onClose: (selectedDates, dateStr, instance) => applyDates(selectedDates, instance),
+        });
+        document.getElementById('filter-dates-clear').addEventListener('click', () => {
+            datesPicker.clear();
+            applyDates([], datesPicker);
+        });
+        moderationFilters.addEventListener('input', (event) => {
+            if (event.target.name !== 'q') return;
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => loadRevisions(filtersUrl()), 300);
+        });
+        moderationRevisions.addEventListener('click', (event) => {
+            const link = event.target.closest('.page-link[href]');
+            if (!link) return;
+            event.preventDefault();
+            loadRevisions(link.href);
         });
     }
 

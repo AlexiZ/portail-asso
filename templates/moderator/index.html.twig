@@ -3,40 +3,41 @@
 {% block title %}Modération{% endblock %}
 
 {% block body %}
+    {% set query = app.request.query %}
     <div class="card border-secondary-subtle rounded-3">
         <div class="card-body px-4 pt-5 pb-3">
             <h1 class="fs-4 fw-semibold mb-3">Modération des contributions</h1>
 
-            {% if revisions|default is not empty %}
-                <table class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Association</th>
-                        <th>Créateur</th>
-                        <th>Date</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for revision in revisions %}
-                        <tr>
-                            <td>{{ revision.association.name }}</td>
-                            <td>{{ revision.createdBy|default('Anonyme') }}</td>
-                            <td>{{ revision.createdAt|date('d/m/Y H:i') }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-outline-primary rounded-pill revision-preview" href="javascript:void(0);" data-href="{{ path('association_rollback_preview', {slug: revision.association.slug, revisionId: revision.id}) }}" title="Voir les changements">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <form id="moderation-filters" class="row g-2 mb-3" method="get" action="{{ path('moderator_index') }}" data-turbo="false">
+                <div class="col-md-4">
+                    <label class="visually-hidden" for="filter-q">Recherche</label>
+                    <input type="search" id="filter-q" name="q" class="form-control" placeholder="Association ou auteur…" value="{{ query.get('q') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="visually-hidden" for="filter-association">Association</label>
+                    <select id="filter-association" name="association" class="form-select">
+                        <option value="">Toutes les associations</option>
+                        {% for association in associations %}
+                            <option value="{{ association.id }}" {{ query.get('association') == association.id ? 'selected' }}>{{ association.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label class="visually-hidden" for="filter-dates">Date ou période</label>
+                    <div class="input-group">
+                        <input type="text" id="filter-dates" class="form-control" placeholder="Date ou période…" data-locale="{{ app.request.locale|lower }}">
+                        <button type="button" class="btn btn-outline-secondary" id="filter-dates-clear" title="Effacer la date"><i class="fa fa-times"></i></button>
+                    </div>
+                    <input type="hidden" name="from" value="{{ query.get('from') }}">
+                    <input type="hidden" name="to" value="{{ query.get('to') }}">
+                </div>
+            </form>
 
-                {% include 'association/_revisions-preview.html.twig' with {'association': revisions[0].association} %}
-            {% else %}
-                <div class="alert alert-info">Aucune contribution en attente.</div>
-            {% endif %}
+            <div id="moderation-revisions">
+                {% include 'moderator/_revisions.html.twig' %}
+            </div>
+
+            {% include 'association/_revisions-preview.html.twig' with {'association': null} %}
         </div>
     </div>
 {% endblock %}
