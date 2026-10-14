@@ -11,7 +11,7 @@ use App\Enum\AssociationCategory;
 final class FeedFilters
 {
     public const DEFAULT_LIMIT = 30;
-    public const EVENT_SORT_FIELDS = ['startAt', 'createdAt', 'title'];
+    public const EVENT_SORT_FIELDS = ['startAt', 'createdAt', 'updatedAt', 'title'];
     public const ASSOCIATION_SORT_FIELDS = ['updatedAt', 'createdAt', 'name'];
 
     /**

@@ -64,7 +64,11 @@ Chaque item contient :
 | `link` | URL absolue de la page de l'événement |
 | `guid` | slug de l'événement suivi de la date de l'occurrence (unique par occurrence) |
 | `description` | date et heure, lieu, association, description courte |
-| `pubDate` | date de publication de l'événement (`createdAt`) |
+| `pubDate` | date de dernière mise à jour de l'événement (`updatedAt`) |
+| `dcterms:created` | date de création (`createdAt`) |
+| `dcterms:modified` | date de dernière mise à jour (`updatedAt`) |
+
+Les dates de création et de mise à jour sont celles de l'événement source : toutes les occurrences d'un événement récurrent les partagent.
 
 Les événements récurrents sont dépliés : chaque occurrence comprise dans la fenêtre de dates devient un item distinct et compte dans `limit`.
 
@@ -79,7 +83,7 @@ Les événements récurrents sont dépliés : chaque occurrence comprise dans la
 | `past` | `false` | `true` inclut aussi les événements passés et, sans `sort` explicite, trie par date de début **décroissante** |
 | `from` | voir ci-dessous | date de début minimale (`YYYY-MM-DD`) |
 | `to` | voir ci-dessous | date de début maximale (`YYYY-MM-DD`, jour inclus) |
-| `sort` | `startAt,ASC` (`startAt,DESC` avec `past=true`) | champs : `startAt`, `createdAt`, `title` ; un `sort` explicite prime sur le défaut lié à `past` |
+| `sort` | `startAt,ASC` (`startAt,DESC` avec `past=true`) | champs : `startAt`, `createdAt`, `updatedAt`, `title` ; un `sort` explicite prime sur le défaut lié à `past` |
 | `debug` | `false` | voir « Règles communes » |
 
 ### Fenêtre de dates
@@ -100,5 +104,6 @@ Le filtre porte sur la date de début (`startAt`) de chaque événement ou occur
 | `/fr/rss/evenements.xml?association=asso-a,asso-b&tags=sport` | événements à venir des associations `asso-a` ou `asso-b`, si elles ont la catégorie `sport` |
 | `/fr/rss/evenements.xml?past=true&from=2025-01-01&to=2025-12-31&limit=-1` | tous les événements publics de 2025, du plus récent au plus ancien |
 | `/fr/rss/evenements.xml?sort=createdAt,DESC&limit=10` | les 10 événements à venir publiés le plus récemment |
+| `/fr/rss/evenements.xml?sort=updatedAt,DESC&limit=10` | les 10 événements à venir modifiés le plus récemment |
 | `/fr/rss/evenements.xml?from=2020-01-01` | événements à venir uniquement (`from` antérieur à maintenant est ramené à maintenant sans `past=true`) |
 | `/fr/rss/evenements.xml?limit=abc&debug=true` | texte indiquant que `limit` est ignoré (défaut 30 appliqué) |

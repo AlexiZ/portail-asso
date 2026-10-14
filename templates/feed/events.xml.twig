@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
     <channel>
         <title>{{ 'wiki_plab.long'|trans }} - Événements</title>
         <link>{{ url('event_list') }}</link>
@@ -12,7 +12,9 @@
             <link>{{ url('event_show', {slug: event.slug}) }}</link>
             <guid isPermaLink="false">{{ event.slug }}@{{ event.startAt|date('c') }}</guid>
             <description>{% apply escape %}<p>{{ event.startAt|date('d/m/Y H:i') }}{% if event.location %} - {{ event.location }}{% endif %} - {{ event.association.name }}</p>{{ event.shortDescription|raw }}{% endapply %}</description>
-            <pubDate>{{ event.createdAt|date('r') }}</pubDate>
+            <pubDate>{{ event.updatedAt|date('r') }}</pubDate>
+            <dcterms:created>{{ event.createdAt|date('c') }}</dcterms:created>
+            <dcterms:modified>{{ event.updatedAt|date('c') }}</dcterms:modified>
 {{ include('feed/_enclosure.xml.twig', {filename: event.posterFilename}) }}
         </item>
 {% endfor %}
