@@ -44,7 +44,7 @@ class ChairmanController extends AbstractController
         }
 
         return $this->render('chairman/index.html.twig', [
-            'associations' => $this->isGranted('ROLE_ADMIN') ? array_merge($this->entityManager->getRepository(Association::class)->findAllWithMemberships(), $this->entityManager->getRepository(Association::class)->findAllWithoutMemberships()) : $user->getChairedAssociations(),
+            'associations' => $this->entityManager->getRepository(Association::class)->findForChairmanIndex($this->isGranted('ROLE_ADMIN') ? null : $user),
         ]);
     }
 
