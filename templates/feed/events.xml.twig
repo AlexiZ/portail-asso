@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
     <channel>
-        <title>{{ 'wiki_plab.long'|trans }} - Événements</title>
+        <title>{{ 'portal_title.long'|trans }} - Événements</title>
         <link>{{ url('event_list') }}</link>
-        <description>Les événements du {{ 'wiki_plab.long'|trans|lower }}</description>
+        <description>Les événements du {{ 'portal_title.long'|trans|lower }}</description>
         <language>{{ app.request.locale }}</language>
         <atom:link href="{{ app.request.uri }}" rel="self" type="application/rss+xml"/>
 {% for event in events %}

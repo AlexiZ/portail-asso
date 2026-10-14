@@ -1,8 +1,9 @@
-wiki_plab:
+portal_title:
     long: Portail des associations Plabennecoises
+    city: Ville de Plabennec
     parts:
-        1: Portail des associations
-        2: Plabennecoises
+        1: Portail
+        2: des associations
     short: Portail
 
 day:

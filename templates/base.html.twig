@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} | {{ 'wiki_plab.long'|trans }}</title>
+        <title>{% block title %}{% endblock %} | {{ 'portal_title.long'|trans }}</title>
         <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
         <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
         <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
@@ -21,13 +21,9 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white border">
             <div class="container">
                 <a class="navbar-brand" href="{{ path('homepage') }}">
-                    <img src="{{ asset('images/logo.png') }}" alt="{{ 'wiki_plab.long'|trans }}" height="50" class="d-inline-block align-text-top">
-                    <span class="ps-3 pt-3 align-middle d-none d-md-inline-block">
-                        <span class="fw-bold text-uppercase">{{ 'wiki_plab.parts.1'|trans }}</span>
-                        <br>
-                        {{ 'wiki_plab.parts.2'|trans }}
-                    </span>
-                    <span class="ps-3 pt-3 align-middle d-sm-inline-block d-md-none">{{ 'wiki_plab.short'|trans }}</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="{{ 'portal_title.long'|trans }}" height="50" class="d-inline-block align-text-top">
+                    <span class="ps-3 pt-3 align-middle d-none d-md-inline-block fs-5">{{ 'portal_title.parts.1'|trans }} {{ 'portal_title.parts.2'|trans }}</span>
+                    <img src="{{ asset('images/logo-plabennec.png') }}" alt="{{ 'portal_title.city'|trans }}" height="50" class="d-inline-block align-text-top ms-4">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMenu" aria-controls="navbarTogglerMenu" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
