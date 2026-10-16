@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use RRule\RRule;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -41,6 +42,10 @@ class Event
     #[Assert\NotBlank]
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $startAt;
+
+    #[Assert\GreaterThan(propertyPath: 'startAt')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $endAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $createdBy = null;
@@ -160,6 +165,66 @@ class Event
         $this->startAt = $startAt;
 
         return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): static
+    {
+        $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    /**
+     * End date, or end of the start day when not set (never equal to the start date).
+     */
+    public function getEffectiveEndAt(): \DateTimeInterface
+    {
+        if ($this->endAt) {
+            return $this->endAt;
+        }
+
+        $endOfDay = \DateTimeImmutable::createFromInterface($this->startAt)->setTime(23, 59, 59);
+
+        return $endOfDay > $this->startAt ? $endOfDay : $endOfDay->modify('+1 minute');
+    }
+
+    /**
+     * Copy of this event starting on $day at the same time, its end shifted accordingly.
+     */
+    public function withStartDate(\DateTimeInterface $day): static
+    {
+        $startAt = \DateTime::createFromInterface($day)->setTime(
+            (int) $this->startAt->format('H'),
+            (int) $this->startAt->format('i'),
+            (int) $this->startAt->format('s'),
+        );
+
+        $occurrence = clone $this;
+        $occurrence->startAt = $startAt;
+        if ($this->endAt) {
+            $occurrence->endAt = (clone $startAt)->add($this->startAt->diff($this->endAt));
+        }
+
+        return $occurrence;
+    }
+
+    /**
+     * The occurrence of this event taking place on $day, or null if none.
+     */
+    public function occurrenceOn(\DateTimeImmutable $day): ?static
+    {
+        if (!$this->recurrenceRule) {
+            return $day->format('Y-m-d') === $this->startAt->format('Y-m-d') ? $this : null;
+        }
+
+        $rule = new RRule($this->recurrenceRule);
+
+        return $rule->getOccurrencesBetween($day->setTime(0, 0), $day->setTime(23, 59, 59), 1) ? $this->withStartDate($day) : null;
     }
 
     public function getCreatedBy(): ?User

@@ -1,3 +1,4 @@
+{% import 'feed/_macros.xml.twig' as feed %}
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
     <channel>
@@ -11,7 +12,8 @@
             <title>{{ association.name }}</title>
             <link>{{ url('association_show', {slug: association.slug}) }}</link>
             <guid isPermaLink="false">{{ association.slug }}</guid>
-            <description>{{ association.content }}</description>
+            <description>{{ feed.cdata(association.content) }}</description>
+{{ feed.categories(association) }}
 {% if association.updatedAt %}
             <pubDate>{{ association.updatedAt|date('r') }}</pubDate>
             <dcterms:modified>{{ association.updatedAt|date('c') }}</dcterms:modified>

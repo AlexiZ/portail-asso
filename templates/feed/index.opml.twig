@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+    <head>
+        <title>{{ 'portal_title.long'|trans }} - Flux RSS</title>
+        <docs>https://opml.org/spec2.opml</docs>
+    </head>
+    <body>
+        <outline type="rss" text="Associations" title="{{ 'portal_title.long'|trans }} - Associations" xmlUrl="{{ url('feed_associations') }}" htmlUrl="{{ url('homepage') }}"/>
+        <outline type="rss" text="Événements" title="{{ 'portal_title.long'|trans }} - Événements" xmlUrl="{{ url('feed_events') }}" htmlUrl="{{ url('event_list') }}"/>
+    </body>
+</opml>

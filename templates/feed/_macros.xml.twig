@@ -1,0 +1,8 @@
+{# HTML wrapped in CDATA (required by the Neocity spec); a "]]>" inside the content is split across two sections #}
+{% macro cdata(html) %}<![CDATA[{{ html|replace({']]>': ']]]]><![CDATA[>'})|raw }}]]>{% endmacro %}
+
+{% macro categories(association) %}
+{% for category in association.categories ?? [] %}
+            <category>{{ category|trans }}</category>
+{% endfor %}
+{% endmacro %}

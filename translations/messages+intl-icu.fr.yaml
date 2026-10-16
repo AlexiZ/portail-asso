@@ -275,6 +275,7 @@ event:
         poster: Affiche de l'événement
         long_description: Description longue de l'événement
         start_at: Date et heure de début
+        end_at: Date et heure de fin (facultatif)
         is_public:
             label: Est-ce un événement public ?
             help: Un événement public apparaîtra sur la page d'accueil de ce portail.

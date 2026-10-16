@@ -17,6 +17,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/rss')]
 class FeedController extends AbstractController
 {
+    /**
+     * OPML list of the available feeds (the feeds equivalent of a sitemap index).
+     */
+    #[Route('', name: 'feed_index')]
+    public function index(): Response
+    {
+        return $this->rss('feed/index.opml.twig', [], 'application/xml');
+    }
+
     #[Route('/associations.xml', name: 'feed_associations')]
     public function associations(Request $request, AssociationRepository $associationRepository): Response
     {
@@ -56,10 +65,10 @@ class FeedController extends AbstractController
         ]);
     }
 
-    private function rss(string $template, array $parameters): Response
+    private function rss(string $template, array $parameters, string $contentType = 'application/rss+xml'): Response
     {
         $response = $this->render($template, $parameters);
-        $response->headers->set('Content-Type', 'application/rss+xml; charset=UTF-8');
+        $response->headers->set('Content-Type', $contentType.'; charset=UTF-8');
 
         return $response->setPublic()->setMaxAge(3600);
     }

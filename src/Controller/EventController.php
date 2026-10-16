@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -47,7 +48,14 @@ class EventController extends AbstractController
     public function show(
         #[MapEntity(mapping: ['slug' => 'slug'])]
         Event $event,
+        #[MapQueryParameter] ?string $date = null,
     ): Response {
+        // ?date=YYYY-MM-DD shows that occurrence (unique URL per occurrence for RSS consumers); invalid dates are ignored
+        $day = $date ? \DateTimeImmutable::createFromFormat('!Y-m-d', $date) : false;
+        if ($day && $day->format('Y-m-d') === $date) {
+            $event = $event->occurrenceOn($day) ?? $event;
+        }
+
         return $this->render('event/show.html.twig', [
             'event' => $event,
         ]);

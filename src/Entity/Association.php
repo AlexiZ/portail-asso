@@ -445,16 +445,7 @@ class Association
                 $rule = new RRule($event->getRecurrenceRule());
 
                 foreach ($rule->getOccurrencesAfter($now, false, 10) as $date) {
-                    $dateWithTime = (clone $date)->setTime(
-                        (int) $startAt->format('H'),
-                        (int) $startAt->format('i'),
-                        (int) $startAt->format('s')
-                    );
-
-                    $occurrence = clone $event;
-                    $occurrence->setStartAt($dateWithTime);
-
-                    $results->add($occurrence);
+                    $results->add($event->withStartDate($date));
                 }
             } else {
                 if ($startAt > $now) {

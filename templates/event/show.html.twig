@@ -41,7 +41,7 @@
                     <h1 class="fs-3 fw-semibold my-1 mb-3">{{ event.title }}</h1>
                     <p class="my-0 mb-2">
                         <small class="fst-italic">
-                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}{% if event.endAt %} → {{ format_date(event.endAt) }}{% endif %}
                             {% if event.recurrenceRule %}
                                 (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)
                             {% endif %}

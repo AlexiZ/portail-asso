@@ -7,9 +7,15 @@ Le portail expose deux flux RSS 2.0 (`Content-Type: application/rss+xml`) :
 | Associations | `/fr/rss/associations.xml` |
 | Événements | `/fr/rss/evenements.xml` |
 
+Les balises suivent la spécification Neocity de l'application mobile qui consomme ces flux : format **Agenda** pour les événements, format **Actualités** pour les associations. Les dates sont au format RFC 2822 (jours et mois en anglais, fuseau `+0100` en hiver et `+0200` en été) et le contenu HTML est encapsulé dans `<![CDATA[…]]>`.
+
 Comme toutes les routes du portail, les URLs sont préfixées par la locale (`/fr/…` ou `/br/…`).
 
-Les deux flux sont annoncés dans le `<head>` de chaque page (`<link rel="alternate" type="application/rss+xml">`) pour la découverte automatique par les navigateurs et lecteurs RSS, et le flux des événements est accessible via l'icône RSS du pied de page.
+Les deux flux sont annoncés dans le `<head>` de chaque page (`<link rel="alternate" type="application/rss+xml">`) pour la découverte automatique par les navigateurs et lecteurs RSS.
+
+## Liste des flux
+
+`/fr/rss` liste les flux disponibles au format [OPML 2.0](https://opml.org/spec2.opml) (`Content-Type: application/xml`), l'équivalent d'un sitemap index pour les flux : une balise `<outline type="rss">` par flux, avec son URL (`xmlUrl`) et la page HTML correspondante (`htmlUrl`). Les lecteurs RSS savent importer ce fichier pour s'abonner à tous les flux. C'est la page ouverte par l'icône RSS du pied de page.
 
 ## Règles communes
 
@@ -26,17 +32,21 @@ Les deux flux sont annoncés dans le `<head>` de chaque page (`<link rel="altern
 
 Contient **toutes** les associations, sans limite, triées par défaut par date de mise à jour décroissante.
 
-Chaque item contient :
+Chaque item contient (format Neocity **Actualités**) :
 
 | Élément | Valeur |
 |---|---|
 | `title` | nom de l'association |
 | `link` | URL absolue de la page de l'association |
 | `guid` | slug de l'association (stable, ne change pas lors d'une mise à jour) |
-| `description` | présentation de l'association |
+| `description` | présentation de l'association (HTML en CDATA) |
+| `category` | une balise par catégorie de l'association (libellé) |
+| `enclosure` | logo de l'association, si présent (URL absolue) |
 | `pubDate` | date de dernière mise à jour (`updatedAt`) |
 | `dcterms:created` | date de création (`createdAt`) |
 | `dcterms:modified` | date de dernière mise à jour (`updatedAt`) |
+
+Les balises facultatives de la spécification `news-popup`, `ev:isPinned` et `art:enddate` ne sont pas utilisées.
 
 Les modifications d'une association étant acceptées par défaut, le flux reflète toujours sa version la plus à jour.
 
@@ -56,17 +66,26 @@ Exemple : `/fr/rss/associations.xml?categories=sport,music&sort=name` (associati
 
 Par défaut : les 30 prochains événements publics, sur l'année à venir, triés par date de début croissante.
 
-Chaque item contient :
+Chaque item contient (format Neocity **Agenda**) :
 
 | Élément | Valeur |
 |---|---|
-| `title` | date de l'événement suivie de son titre |
-| `link` | URL absolue de la page de l'événement |
+| `title` | titre de l'événement |
+| `link` | URL absolue de la page de l'occurrence : `/fr/event/{slug}?date=YYYY-MM-DD` (unique par occurrence, la page affiche la date de cette occurrence) |
 | `guid` | slug de l'événement suivi de la date de l'occurrence (unique par occurrence) |
-| `description` | date et heure, lieu, association, description courte |
+| `description` | description longue suivie de l'association organisatrice (HTML en CDATA) |
+| `category` | une balise par catégorie de l'association organisatrice (libellé) |
+| `enclosure` | affiche de l'événement, si présente (URL absolue) |
+| `ev:startdate` | date et heure de début de l'occurrence |
+| `ev:enddate` | date et heure de fin de l'occurrence (voir ci-dessous) |
+| `ev:location` | lieu, si renseigné |
 | `pubDate` | date de dernière mise à jour de l'événement (`updatedAt`) |
 | `dcterms:created` | date de création (`createdAt`) |
 | `dcterms:modified` | date de dernière mise à jour (`updatedAt`) |
+
+La date de fin est facultative dans le formulaire d'un événement. Si elle n'est pas renseignée, `ev:enddate` vaut la fin de la journée de début (23:59:59) ; la spécification interdisant une fin égale au début, un événement commençant à 23:59:59 se termine une minute plus tard. Pour un événement récurrent, chaque occurrence conserve la durée de l'événement source.
+
+Les balises facultatives de la spécification `geo:lat`, `geo:long` (coordonnées non disponibles) et `ev:isPinned` (épingles gérées depuis le back-office Neocity) ne sont pas utilisées.
 
 Les dates de création et de mise à jour sont celles de l'événement source : toutes les occurrences d'un événement récurrent les partagent.
 

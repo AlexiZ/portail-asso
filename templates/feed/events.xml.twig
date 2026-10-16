@@ -1,5 +1,6 @@
+{% import 'feed/_macros.xml.twig' as feed %}
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ev="http://purl.org/rss/1.0/modules/event/">
     <channel>
         <title>{{ 'portal_title.long'|trans }} - Événements</title>
         <link>{{ url('event_list') }}</link>
@@ -8,10 +9,17 @@
         <atom:link href="{{ app.request.uri }}" rel="self" type="application/rss+xml"/>
 {% for event in events %}
         <item>
-            <title>{{ event.startAt|date('d/m/Y') }} - {{ event.title }}</title>
-            <link>{{ url('event_show', {slug: event.slug}) }}</link>
+            <title>{{ event.title }}</title>
+            <link>{{ url('event_show', {slug: event.slug, date: event.startAt|date('Y-m-d')}) }}</link>
             <guid isPermaLink="false">{{ event.slug }}@{{ event.startAt|date('c') }}</guid>
-            <description>{% apply escape %}<p>{{ event.startAt|date('d/m/Y H:i') }}{% if event.location %} - {{ event.location }}{% endif %} - {{ event.association.name }}</p>{{ event.shortDescription|raw }}{% endapply %}</description>
+            {% set body %}{{ event.longDescription|raw }}<p>Organisé par <a href="{{ url('association_show', {slug: event.association.slug}) }}">{{ event.association.name }}</a></p>{% endset %}
+            <description>{{ feed.cdata(body) }}</description>
+{{ feed.categories(event.association) }}
+            <ev:startdate>{{ event.startAt|date('r') }}</ev:startdate>
+            <ev:enddate>{{ event.effectiveEndAt|date('r') }}</ev:enddate>
+{% if event.location %}
+            <ev:location>{{ event.location }}</ev:location>
+{% endif %}
             <pubDate>{{ event.updatedAt|date('r') }}</pubDate>
             <dcterms:created>{{ event.createdAt|date('c') }}</dcterms:created>
             <dcterms:modified>{{ event.updatedAt|date('c') }}</dcterms:modified>

@@ -266,6 +266,7 @@ event:
         long_description: Deskrivadur hir
         description: Deskrivadur
         start_at: Deiziad hag eur kregiñ
+        end_at: Deiziad hag eur echuiñ
         is_public:
             label: Un abadenn foran eo ?
             help: Un abadenn foran a zeuio war wel war bajenn degemer ar Porched-mañ.

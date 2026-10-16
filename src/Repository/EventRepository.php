@@ -76,18 +76,9 @@ class EventRepository extends ServiceEntityRepository
         foreach ($events as $event) {
             if ($event->getRecurrenceRule()) {
                 $rule = new RRule($event->getRecurrenceRule());
-                $eventStart = $event->getStartAt();
 
                 foreach ($rule->getOccurrencesBetween($from, $to) as $date) {
-                    $dateWithTime = (clone $date)->setTime(
-                        (int) $eventStart->format('H'),
-                        (int) $eventStart->format('i'),
-                        (int) $eventStart->format('s')
-                    );
-                    $nextEvent = clone $event;
-                    $nextEvent->setStartAt($dateWithTime);
-
-                    $eventsWithOccurrences[] = $nextEvent;
+                    $eventsWithOccurrences[] = $event->withStartDate($date);
                 }
             } elseif ($event->getStartAt() >= $from && $event->getStartAt() <= $to) {
                 $eventsWithOccurrences[] = $event;

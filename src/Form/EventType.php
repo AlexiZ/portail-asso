@@ -50,6 +50,11 @@ class EventType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
             ])
+            ->add('endAt', DateTimeType::class, [
+                'label' => 'event.form.end_at',
+                'widget' => 'single_text',
+                'required' => false,
+            ])
             ->add('recurrenceRule', HiddenType::class, [
                 'label' => false,
                 'required' => false,
