@@ -52,4 +52,19 @@ class EventTest extends TestCase
         $this->assertNull($event->occurrenceOn(new \DateTimeImmutable('2026-10-28')));
         $this->assertNull($event->occurrenceOn(new \DateTimeImmutable('2026-12-29')));
     }
+
+    public function testRuleWithoutDtstartIsAnchoredOnStartAt(): void
+    {
+        // the form saves rules without DTSTART (RRule.toString() in assets/app.js)
+        $event = $this->event('2026-10-20 10:00', null, 'RRULE:FREQ=WEEKLY;INTERVAL=1');
+
+        $occurrences = $event->getRRule()->getOccurrencesBetween(new \DateTime('2026-10-01'), new \DateTime('2026-11-01'));
+
+        $this->assertEquals(
+            [new \DateTime('2026-10-20 10:00'), new \DateTime('2026-10-27 10:00')],
+            $occurrences,
+        );
+        $this->assertNotNull($event->occurrenceOn(new \DateTimeImmutable('2026-10-27')));
+        $this->assertNull($event->occurrenceOn(new \DateTimeImmutable('2026-10-30')));
+    }
 }

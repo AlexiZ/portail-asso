@@ -214,6 +214,21 @@ class Event
     }
 
     /**
+     * Recurrence rule anchored on startAt: rules saved by the form have no DTSTART,
+     * and RRule would otherwise start from "now".
+     */
+    public function getRRule(): ?RRule
+    {
+        if (!$this->recurrenceRule) {
+            return null;
+        }
+
+        return str_contains($this->recurrenceRule, 'DTSTART')
+            ? new RRule($this->recurrenceRule)
+            : new RRule($this->recurrenceRule, \DateTime::createFromInterface($this->startAt));
+    }
+
+    /**
      * The occurrence of this event taking place on $day, or null if none.
      */
     public function occurrenceOn(\DateTimeImmutable $day): ?static
@@ -222,9 +237,7 @@ class Event
             return $day->format('Y-m-d') === $this->startAt->format('Y-m-d') ? $this : null;
         }
 
-        $rule = new RRule($this->recurrenceRule);
-
-        return $rule->getOccurrencesBetween($day->setTime(0, 0), $day->setTime(23, 59, 59), 1) ? $this->withStartDate($day) : null;
+        return $this->getRRule()->getOccurrencesBetween($day->setTime(0, 0), $day->setTime(23, 59, 59), 1) ? $this->withStartDate($day) : null;
     }
 
     public function getCreatedBy(): ?User

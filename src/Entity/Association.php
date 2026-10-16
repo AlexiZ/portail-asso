@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use RRule\RRule;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
@@ -442,7 +441,7 @@ class Association
             $startAt = $event->getStartAt();
 
             if ($event->getRecurrenceRule()) {
-                $rule = new RRule($event->getRecurrenceRule());
+                $rule = $event->getRRule();
 
                 foreach ($rule->getOccurrencesAfter($now, false, 10) as $date) {
                     $results->add($event->withStartDate($date));

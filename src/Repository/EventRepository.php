@@ -7,7 +7,6 @@ use App\Entity\Event;
 use App\Feed\FeedFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use RRule\RRule;
 
 /**
  * @extends ServiceEntityRepository<Event>
@@ -75,7 +74,7 @@ class EventRepository extends ServiceEntityRepository
 
         foreach ($events as $event) {
             if ($event->getRecurrenceRule()) {
-                $rule = new RRule($event->getRecurrenceRule());
+                $rule = $event->getRRule();
 
                 foreach ($rule->getOccurrencesBetween($from, $to) as $date) {
                     $eventsWithOccurrences[] = $event->withStartDate($date);
