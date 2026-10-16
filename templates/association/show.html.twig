@@ -202,7 +202,7 @@
                                     <a href="{{ path('event_show', {'slug': event.slug}) }}" class="text-black text-decoration-none">
                                         <strong class="text-primary fw-semibold">{{ event.title }}</strong><br>
                                         <small class="mb-2 fst-italic">
-                                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                                            <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_event_dates(event) }}
                                         </small>
                                         {% if event.location|default %}
                                             <br>
@@ -260,7 +260,7 @@
                                         <div>
                                             <p class="fw-semibold text-primary my-0">{{ event.title }}</p>
                                             <small class="mb-2 fst-italic">
-                                                <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+                                                <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_event_dates(event) }}
                                             </small>
                                             {% if event.location|default %}
                                                 <br>

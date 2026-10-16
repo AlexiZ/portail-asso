@@ -237,6 +237,10 @@ reset_password:
 
 event:
     date: "{date} à {start}"
+    dates:
+        single: Le {startDay} à {startTime}
+        same_day: Le {startDay} de {startTime} à {endTime}
+        range: Du {startDay} à {startTime} au {endDay} à {endTime}
     list:
         title: Prochains événements
         filter: Filtrer par dates

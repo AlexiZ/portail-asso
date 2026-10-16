@@ -11,7 +11,7 @@
         <a href="{{ path('event_show', {slug: event.slug}) }}" class="text-decoration-none">{{ event.title }}</a>
     </h5>
     <small class="mb-2 fst-italic">
-        <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_date(event.startAt) }}
+        <i class="fa-regular fa-calendar-days text-primary pe-1"></i>&nbsp;{{ format_event_dates(event) }}
         {% if event.recurrenceRule %}
             (<small class="text-lowercase fst-italic" id="event-recurrence" data-locale="{{ app.locale }}" data-rrule="{{ event.recurrenceRule }}"></small>)
         {% endif %}

@@ -233,6 +233,10 @@ reset_password:
 
 event:
     date: D'an {date} da {start}
+    dates:
+        single: D'an {startDay} da {startTime}
+        same_day: D'an {startDay} eus {startTime} da {endTime}
+        range: Eus an {startDay} da {startTime} betek an {endDay} da {endTime}
     list:
         title: Darvoudoù da zont
         filter: Silañ dre deiziad
