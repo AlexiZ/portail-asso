@@ -2,7 +2,7 @@ import ENGLISH from 'rrule/dist/esm/nlp/i18n.js';
 
 export function rruleBr(rrule) {
     const dayNames = ['sul', 'lun', 'meurzh', 'merc\'her', 'yaou', 'gwener', 'sadorn'];
-    const monthNames = ['genver', 'c\'hwevrer', 'meurzh', 'ebrel', 'mae', 'mezheven', 'gouere', 'eost', 'gwengolo', 'here', 'gwengolo', 'kerzu'];
+    const monthNames = ['genver', 'c\'hwevrer', 'meurzh', 'ebrel', 'mae', 'mezheven', 'gouere', 'eost', 'gwengolo', 'here', 'du', 'kerzu'];
     const translate = {
         "(~ approximate)": "(tost)",
         "and": "ha",
