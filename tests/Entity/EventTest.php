@@ -67,4 +67,14 @@ class EventTest extends TestCase
         $this->assertNotNull($event->occurrenceOn(new \DateTimeImmutable('2026-10-27')));
         $this->assertNull($event->occurrenceOn(new \DateTimeImmutable('2026-10-30')));
     }
+
+    public function testFirstOccurrenceAt(): void
+    {
+        $this->assertNull($this->event('2026-10-20 10:00')->getFirstOccurrenceAt());
+
+        $event = $this->event('2026-10-20 10:00', null, 'RRULE:FREQ=WEEKLY;COUNT=6');
+        $this->assertEquals(new \DateTime('2026-10-20 10:00'), $event->getFirstOccurrenceAt());
+        // an occurrence keeps the source anchor
+        $this->assertEquals(new \DateTime('2026-10-20 10:00'), $event->occurrenceOn(new \DateTimeImmutable('2026-11-03'))->getFirstOccurrenceAt());
+    }
 }

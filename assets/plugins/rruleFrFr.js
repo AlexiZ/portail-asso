@@ -1,6 +1,6 @@
 import ENGLISH from 'rrule/dist/esm/nlp/i18n.js';
 
-export function rruleFrFr(rrule) {
+export function rruleFrFr(rrule, hiddenYear = null, from = null) {
     const monthNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
         'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
     const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
@@ -12,7 +12,6 @@ export function rruleFrFr(rrule) {
         "DAY": "JOUR",
         "days": "jours",
         "every": "chaque",
-        "for": "pendant",
         "hour": "heure",
         "hours": "heures",
         "in": "dans",
@@ -30,8 +29,6 @@ export function rruleFrFr(rrule) {
         "on": "le",
         "RRule error: Unable to fully convert this rrule to text": "Erreur : impossible de textualiser cette règle.",
         "the": "le",
-        "time": "occurrence",
-        "times": "occurrences",
         "until": "jusqu'au",
         "week": "semaine",
         "weekday": "jour de la semaine",
@@ -43,7 +40,12 @@ export function rruleFrFr(rrule) {
     };
 
     function dateFormatter(year, month, day) {
-        return `${day} ${month} ${year}`;
+        return year === hiddenYear ? `${day} ${month}` : `${day} ${month} ${year}`;
+    }
+
+    if (from) {
+        const start = dateFormatter(from[0], monthNames[from[1]], from[2]);
+        translate.until = `du ${start} au`;
     }
 
     return rrule

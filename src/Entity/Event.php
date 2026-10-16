@@ -65,6 +65,9 @@ class Event
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $location = null;
 
+    /** Start of the source event, kept on occurrences built by withStartDate() to anchor the recurrence rule */
+    private ?\DateTimeInterface $sourceStartAt = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -205,6 +208,7 @@ class Event
         );
 
         $occurrence = clone $this;
+        $occurrence->sourceStartAt = $this->sourceStartAt ?? $this->startAt;
         $occurrence->startAt = $startAt;
         if ($this->endAt) {
             $occurrence->endAt = (clone $startAt)->add($this->startAt->diff($this->endAt));
@@ -225,7 +229,15 @@ class Event
 
         return str_contains($this->recurrenceRule, 'DTSTART')
             ? new RRule($this->recurrenceRule)
-            : new RRule($this->recurrenceRule, \DateTime::createFromInterface($this->startAt));
+            : new RRule($this->recurrenceRule, \DateTime::createFromInterface($this->sourceStartAt ?? $this->startAt));
+    }
+
+    /**
+     * Date of the first occurrence of the series, or null if the event doesn't recur.
+     */
+    public function getFirstOccurrenceAt(): ?\DateTimeInterface
+    {
+        return $this->getRRule()?->getOccurrences(1)[0] ?? null;
     }
 
     /**

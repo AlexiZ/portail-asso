@@ -1,6 +1,6 @@
 import ENGLISH from 'rrule/dist/esm/nlp/i18n.js';
 
-export function rruleBr(rrule) {
+export function rruleBr(rrule, hiddenYear = null, from = null) {
     const dayNames = ['sul', 'lun', 'meurzh', 'merc\'her', 'yaou', 'gwener', 'sadorn'];
     const monthNames = ['genver', 'c\'hwevrer', 'meurzh', 'ebrel', 'mae', 'mezheven', 'gouere', 'eost', 'gwengolo', 'here', 'du', 'kerzu'];
     const translate = {
@@ -11,7 +11,6 @@ export function rruleBr(rrule) {
         "DAY": "DEIZ",
         "days": "deizioù",
         "every": "pep",
-        "for": "goude",
         "hour": "eur",
         "hours": "eurioù",
         "in": "e",
@@ -29,8 +28,6 @@ export function rruleBr(rrule) {
         "on": "war",
         "RRule error: Unable to fully convert this rrule to text": "Erreur : n'haller ket amdreiñ ar reolenn-mañ e destenn penn-da-benn.",
         "the": "an",
-        "time": "gwech",
-        "times": "wech",
         "until": "betek",
         "week": "sizhun",
         "weekday": "deiz ar sizhun",
@@ -42,7 +39,12 @@ export function rruleBr(rrule) {
     };
 
     function dateFormatter(year, month, day) {
-        return `${day} ${month} ${year}`;
+        return year === hiddenYear ? `${day} ${month}` : `${day} ${month} ${year}`;
+    }
+
+    if (from) {
+        const start = dateFormatter(from[0], monthNames[from[1]], from[2]);
+        translate.until = `eus ${start} betek`;
     }
 
     return rrule

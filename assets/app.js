@@ -29,15 +29,43 @@ function initTomSelects() {
     });
 }
 
-function rRuleToText(rrule, locale) {
+// hiddenYear: year left out of the series dates (e.g. the year of the displayed start date)
+// from: [year, monthIndex, day] of the first occurrence, turns "until X" into "from F to X"
+function rRuleToText(rrule, locale, hiddenYear = null, from = null) {
     let text;
     switch (locale) {
-        case 'fr': text = rruleFrFr(rrule); break;
-        case 'br': text = rruleBr(rrule); break;
+        case 'fr': text = rruleFrFr(rrule, hiddenYear, from); break;
+        case 'br': text = rruleBr(rrule, hiddenYear, from); break;
         default: text = rrule.toText(); break;
     }
 
     return String(text).charAt(0).toUpperCase() + String(text).slice(1);
+}
+
+// "for 6 times" is unclear to the public: a finite rule is shown with its bounds ("from F to L"),
+// computed from the series start date (rules saved by the form have no DTSTART).
+// seriesStart: "YYYY-MM-DD"; hiddenYear defaults to the series start year
+function seriesToText(rule, locale, seriesStart, hiddenYear = null) {
+    const { count, until, ...unbounded } = rule.origOptions;
+    if (!count && !until) {
+        return rRuleToText(rule, locale);
+    }
+    // no start date yet (new event form): bounds unknown, never fall back to "for N times"
+    if (!seriesStart) {
+        return rRuleToText(new RRule(unbounded), locale);
+    }
+
+    const [year, month, day] = seriesStart.split('-').map(Number);
+    // midnight UTC: weekdays match the local calendar and an "until" day (midnight UTC) is included
+    const occurrences = new RRule({ ...rule.origOptions, dtstart: new Date(Date.UTC(year, month - 1, day)) }).all();
+    if (!occurrences.length) {
+        return rRuleToText(new RRule(unbounded), locale);
+    }
+
+    const first = occurrences[0];
+    const bounded = new RRule({ ...unbounded, until: occurrences[occurrences.length - 1] });
+
+    return rRuleToText(bounded, locale, hiddenYear ?? year, [first.getUTCFullYear(), first.getUTCMonth(), first.getUTCDate()]);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -755,6 +783,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const untilInput = document.getElementById('recurrence-until');
         const applyBtn = document.getElementById('recurrence-apply');
         const summaryBtn = document.getElementById('recurrence-summary');
+        const startAtInput = document.querySelector('[name="event[startAt]"]');
+        const summaryText = (rule) => seriesToText(rule, summaryBtn.dataset.locale, startAtInput?.value.substring(0, 10));
 
         // --- helpers -------------------------------------------------------
 
@@ -836,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const rule = new RRule(options);
             hiddenRecurrenceRule.value = rule.toString();
-            summaryBtn.textContent = rRuleToText(rule, summaryBtn.dataset.locale);
+            summaryBtn.textContent = summaryText(rule);
         });
 
         // --- edition: hydrate UI from existing RRULE -----------------------
@@ -873,21 +903,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 untilInput.value = o.until.toISOString().substring(0, 10);
             }
 
-            summaryBtn.textContent = rRuleToText(rule, summaryBtn.dataset.locale);
+            summaryBtn.textContent = summaryText(rule);
         }
+
+        // the bounds depend on the start date
+        startAtInput?.addEventListener('change', () => {
+            if (hiddenRecurrenceRule.value) {
+                summaryBtn.textContent = summaryText(RRule.fromString(hiddenRecurrenceRule.value));
+            }
+        });
     }
 
-    const eventRecurrence = document.getElementById('event-recurrence');
-    if (eventRecurrence) {
-        const rruleString = eventRecurrence.dataset.rrule;
+    document.querySelectorAll('.event-recurrence').forEach(eventRecurrence => {
+        const { locale, rrule, seriesStart, startYear } = eventRecurrence.dataset;
 
         try {
-            const rule = RRule.fromString(rruleString);
-            eventRecurrence.textContent = rRuleToText(rule, eventRecurrence.dataset.locale);
+            // an occurrence page shows its own date: the year is hidden only if it matches that one
+            eventRecurrence.textContent = seriesToText(RRule.fromString(rrule), locale, seriesStart, Number(startYear));
         } catch (e) {
             eventRecurrence.textContent = '';
         }
-    }
+    });
 
     const settingsPage = document.querySelector('body[data-route="admin_settings"]');
     if (settingsPage) {

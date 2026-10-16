@@ -22,7 +22,7 @@
                 <div class="row">
                     {% for event in events %}
                         <div class="event-item col-6 d-flex p-3" data-from="{{ event.startAt|date('Y-m-d H:i:s') }}">
-                            {% include 'event/show-with-image.html.twig' %}
+                            {% include 'event/show-with-image.html.twig' with {showRecurrence: true} %}
                         </div>
                     {% endfor %}
                 </div>
